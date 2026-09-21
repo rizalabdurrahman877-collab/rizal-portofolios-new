@@ -1,24 +1,31 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink, GitBranch, Search, X, Star } from "lucide-react";
+import {
+  ExternalLink,
+  GitBranch,
+  Search,
+  X,
+  Star,
+} from "lucide-react";
 import ProjectCard from "./ProjectCard";
 import { supabase } from "@/lib/supabase";
 
 type SupabaseProject = {
   id: number;
   created_at: string;
-  judul: string;
-  kategori: string;
-  deskripsi: string;
-  teknologi: string;
+  judul: string | null;
+  kategori: string | null;
+  deskripsi: string | null;
+  teknologi: string | null;
   gambar: string | null;
   link: string | null;
   featured: boolean | null;
 };
 
 type CardProject = {
+  id: number;
   number: string;
   title: string;
   category: string;
@@ -36,15 +43,10 @@ export default function Projects() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedProject, setSelectedProject] = useState<CardProject | null>(
-    null,
-  );
+  const [selectedProject, setSelectedProject] =
+    useState<CardProject | null>(null);
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     setLoading(true);
     setError("");
 
@@ -58,28 +60,35 @@ export default function Projects() {
 
       if (supabaseError) {
         console.error("SUPABASE ERROR:", supabaseError);
-        console.error("Message:", supabaseError.message);
-        console.error("Details:", supabaseError.details);
-        console.error("Hint:", supabaseError.hint);
-        console.error("Code:", supabaseError.code);
 
-        setError(supabaseError.message || "Gagal mengambil data project");
+        setError(
+          supabaseError.message || "Gagal mengambil data project.",
+        );
+
         return;
       }
 
-      setProjects(data || []);
+      setProjects(data ?? []);
     } catch (err) {
       console.error("FETCH PROJECT ERROR:", err);
       setError("Terjadi kesalahan saat mengambil data project.");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
 
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
-      new Set(projects.map((project) => project.kategori)),
-    ).filter(Boolean);
+      new Set(
+        projects
+          .map((project) => project.kategori?.trim())
+          .filter(Boolean),
+      ),
+    ) as string[];
 
     return ["All", ...uniqueCategories];
   }, [projects]);
@@ -88,27 +97,36 @@ export default function Projects() {
     const keyword = search.toLowerCase().trim();
 
     return projects.filter((project) => {
+      const judul = project.judul?.toLowerCase() ?? "";
+      const kategori = project.kategori?.toLowerCase() ?? "";
+      const deskripsi = project.deskripsi?.toLowerCase() ?? "";
+      const teknologi = project.teknologi?.toLowerCase() ?? "";
+
       const matchCategory =
-        activeCategory === "All" || project.kategori === activeCategory;
+        activeCategory === "All" ||
+        project.kategori === activeCategory;
 
       const matchSearch =
         !keyword ||
-        project.judul.toLowerCase().includes(keyword) ||
-        project.kategori.toLowerCase().includes(keyword) ||
-        project.deskripsi.toLowerCase().includes(keyword) ||
-        project.teknologi.toLowerCase().includes(keyword);
+        judul.includes(keyword) ||
+        kategori.includes(keyword) ||
+        deskripsi.includes(keyword) ||
+        teknologi.includes(keyword);
 
       return matchCategory && matchSearch;
     });
   }, [projects, search, activeCategory]);
 
-  const cardProjects: CardProject[] = filteredProjects.map(
-    (project, index) => ({
+  const cardProjects: CardProject[] = useMemo(() => {
+    return filteredProjects.map((project, index) => ({
+      id: project.id,
       number: String(index + 1).padStart(2, "0"),
-      title: project.judul,
-      category: project.kategori,
-      image: project.gambar || "/placeholder-project.jpg",
-      description: project.deskripsi,
+      title: project.judul?.trim() || "Project Tanpa Judul",
+      category: project.kategori?.trim() || "Project",
+      image: project.gambar?.trim() || "/placeholder-project.jpg",
+      description:
+        project.deskripsi?.trim() ||
+        "Belum ada deskripsi untuk project ini.",
       tags: project.teknologi
         ? project.teknologi
             .split(",")
@@ -116,13 +134,16 @@ export default function Projects() {
             .filter(Boolean)
         : [],
       featured: project.featured ?? false,
-      liveUrl: project.link || "#",
+      liveUrl: project.link?.trim() || "#",
       githubUrl: "#",
-    }),
-  );
+    }));
+  }, [filteredProjects]);
 
   return (
-    <section id="projects" className="relative overflow-hidden py-24 sm:py-32">
+    <section
+      id="projects"
+      className="relative overflow-hidden py-24 sm:py-32"
+    >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
@@ -135,6 +156,7 @@ export default function Projects() {
               className="mb-4 flex items-center gap-3"
             >
               <span className="h-px w-10 bg-violet-400" />
+
               <span className="text-sm font-medium uppercase tracking-[0.3em] text-violet-300">
                 Portfolio
               </span>
@@ -160,7 +182,8 @@ export default function Projects() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-4 max-w-2xl text-zinc-400"
             >
-              Beberapa project yang saya kerjakan menggunakan teknologi modern.
+              Beberapa project yang saya kerjakan menggunakan teknologi
+              modern.
             </motion.p>
           </div>
 
@@ -189,6 +212,7 @@ export default function Projects() {
           {categories.map((category) => (
             <button
               key={category}
+              type="button"
               onClick={() => setActiveCategory(category)}
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                 activeCategory === category
@@ -231,9 +255,12 @@ export default function Projects() {
               Gagal mengambil data project
             </p>
 
-            <p className="mt-2 text-sm text-zinc-500">{error}</p>
+            <p className="mt-2 text-sm text-zinc-500">
+              {error}
+            </p>
 
             <button
+              type="button"
               onClick={fetchProjects}
               className="mt-5 rounded-lg bg-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/15"
             >
@@ -251,17 +278,30 @@ export default function Projects() {
             <AnimatePresence mode="popLayout">
               {cardProjects.map((project) => (
                 <motion.div
-                  key={project.number + project.title}
+                  key={project.id}
                   layout
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{
+                    opacity: 0,
+                    scale: 0.96,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.96,
+                  }}
+                  transition={{
+                    duration: 0.3,
+                  }}
                   className="cursor-pointer"
                 >
                   <ProjectCard
                     project={project}
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() =>
+                      setSelectedProject(project)
+                    }
                   />
                 </motion.div>
               ))}
@@ -296,16 +336,30 @@ export default function Projects() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
           >
             <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 30, scale: 0.96 }}
+              initial={{
+                opacity: 0,
+                y: 30,
+                scale: 0.96,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              }}
+              exit={{
+                opacity: 0,
+                y: 30,
+                scale: 0.96,
+              }}
               onClick={(e) => e.stopPropagation()}
               className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-white/10 bg-[#0c0d1b] shadow-2xl"
             >
               {/* Close */}
               <button
+                type="button"
                 onClick={() => setSelectedProject(null)}
                 className="absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/40 p-2 text-zinc-400 backdrop-blur transition hover:text-white"
+                aria-label="Tutup"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -362,13 +416,7 @@ export default function Projects() {
                       href={selectedProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-black
-  transition-all duration-300 ease-out
-  hover:-translate-y-1
-  hover:scale-105
-  hover:bg-blue-400
-  hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]
-  active:scale-95"
+                      className="group inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-black transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 hover:bg-blue-400 hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] active:scale-95"
                     >
                       <ExternalLink className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                       Live Demo
