@@ -36,10 +36,7 @@ export default function Skills() {
   };
 
   return (
-    <section
-      id="skills"
-      className="relative px-6 py-24 sm:py-32"
-    >
+    <section id="skills" className="relative px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-violet-400">
@@ -51,8 +48,8 @@ export default function Skills() {
           </h2>
 
           <p className="mt-4 max-w-2xl text-zinc-400">
-            Teknologi dan tools yang saya gunakan dalam
-            mengembangkan berbagai project.
+            Teknologi dan tools yang saya gunakan dalam mengembangkan berbagai
+            project.
           </p>
         </div>
 
@@ -61,12 +58,12 @@ export default function Skills() {
             {Array.from({ length: 6 }).map((_, index) => (
               <div
                 key={index}
-                className="h-32 animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]"
+                className="h-32 animate-pulse rounded-2xl border border-white/10 bg-white/3"
               />
             ))}
           </div>
         ) : skills.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-10 text-center text-zinc-500">
+          <div className="rounded-2xl border border-white/10 bg-white/3 p-10 text-center text-zinc-500">
             Belum ada skills.
           </div>
         ) : (
@@ -74,7 +71,7 @@ export default function Skills() {
             {skills.map((skill) => (
               <div
                 key={skill.id}
-                className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:bg-white/[0.05]"
+                className="group rounded-2xl border border-white/10 bg-white/3 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:bg-white/5"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -83,9 +80,7 @@ export default function Skills() {
                     </div>
 
                     <div>
-                      <h3 className="font-semibold text-white">
-                        {skill.nama}
-                      </h3>
+                      <h3 className="font-semibold text-white">{skill.nama}</h3>
 
                       <p className="text-xs text-zinc-500">
                         {skill.kategori || "Technology"}
@@ -100,12 +95,9 @@ export default function Skills() {
 
                 <div className="h-2 overflow-hidden rounded-full bg-white/10">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-violet-500 to-blue-500 transition-all duration-1000"
+                    className="h-full rounded-full bg-linear-to-r from-violet-500 to-blue-500 transition-all duration-1000"
                     style={{
-                      width: `${Math.min(
-                        Math.max(skill.level, 0),
-                        100
-                      )}%`,
+                      width: `${Math.min(Math.max(skill.level, 0), 100)}%`,
                     }}
                   />
                 </div>

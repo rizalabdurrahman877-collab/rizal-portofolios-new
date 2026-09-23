@@ -2,13 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  ExternalLink,
-  GitBranch,
-  Search,
-  X,
-  Star,
-} from "lucide-react";
+import { ExternalLink, GitBranch, Search, X, Star } from "lucide-react";
 import ProjectCard from "./ProjectCard";
 import { supabase } from "@/lib/supabase";
 
@@ -43,8 +37,9 @@ export default function Projects() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedProject, setSelectedProject] =
-    useState<CardProject | null>(null);
+  const [selectedProject, setSelectedProject] = useState<CardProject | null>(
+    null,
+  );
 
   const fetchProjects = useCallback(async () => {
     setLoading(true);
@@ -61,9 +56,7 @@ export default function Projects() {
       if (supabaseError) {
         console.error("SUPABASE ERROR:", supabaseError);
 
-        setError(
-          supabaseError.message || "Gagal mengambil data project.",
-        );
+        setError(supabaseError.message || "Gagal mengambil data project.");
 
         return;
       }
@@ -84,9 +77,7 @@ export default function Projects() {
   const categories = useMemo(() => {
     const uniqueCategories = Array.from(
       new Set(
-        projects
-          .map((project) => project.kategori?.trim())
-          .filter(Boolean),
+        projects.map((project) => project.kategori?.trim()).filter(Boolean),
       ),
     ) as string[];
 
@@ -103,8 +94,7 @@ export default function Projects() {
       const teknologi = project.teknologi?.toLowerCase() ?? "";
 
       const matchCategory =
-        activeCategory === "All" ||
-        project.kategori === activeCategory;
+        activeCategory === "All" || project.kategori === activeCategory;
 
       const matchSearch =
         !keyword ||
@@ -125,8 +115,7 @@ export default function Projects() {
       category: project.kategori?.trim() || "Project",
       image: project.gambar?.trim() || "/placeholder-project.jpg",
       description:
-        project.deskripsi?.trim() ||
-        "Belum ada deskripsi untuk project ini.",
+        project.deskripsi?.trim() || "Belum ada deskripsi untuk project ini.",
       tags: project.teknologi
         ? project.teknologi
             .split(",")
@@ -140,10 +129,7 @@ export default function Projects() {
   }, [filteredProjects]);
 
   return (
-    <section
-      id="projects"
-      className="relative overflow-hidden py-24 sm:py-32"
-    >
+    <section id="projects" className="relative overflow-hidden py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
@@ -170,7 +156,7 @@ export default function Projects() {
               className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
             >
               Selected{" "}
-              <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
                 Projects
               </span>
             </motion.h2>
@@ -182,8 +168,7 @@ export default function Projects() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-4 max-w-2xl text-zinc-400"
             >
-              Beberapa project yang saya kerjakan menggunakan teknologi
-              modern.
+              Beberapa project yang saya kerjakan menggunakan teknologi modern.
             </motion.p>
           </div>
 
@@ -202,7 +187,7 @@ export default function Projects() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari project..."
-              className="w-full rounded-xl border border-white/10 bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-violet-500/50 focus:bg-white/[0.06]"
+              className="w-full rounded-xl border border-white/10 bg-white/4 py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-violet-500/50 focus:bg-white/6"
             />
           </motion.div>
         </div>
@@ -217,7 +202,7 @@ export default function Projects() {
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                 activeCategory === category
                   ? "bg-violet-500 text-white shadow-lg shadow-violet-500/20"
-                  : "border border-white/10 bg-white/[0.03] text-zinc-400 hover:bg-white/[0.07] hover:text-white"
+                  : "border border-white/10 bg-white/3 text-zinc-400 hover:bg-white/7 hover:text-white"
               }`}
             >
               {category}
@@ -242,7 +227,7 @@ export default function Projects() {
             {Array.from({ length: 6 }).map((_, index) => (
               <div
                 key={index}
-                className="h-[420px] animate-pulse rounded-3xl border border-white/10 bg-white/[0.03]"
+                className="h-105 animate-pulse rounded-3xl border border-white/10 bg-white/3"
               />
             ))}
           </div>
@@ -255,9 +240,7 @@ export default function Projects() {
               Gagal mengambil data project
             </p>
 
-            <p className="mt-2 text-sm text-zinc-500">
-              {error}
-            </p>
+            <p className="mt-2 text-sm text-zinc-500">{error}</p>
 
             <button
               type="button"
@@ -299,9 +282,7 @@ export default function Projects() {
                 >
                   <ProjectCard
                     project={project}
-                    onClick={() =>
-                      setSelectedProject(project)
-                    }
+                    onClick={() => setSelectedProject(project)}
                   />
                 </motion.div>
               ))}
@@ -311,7 +292,7 @@ export default function Projects() {
 
         {/* Empty */}
         {!loading && !error && cardProjects.length === 0 && (
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] py-20 text-center">
+          <div className="rounded-3xl border border-white/10 bg-white/3 py-20 text-center">
             <Search className="mx-auto mb-4 h-8 w-8 text-zinc-600" />
 
             <h3 className="text-lg font-semibold text-white">
@@ -401,7 +382,7 @@ export default function Projects() {
                     {selectedProject.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-300"
+                        className="rounded-lg border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-zinc-300"
                       >
                         {tag}
                       </span>
@@ -428,7 +409,7 @@ export default function Projects() {
                       href={selectedProject.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.08]"
+                      className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/4 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/8"
                     >
                       <GitBranch className="h-4 w-4" />
                       GitHub
