@@ -2,146 +2,175 @@
 
 import { motion } from "framer-motion";
 
-const particles = Array.from({ length: 25 });
-
 export default function AnimatedBackground() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#050816]">
-
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Base */}
       <div className="absolute inset-0 bg-[#050816]" />
 
-      {/* Violet glow */}
+      {/* Animated gradient */}
       <motion.div
         animate={{
-          x: [0, 120, -80, 0],
-          y: [0, 80, -50, 0],
-          scale: [1, 1.2, 0.9, 1],
+          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
         }}
         transition={{
-          duration: 18,
+          duration: 14,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        className="absolute inset-0 bg-[linear-gradient(120deg,#050816,#090a20,#110b25,#080a1c,#050816)] bg-[length:300%_300%]"
+      />
+
+      {/* Orb kiri atas */}
+      <motion.div
+        animate={{
+          x: [0, 50, 20, 0],
+          y: [0, 30, -15, 0],
+          scale: [1, 1.08, 0.96, 1],
+        }}
+        transition={{
+          duration: 10,
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute -left-40 top-10 h-125 w-[500px] rounded-full bg-violet-600/20 blur-[120px]"
+        className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-[#8d7cff]/12"
       />
 
-      {/* Blue glow */}
+      {/* Orb kanan bawah */}
       <motion.div
         animate={{
-          x: [0, -100, 70, 0],
-          y: [0, -60, 80, 0],
-          scale: [1, 0.9, 1.2, 1],
+          x: [0, -45, -15, 0],
+          y: [0, -30, 20, 0],
+          scale: [1, 0.94, 1.08, 1],
         }}
         transition={{
-          duration: 22,
+          duration: 11,
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute -right-40 top-[20%] h-[550px] w-[550px] rounded-full bg-blue-500/20 blur-[130px]"
+        className="absolute -bottom-36 -right-36 h-96 w-96 rounded-full bg-[#b37dff]/10"
       />
 
-      {/* Cyan glow */}
+      {/* Orb kanan atas */}
       <motion.div
         animate={{
-          x: [0, 100, -70, 0],
-          y: [0, -70, 40, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute bottom-[-250px] left-[30%] h-[500px] w-[500px] rounded-full bg-cyan-400/15 blur-[120px]"
-      />
-
-      {/* Center glow */}
-      <motion.div
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.1, 0.2, 0.1],
+          x: [0, -25, 0],
+          y: [0, 30, 0],
         }}
         transition={{
           duration: 8,
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute left-1/2 top-[35%] h-[450px] w-[450px] -translate-x-1/2 rounded-full bg-violet-500/10 blur-[100px]"
+        className="absolute -right-20 top-20 h-52 w-52 rounded-full bg-[#6d8cff]/8"
+      />
+
+      {/* Orb bawah kiri */}
+      <motion.div
+        animate={{
+          x: [0, 25, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 9,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute -bottom-24 -left-20 h-48 w-48 rounded-full bg-[#9b7cff]/8"
+      />
+
+      {/* Center glow */}
+      <motion.div
+        animate={{
+          scale: [0.9, 1.12, 0.9],
+          opacity: [0.03, 0.08, 0.03],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8d7cff]/10"
       />
 
       {/* Grid */}
       <div
-        className="absolute inset-0 opacity-[0.045]"
+        className="absolute inset-0 opacity-[0.035]"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(139,92,246,0.8) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(59,130,246,0.8) 1px, transparent 1px)
-          `,
-          backgroundSize: "70px 70px",
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+          backgroundSize: "50px 50px",
         }}
       />
 
-      {/* Rotating ring */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{
-          duration: 40,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className="absolute left-1/2 top-[40%] h-[500px] w-[500px] -translate-x-1/2 rounded-full border border-violet-400/10"
-      />
-
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{
-          duration: 55,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className="absolute left-1/2 top-[40%] h-[700px] w-[700px] -translate-x-1/2 rounded-full border border-cyan-400/[0.06]"
-      />
-
-      {/* Moving light */}
+      {/* Moving horizontal line */}
       <motion.div
         animate={{
-          x: ["-100%", "250%"],
-          opacity: [0, 1, 0],
+          x: ["-100%", "100%"],
         }}
         transition={{
           duration: 7,
           repeat: Infinity,
-          repeatDelay: 2,
-          ease: "easeInOut",
+          ease: "linear",
         }}
-        className="absolute top-[30%] h-px w-[40%] bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent"
+        className="absolute left-0 top-[35%] h-px w-1/3 bg-gradient-to-r from-transparent via-[#8d7cff]/20 to-transparent"
       />
 
-      {/* Particles */}
-      {particles.map((_, index) => (
-        <motion.span
-          key={index}
-          animate={{
-            y: [0, -80, -160],
-            opacity: [0, 0.8, 0],
-            scale: [0.5, 1, 0.5],
-          }}
-          transition={{
-            duration: 4 + (index % 4),
-            delay: index * 0.3,
-            repeat: Infinity,
-            ease: "easeOut",
-          }}
-          className="absolute h-1 w-1 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]"
-          style={{
-            left: `${(index * 37) % 100}%`,
-            top: `${40 + ((index * 17) % 55)}%`,
-          }}
-        />
-      ))}
+      {/* Floating dots */}
+      <motion.div
+        animate={{
+          y: [0, -28, 0],
+          opacity: [0.15, 0.55, 0.15],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute left-[15%] top-[25%] h-1 w-1 rounded-full bg-[#b37dff]"
+      />
 
-      {/* Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(5,8,22,0.55)_100%)]" />
+      <motion.div
+        animate={{
+          y: [0, 22, 0],
+          opacity: [0.1, 0.45, 0.1],
+        }}
+        transition={{
+          duration: 5,
+          delay: 0.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute right-[18%] top-[30%] h-1.5 w-1.5 rounded-full bg-[#8d7cff]"
+      />
+
+      <motion.div
+        animate={{
+          y: [0, -20, 0],
+          opacity: [0.1, 0.4, 0.1],
+        }}
+        transition={{
+          duration: 4.5,
+          delay: 1,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute bottom-[25%] left-[23%] h-1 w-1 rounded-full bg-[#b37dff]"
+      />
+
+      <motion.div
+        animate={{
+          y: [0, 18, 0],
+          opacity: [0.1, 0.4, 0.1],
+        }}
+        transition={{
+          duration: 5,
+          delay: 1.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute bottom-[20%] right-[25%] h-1 w-1 rounded-full bg-[#8d7cff]"
+      />
     </div>
   );
 }

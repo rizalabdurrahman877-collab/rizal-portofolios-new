@@ -1,7 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import AnimatedBackground from "./AnimatedBackground";
 
 export default function SplashScreen() {
   const [show, setShow] = useState(true);
@@ -9,7 +10,7 @@ export default function SplashScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShow(false);
-    }, 1800);
+    }, 1900);
 
     return () => clearTimeout(timer);
   }, []);
@@ -19,70 +20,120 @@ export default function SplashScreen() {
       {show && (
         <motion.div
           initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            scale: 1.03,
+            transition: {
+              duration: 0.5,
+              ease: "easeOut",
+            },
           }}
-          transition={{
-            duration: 0.7,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="fixed inset-0 z-99999 flex items-center justify-center overflow-hidden bg-[#050816]"
+          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
         >
-          {/* Glow */}
-          <div className="absolute h-[350px] w-[350px] rounded-full bg-violet-600/20 blur-[120px]" />
-          <div className="absolute h-[250px] w-[250px] rounded-full bg-cyan-500/10 blur-[100px]" />
+          <AnimatedBackground />
 
           {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{
-              duration: 0.7,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative flex flex-col items-center"
-          >
+          <div className="relative z-10 flex flex-col items-center">
             {/* Logo */}
             <motion.div
-              initial={{ rotate: -10, scale: 0 }}
-              animate={{ rotate: 0, scale: 1 }}
-              transition={{
-                delay: 0.15,
-                duration: 0.6,
-                type: "spring",
-                stiffness: 180,
-                damping: 14,
+              initial={{
+                opacity: 0,
+                scale: 0.7,
+                y: 15,
               }}
-              className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-violet-400/30 bg-white/[0.04] shadow-[0_0_60px_rgba(139,92,246,0.25)]"
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.55,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8d7cff] to-[#b37dff] shadow-[0_0_30px_rgba(141,124,255,0.25)]"
             >
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 blur-xl" />
+              <motion.div
+                animate={{
+                  opacity: [0.25, 0.7, 0.25],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute inset-0 rounded-2xl border border-white/30"
+              />
 
-              <span className="relative bg-gradient-to-r from-violet-300 via-blue-400 to-cyan-300 bg-clip-text text-2xl font-black tracking-[-0.08em] text-transparent">
-                RW
+              <span className="relative text-3xl font-bold text-white">
+                R
               </span>
             </motion.div>
 
             {/* Name */}
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
-              className="mt-6 text-xl font-bold text-white"
-            >
-              Rizal Abdurrakhman Wakhid
-              <span className="text-cyan-400">.</span>
-            </motion.h1>
-
-            {/* Loading line */}
             <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 120, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.9 }}
-              className="mt-4 h-0.5 overflow-hidden rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400"
-            />
-          </motion.div>
+              initial={{
+                opacity: 0,
+                y: 10,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                delay: 0.2,
+                duration: 0.4,
+              }}
+              className="mt-5 text-center"
+            >
+              <h1 className="text-xl font-bold tracking-tight text-white">
+                Rizal Abdurrakhman
+              </h1>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.4,
+                  duration: 0.35,
+                }}
+                className="mt-1 text-sm text-white/50"
+              >
+                Web Developer
+              </motion.p>
+            </motion.div>
+
+            {/* Loading */}
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 5,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                delay: 0.35,
+                duration: 0.3,
+              }}
+              className="mt-6"
+            >
+              <div className="h-[2px] w-36 overflow-hidden rounded-full bg-white/10">
+                <motion.div
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{
+                    duration: 1.25,
+                    ease: "easeInOut",
+                  }}
+                  className="h-full rounded-full bg-gradient-to-r from-[#8d7cff] to-[#b37dff]"
+                />
+              </div>
+
+              <p className="mt-2 text-center text-[9px] uppercase tracking-[0.25em] text-white/30">
+                Loading Portfolio
+              </p>
+            </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
