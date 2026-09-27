@@ -168,7 +168,7 @@ export default function AdminSidebar({
           </p>
 
           {/* PORTFOLIO */}
-          <Link
+          <a
             href={siteUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -179,7 +179,7 @@ export default function AdminSidebar({
             </span>
 
             <span>Lihat Portfolio</span>
-          </Link>
+          </a>
         </nav>
 
         {/* ================= USER ================= */}
