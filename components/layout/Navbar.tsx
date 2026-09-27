@@ -40,6 +40,11 @@ export default function Navbar() {
     setOpen(false);
   };
 
+  const handleLoginClick = () => {
+    setOpen(false);
+    window.location.href = "/admin/login";
+  };
+
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
@@ -73,6 +78,7 @@ export default function Navbar() {
             </a>
           ))}
 
+          {/* LET'S TALK */}
           <a
             href="#contact"
             onClick={(e) => handleNavigation(e, "#contact")}
@@ -117,10 +123,11 @@ export default function Navbar() {
                   </a>
                 ))}
 
+                {/* MOBILE LET'S TALK */}
                 <a
                   href="#contact"
                   onClick={(e) => handleNavigation(e, "#contact")}
-                  className="mt-5 flex min-h-12 items-center justify-center rounded-full border border-blue-400/20 bg-blue-500/10 px-5 py-3 text-sm font-medium text-blue-300 transition-colors duration-200 hover:border-blue-400/50 hover:bg-blue-500/20 hover:text-white"
+                  className="mt-3 flex min-h-12 items-center justify-center rounded-full border border-blue-400/20 bg-blue-500/10 px-5 py-3 text-sm font-medium text-blue-300 transition-colors duration-200 hover:border-blue-400/50 hover:bg-blue-500/20 hover:text-white"
                 >
                   Let's Talk
                 </a>

@@ -2,7 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/[0.06] px-6 py-10">
+    <footer className="border-t border-white/6 px-6 py-10">
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-6 sm:flex-row sm:items-center">
         <div>
           <a
@@ -10,7 +10,7 @@ export default function Footer() {
             className="text-lg font-semibold"
           >
             Rizal
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               .
             </span>
           </a>
@@ -33,7 +33,7 @@ export default function Footer() {
         </a>
       </div>
 
-      <div className="mx-auto mt-8 max-w-7xl border-t border-white/[0.05] pt-6">
+      <div className="mx-auto mt-8 max-w-7xl border-t border-white/5 pt-6">
         <p className="text-xs text-slate-700">
           © 2026 Rizal Abdurrakhman. All rights reserved.
         </p>

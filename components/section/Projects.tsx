@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, GitBranch, Search, X, Star } from "lucide-react";
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "../projects/ProjectCard";
 import { supabase } from "@/lib/supabase";
+import Link from "next/link";
 
 type SupabaseProject = {
   id: number;
@@ -131,8 +132,9 @@ export default function Projects() {
   return (
     <section id="projects" className="relative overflow-hidden py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        {/* ================= HEADER ================= */}
+        <div className="mb-10 flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+          {/* LEFT CONTENT */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -166,51 +168,66 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-4 max-w-2xl text-zinc-400"
+              className="mt-4 max-w-2xl text-zinc-300"
             >
               Beberapa project yang saya kerjakan menggunakan teknologi modern.
             </motion.p>
           </div>
 
-          {/* Search */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative w-full lg:max-w-xs"
-          >
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          {/* ================= RIGHT COLUMN: SEARCH + TAMBAH PROJEK + FILTER ================= */}
+          <div className="flex w-full flex-col items-stretch gap-4 lg:w-auto lg:items-end">
+            {/* SEARCH + TAMBAH PROJEK */}
+            <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-stretch lg:w-auto">
+              {/* SEARCH */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="relative flex w-full items-center sm:w-72"
+              >
+                <Search className="pointer-events-none absolute left-4 h-4 w-4 text-zinc-500" />
 
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari project..."
-              className="w-full rounded-xl border border-white/10 bg-white/4 py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-violet-500/50 focus:bg-white/6"
-            />
-          </motion.div>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Cari project..."
+                  className="box-border h-12 w-full rounded-xl border border-zinc-700 bg-zinc-900 pl-11 pr-4 text-sm leading-normal text-white outline-none transition placeholder:text-zinc-300 focus:border-violet-500/50 focus:bg-white/6"
+                />
+              </motion.div>
+
+              {/* TAMBAH PROJEK */}
+              <Link
+                href="/admin/proyek/manajemen"
+                className="box-border inline-flex h-12 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-violet-500 px-5 text-sm font-semibold leading-none text-white transition hover:bg-violet-400 hover:shadow-lg hover:shadow-violet-500/20"
+              >
+                <span className="text-lg leading-none">+</span>
+                Tambah Projek
+              </Link>
+            </div>
+
+            {/* ================= CATEGORIES ================= */}
+            <div className="flex flex-wrap gap-2 lg:justify-end">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setActiveCategory(category)}
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                    activeCategory === category
+                      ? "bg-violet-500 text-white shadow-lg shadow-violet-500/20"
+                      : "border border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800 hover:text-white"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Categories */}
-        <div className="mb-10 flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              type="button"
-              onClick={() => setActiveCategory(category)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                activeCategory === category
-                  ? "bg-violet-500 text-white shadow-lg shadow-violet-500/20"
-                  : "border border-white/10 bg-white/3 text-zinc-400 hover:bg-white/7 hover:text-white"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        {/* Count */}
+        {/* ================= COUNT ================= */}
         {!loading && !error && (
           <div className="mb-6 text-sm text-zinc-500">
             Menampilkan{" "}
@@ -221,7 +238,7 @@ export default function Projects() {
           </div>
         )}
 
-        {/* Loading */}
+        {/* ================= LOADING ================= */}
         {loading && (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -233,7 +250,7 @@ export default function Projects() {
           </div>
         )}
 
-        {/* Error */}
+        {/* ================= ERROR ================= */}
         {!loading && error && (
           <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6 text-center">
             <p className="text-sm font-medium text-red-400">
@@ -252,7 +269,7 @@ export default function Projects() {
           </div>
         )}
 
-        {/* Projects */}
+        {/* ================= PROJECTS ================= */}
         {!loading && !error && cardProjects.length > 0 && (
           <motion.div
             layout
@@ -290,7 +307,7 @@ export default function Projects() {
           </motion.div>
         )}
 
-        {/* Empty */}
+        {/* ================= EMPTY ================= */}
         {!loading && !error && cardProjects.length === 0 && (
           <div className="rounded-3xl border border-white/10 bg-white/3 py-20 text-center">
             <Search className="mx-auto mb-4 h-8 w-8 text-zinc-600" />
@@ -306,7 +323,7 @@ export default function Projects() {
         )}
       </div>
 
-      {/* Modal */}
+      {/* ================= MODAL ================= */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
@@ -335,17 +352,17 @@ export default function Projects() {
               onClick={(e) => e.stopPropagation()}
               className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-white/10 bg-[#0c0d1b] shadow-2xl"
             >
-              {/* Close */}
+              {/* CLOSE */}
               <button
                 type="button"
                 onClick={() => setSelectedProject(null)}
-                className="absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/40 p-2 text-zinc-400 backdrop-blur transition hover:text-white"
+                className="absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/40 p-2 text-zinc-300 backdrop-blur transition hover:text-white"
                 aria-label="Tutup"
               >
                 <X className="h-5 w-5" />
               </button>
 
-              {/* Image */}
+              {/* IMAGE */}
               <div className="aspect-video overflow-hidden">
                 <img
                   src={selectedProject.image}
@@ -355,6 +372,7 @@ export default function Projects() {
               </div>
 
               <div className="p-6 sm:p-8">
+                {/* CATEGORY + FEATURED */}
                 <div className="mb-3 flex flex-wrap items-center gap-3">
                   <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-300">
                     {selectedProject.category}
@@ -368,15 +386,17 @@ export default function Projects() {
                   )}
                 </div>
 
+                {/* TITLE */}
                 <h3 className="text-2xl font-bold text-white sm:text-3xl">
                   {selectedProject.title}
                 </h3>
 
-                <p className="mt-4 leading-7 text-zinc-400">
+                {/* DESCRIPTION */}
+                <p className="mt-4 leading-7 text-zinc-300">
                   {selectedProject.description}
                 </p>
 
-                {/* Tags */}
+                {/* TAGS */}
                 {selectedProject.tags.length > 0 && (
                   <div className="mt-6 flex flex-wrap gap-2">
                     {selectedProject.tags.map((tag) => (
@@ -390,7 +410,7 @@ export default function Projects() {
                   </div>
                 )}
 
-                {/* Buttons */}
+                {/* BUTTONS */}
                 <div className="mt-8 flex flex-wrap gap-3">
                   {selectedProject.liveUrl !== "#" && (
                     <a

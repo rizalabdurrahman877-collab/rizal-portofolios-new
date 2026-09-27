@@ -1,14 +1,14 @@
 "use client";
 
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import TechStack from "../components/TechStack";
-import About from "../components/About";
-import Projects from "../components/Projects";
-import Experience from "../components/Experience";
-import Contact from "../components/Contact";
-import Footer from "../components/Footer";
-import Skills from "../components/Skill";
+import Navbar from "../components/layout/Navbar";
+import Hero from "../components/section/Hero";
+import TechStack from "../components/section/TechStack";
+import About from "../components/section/About";
+import Projects from "../components/section/Projects";
+import Experience from "../components/section/Experience";
+import Contact from "../components/section/Contact";
+import Footer from "../components/layout/Footer";
+import Skills from "../components/section/Skill";
 
 export default function PortfolioPage() {
   return (
