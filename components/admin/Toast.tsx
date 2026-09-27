@@ -45,7 +45,7 @@ export default function Toast() {
   const message = success || error;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-4 z-[100] flex justify-center px-4 sm:justify-end sm:pr-6">
+    <div className="pointer-events-none fixed inset-x-0 top-4 z-100 flex justify-center px-4 sm:justify-end sm:pr-6">
       <AnimatePresence>
         {visible && message && (
           <motion.div

@@ -169,7 +169,7 @@ export default function AdminSidebar({
 
           {/* PORTFOLIO */}
           <a
-            href={siteUrl}
+            href="/"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 transition-all duration-200 hover:bg-blue-200 hover:text-blue-600 bg-blue-200"
