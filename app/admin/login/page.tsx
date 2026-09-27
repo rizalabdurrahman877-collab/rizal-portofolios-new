@@ -93,7 +93,7 @@ export default async function LoginPage({
                 name="email"
                 type="email"
                 autoComplete="off"
-                placeholder="admin@gmail.com"
+                placeholder="abcdefg@gmail.com"
                 required
                 className="h-12 w-full rounded-xl border border-white/30 bg-white/20 backdrop-blur-md px-4 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-white/50 focus:ring-4 focus:ring-blue-200/50"
               />
