@@ -65,7 +65,7 @@ export default function Experience() {
 
         <div className="relative mt-16">
           {/* Timeline */}
-          <div className="absolute bottom-0 left-[7px] top-0 w-px bg-gradient-to-b from-blue-500/50 via-cyan-400/20 to-transparent" />
+          <div className="absolute bottom-0 left-1.75 top-0 w-px bg-linear-to-b from-blue-500/50 via-cyan-400/20 to-transparent" />
 
           <div className="space-y-12">
             {experiences.map((item, index) => (
@@ -83,7 +83,7 @@ export default function Experience() {
                 {/* Dot */}
                 <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-blue-400 bg-[#050816] shadow-lg shadow-blue-500/30" />
 
-                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 transition duration-300 hover:border-blue-400/20 hover:bg-blue-500/[0.02] sm:p-7">
+                <div className="rounded-2xl border border-white/6 bg-white/2 p-6 transition duration-300 hover:border-blue-400/20 hover:bg-blue-500/2 sm:p-7">
                   <div className="flex flex-col justify-between gap-3 sm:flex-row">
                     <div>
                       <p className="text-sm text-blue-400">

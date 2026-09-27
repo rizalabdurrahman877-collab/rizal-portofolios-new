@@ -1122,3 +1122,42 @@ input:-webkit-autofill:active {
   caret-color: #ffffff !important;
   transition: background-color 9999s ease-in-out 0s;
 }
+/* Wrapper Preloader (Menutupi seluruh layar) */
+.preloader-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #0f172a; /* Warna latar gelap */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Animasi menghilang perlahan di akhir */
+  animation: fadeOut 0.5s ease-in-out 1.5s forwards; 
+}
+
+/* Animasi Teks */
+.preloader-text {
+  color: white;
+  font-size: 2.5rem;
+  font-family: sans-serif;
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Keyframes untuk efek transisi */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}

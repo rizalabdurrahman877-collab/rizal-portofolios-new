@@ -184,12 +184,7 @@ export async function tambahProyekAction(formData: FormData) {
       error.message,
     );
 
-    /*
-      Hapus gambar yang sudah berhasil
-      diupload agar tidak menjadi file
-      yang tidak terpakai di Storage.
-    */
-
+    /* Hapus gambar yang sudah terupload */
     await supabase.storage
       .from("proyek")
       .remove([pathFile]);
@@ -225,46 +220,268 @@ export async function tambahProyekAction(formData: FormData) {
 export async function updateProyekAction(formData: FormData) {
   const supabase = await checkAdmin();
 
-  const id = String(formData.get("id") ?? "");
+  /* =========================
+     AMBIL DATA FORM
+  ========================= */
+
+  const id = String(formData.get("id") ?? "").trim();
+
   const judul = String(formData.get("judul") ?? "").trim();
+
+  const kategori = String(
+    formData.get("kategori") ?? "",
+  ).trim();
+
   const deskripsi = String(
     formData.get("deskripsi") ?? "",
   ).trim();
+
   const teknologi = String(
     formData.get("teknologi") ?? "",
   ).trim();
 
-  if (!id || !judul || !deskripsi || !teknologi) {
+  const link = String(
+    formData.get("link") ?? "",
+  ).trim();
+
+  const featured = formData.get("featured") === "on";
+
+  const gambar = formData.get("gambar");
+
+  /* =========================
+     VALIDASI DATA
+  ========================= */
+
+  if (
+    !id ||
+    !judul ||
+    !kategori ||
+    !deskripsi ||
+    !teknologi
+  ) {
     redirect(
       `/admin/proyek/edit/${id}?error=${encodeURIComponent(
-        "Semua field wajib diisi.",
+        "Judul, kategori, deskripsi, dan teknologi wajib diisi.",
       )}`,
     );
   }
 
-  const { error } = await supabase
+  /* =========================
+     AMBIL DATA LAMA
+  ========================= */
+
+  const { data: proyekLama, error: proyekError } =
+    await supabase
+      .from("proyek")
+      .select("gambar")
+      .eq("id", id)
+      .single();
+
+  if (proyekError || !proyekLama) {
+    redirect(
+      `/admin/proyek/edit/${id}?error=${encodeURIComponent(
+        "Data proyek tidak ditemukan.",
+      )}`,
+    );
+  }
+
+  /* =========================
+     GAMBAR LAMA
+  ========================= */
+
+  const gambarLama = proyekLama.gambar;
+
+  let imageUrl = gambarLama;
+
+  let gambarBaruPath: string | null = null;
+
+  /* =======================================================
+     JIKA USER MEMILIH GAMBAR BARU
+  ======================================================= */
+
+  if (gambar instanceof File && gambar.size > 0) {
+    /* =========================
+       VALIDASI FORMAT
+    ========================= */
+
+    const tipeYangDiizinkan = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
+
+    if (!tipeYangDiizinkan.includes(gambar.type)) {
+      redirect(
+        `/admin/proyek/edit/${id}?error=${encodeURIComponent(
+          "Format gambar harus JPG, PNG, atau WEBP.",
+        )}`,
+      );
+    }
+
+    /* =========================
+       VALIDASI UKURAN
+       Maksimal 5 MB
+    ========================= */
+
+    const maksimalUkuran = 5 * 1024 * 1024;
+
+    if (gambar.size > maksimalUkuran) {
+      redirect(
+        `/admin/proyek/edit/${id}?error=${encodeURIComponent(
+          "Ukuran gambar maksimal 5 MB.",
+        )}`,
+      );
+    }
+
+    /* =========================
+       BUAT NAMA FILE BARU
+    ========================= */
+
+    const ekstensi =
+      gambar.name.split(".").pop()?.toLowerCase() || "jpg";
+
+    const namaFile = `${Date.now()}-${crypto.randomUUID()}.${ekstensi}`;
+
+    const pathFile = `proyek/${namaFile}`;
+
+    gambarBaruPath = pathFile;
+
+    /* =========================
+       UPLOAD GAMBAR BARU
+    ========================= */
+
+    const { error: uploadError } = await supabase.storage
+      .from("proyek")
+      .upload(pathFile, gambar, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: gambar.type,
+      });
+
+    if (uploadError) {
+      console.error(
+        "Gagal upload gambar baru:",
+        uploadError.message,
+      );
+
+      redirect(
+        `/admin/proyek/edit/${id}?error=${encodeURIComponent(
+          "Gagal mengupload gambar: " +
+            uploadError.message,
+        )}`,
+      );
+    }
+
+    /* =========================
+       PUBLIC URL GAMBAR BARU
+    ========================= */
+
+    const { data: publicUrlData } = supabase.storage
+      .from("proyek")
+      .getPublicUrl(pathFile);
+
+    imageUrl = publicUrlData.publicUrl;
+  }
+
+  /* =======================================================
+     UPDATE DATABASE
+  ======================================================= */
+
+  const { error: updateError } = await supabase
     .from("proyek")
     .update({
       judul,
+      kategori,
       deskripsi,
       teknologi,
+      gambar: imageUrl,
+      link,
+      featured,
     })
     .eq("id", id);
 
-  if (error) {
+  /* =======================================================
+     JIKA DATABASE GAGAL DIUPDATE
+  ======================================================= */
+
+  if (updateError) {
     console.error(
       "Gagal mengupdate proyek:",
-      error.message,
+      updateError.message,
     );
+
+    /* =========================
+       HAPUS GAMBAR BARU
+       Supaya tidak menjadi file
+       sampah di Storage
+    ========================= */
+
+    if (gambarBaruPath) {
+      await supabase.storage
+        .from("proyek")
+        .remove([gambarBaruPath]);
+    }
 
     redirect(
       `/admin/proyek/edit/${id}?error=${encodeURIComponent(
-        "Gagal menyimpan perubahan: " + error.message,
+        "Gagal menyimpan perubahan: " +
+          updateError.message,
       )}`,
     );
   }
 
+  /* =======================================================
+     HAPUS GAMBAR LAMA
+     HANYA JIKA GAMBAR BARU BERHASIL DISIMPAN
+  ======================================================= */
+
+  if (gambarBaruPath && gambarLama) {
+    try {
+      const url = new URL(gambarLama);
+
+      const marker =
+        "/storage/v1/object/public/proyek/";
+
+      const index = url.pathname.indexOf(marker);
+
+      if (index !== -1) {
+        const filePath = decodeURIComponent(
+          url.pathname.substring(
+            index + marker.length,
+          ),
+        );
+
+        if (filePath) {
+          const { error: deleteOldImageError } =
+            await supabase.storage
+              .from("proyek")
+              .remove([filePath]);
+
+          if (deleteOldImageError) {
+            console.error(
+              "Gagal menghapus gambar lama:",
+              deleteOldImageError.message,
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Gagal memproses gambar lama:",
+        error,
+      );
+    }
+  }
+
+  /* =======================================================
+     REFRESH CACHE
+  ======================================================= */
+
   revalidateSemua();
+
+  /* =======================================================
+     REDIRECT
+  ======================================================= */
 
   redirect(
     `/admin/proyek?success=${encodeURIComponent(
@@ -277,10 +494,18 @@ export async function updateProyekAction(formData: FormData) {
    HAPUS PROYEK
 ========================================================= */
 
-export async function hapusProyekAction(formData: FormData) {
+export async function hapusProyekAction(
+  formData: FormData,
+) {
   const supabase = await checkAdmin();
 
-  const id = String(formData.get("id") ?? "");
+  const id = String(
+    formData.get("id") ?? "",
+  ).trim();
+
+  /* =========================
+     VALIDASI ID
+  ========================= */
 
   if (!id) {
     redirect(
@@ -342,13 +567,23 @@ export async function hapusProyekAction(formData: FormData) {
           ),
         );
 
-        await supabase.storage
-          .from("proyek")
-          .remove([filePath]);
+        if (filePath) {
+          const { error: deleteImageError } =
+            await supabase.storage
+              .from("proyek")
+              .remove([filePath]);
+
+          if (deleteImageError) {
+            console.error(
+              "Gagal menghapus gambar dari Storage:",
+              deleteImageError.message,
+            );
+          }
+        }
       }
     } catch (error) {
       console.error(
-        "Gagal menghapus gambar dari Storage:",
+        "Gagal memproses URL gambar:",
         error,
       );
     }
@@ -359,6 +594,10 @@ export async function hapusProyekAction(formData: FormData) {
   ========================= */
 
   revalidateSemua();
+
+  /* =========================
+     REDIRECT
+  ========================= */
 
   redirect(
     `/admin/proyek?success=${encodeURIComponent(
@@ -372,7 +611,8 @@ export async function hapusProyekAction(formData: FormData) {
 ========================================================= */
 
 export async function logoutAction() {
-  const supabase = await createSupabaseServerClient();
+  const supabase =
+    await createSupabaseServerClient();
 
   await supabase.auth.signOut();
 
