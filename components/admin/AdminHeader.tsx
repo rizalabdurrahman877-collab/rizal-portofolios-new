@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { logoutAction } from "@/actions/project-actions";
+import { logoutAction } from "@/actions/proyek-actions";
 
 type AdminHeaderProps = {
   email?: string;

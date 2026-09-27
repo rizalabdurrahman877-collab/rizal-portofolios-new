@@ -1,185 +1,199 @@
 import Link from "next/link";
-import { tambahProyekAction } from "@/actions/project-actions";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { tambahProyekAction } from "@/actions/proyek-actions";
 
-export default async function ManajemenProyekPage() {
+export default async function ManajemenProyekPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; success?: string }>;
+}) {
+  const params = await searchParams;
+
   const supabase = await createSupabaseServerClient();
-
-  const { count } = await supabase
+  const { data: daftarProyek } = await supabase
     .from("proyek")
-    .select("id", {
-      count: "exact",
-      head: true,
-    });
-
-  const totalProyek = count ?? 0;
+    .select("*")
+    .order("id", { ascending: true });
 
   return (
-    <div className="w-full">
-
-      {/* Header */}
-      <div className="mb-8">
-        <div className="mb-3 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-blue-600">
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-xl font-black text-slate-900 sm:text-2xl">
           Manajemen Proyek
-        </div>
-
-        <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-          Tambah Proyek
         </h1>
-
-        <p className="mt-2 text-sm font-medium text-slate-500">
-          Tambahkan proyek baru ke portfolio kamu.
+        <p className="mt-1 text-sm text-slate-500">
+          Tambah, ubah, atau hapus data proyek yang tampil di halaman
+          portfolio.
         </p>
       </div>
 
-      {/* Stats */}
-      <div className="mb-8 grid gap-5 md:grid-cols-3">
-
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-bold text-slate-500">
-            Proyek Aktif
-          </p>
-
-          <p className="mt-3 text-4xl font-black text-green-600">
-            {totalProyek}
-          </p>
-
-          <p className="mt-2 text-xs font-medium text-slate-400">
-            Proyek tersedia
-          </p>
+      {params.error && (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-600">
+          {params.error}
         </div>
+      )}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-bold text-slate-500">
-            Total Proyek
-          </p>
-
-          <p className="mt-3 text-4xl font-black text-slate-900">
-            {totalProyek}
-          </p>
-
-          <p className="mt-2 text-xs font-medium text-slate-400">
-            Semua proyek portfolio
-          </p>
+      {params.success && (
+        <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-medium text-green-600">
+          {params.success}
         </div>
+      )}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-bold text-slate-500">
-            Akses
-          </p>
+      {/* ================= TABEL DAFTAR PROYEK ================= */}
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table className="w-full min-w-140 text-sm">
+          <thead className="border-b border-slate-200 bg-slate-50">
+            <tr>
+              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
+                Judul
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
+                Kategori
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
+                Featured
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
+                Aksi
+              </th>
+            </tr>
+          </thead>
 
-          <p className="mt-3 text-3xl font-black text-slate-900">
-            Admin
-          </p>
+          <tbody className="divide-y divide-slate-100">
+            {daftarProyek?.map((proyek) => (
+              <tr key={proyek.id} className="hover:bg-slate-50">
+                <td className="px-4 py-3 font-medium text-slate-900">
+                  {proyek.judul}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-slate-500">
+                  {proyek.kategori}
+                </td>
+                <td className="px-4 py-3 text-slate-500">
+                  {proyek.featured ? "✓" : "—"}
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/admin/proyek/edit/${proyek.id}`}
+                      className="whitespace-nowrap rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-semibold text-blue-700 transition hover:bg-blue-400"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      href={`/admin/proyek/hapus/${proyek.id}`}
+                      className="whitespace-nowrap rounded-lg bg-red-500 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-400"
+                    >
+                      Hapus
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
 
-          <p className="mt-2 text-xs font-medium text-slate-400">
-            Hak akses penuh
-          </p>
-        </div>
-
+            {(!daftarProyek || daftarProyek.length === 0) && (
+              <tr>
+                <td
+                  colSpan={4}
+                  className="px-4 py-8 text-center text-slate-400"
+                >
+                  Belum ada data proyek.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
-      {/* Form */}
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      {/* ================= FORM TAMBAH PROYEK ================= */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="mb-4 text-lg font-bold text-slate-900">
+          Tambah Proyek Baru
+        </h2>
 
-        <div className="border-b border-slate-200 px-6 py-6 sm:px-8">
-          <h2 className="text-xl font-black text-slate-900">
-            Informasi Proyek
-          </h2>
+        <form action={tambahProyekAction} className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Judul Proyek
+              </label>
+              <input
+                name="judul"
+                required
+                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
 
-          <p className="mt-1 text-sm font-medium text-slate-500">
-            Isi semua informasi proyek dengan lengkap.
-          </p>
-        </div>
-
-        <form
-          action={tambahProyekAction}
-          className="space-y-6 p-6 sm:p-8"
-        >
-
-          {/* Judul */}
-          <div>
-            <label
-              htmlFor="judul"
-              className="mb-2 block text-sm font-black text-slate-700"
-            >
-              Judul Proyek
-            </label>
-
-            <input
-              id="judul"
-              name="judul"
-              type="text"
-              placeholder="Contoh: Sistem Manajemen Siswa"
-              required
-              className="h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
-            />
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Kategori
+              </label>
+              <input
+                name="kategori"
+                placeholder="Web Application / Management System / IOT"
+                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
           </div>
 
-          {/* Deskripsi */}
           <div>
-            <label
-              htmlFor="deskripsi"
-              className="mb-2 block text-sm font-black text-slate-700"
-            >
+            <label className="mb-1 block text-sm font-medium text-slate-700">
               Deskripsi
             </label>
-
             <textarea
-              id="deskripsi"
               name="deskripsi"
-              rows={6}
-              placeholder="Jelaskan tentang proyek ini..."
-              required
-              className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+              rows={3}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
             />
           </div>
 
-          {/* Teknologi */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Teknologi (pisah koma)
+              </label>
+              <input
+                name="teknologi"
+                placeholder="Next.js, Tailwind, Supabase"
+                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Link Proyek
+              </label>
+              <input
+                name="link"
+                type="url"
+                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+          </div>
+
           <div>
-            <label
-              htmlFor="teknologi" 
-              className="mb-2 block text-sm font-black text-slate-700"
-            >
-              Teknologi
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              URL Gambar
             </label>
-
             <input
-              id="teknologi"
-              name="teknologi"
-              type="text"
-              placeholder="Contoh: Next.js, Supabase, Tailwind CSS"
-              required
-              className="h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+              name="gambar"
+              type="url"
+              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
             />
           </div>
 
-          {/* Buttons */}
-          <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+          <label className="flex items-center gap-2 text-sm text-slate-700">
+            <input type="checkbox" name="featured" className="h-4 w-4" />
+            Tandai sebagai Featured
+          </label>
 
-            <Link
-              href="/admin"
-              className="inline-flex h-12 items-center justify-center rounded-xl bg-red-500 px-6 text-sm font-black text-slate-700 hover:bg-red-4[y00"
-            >
-              Batal
-            </Link>
-
-            <button
-              type="submit"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-blue-600 px-7 text-sm font-black text-white shadow-lg shadow-blue-100 transition hover:bg-blue-700"
-            >
-              <span className="text-lg">
-                +
-              </span>
-
-              Tambah Proyek
-            </button>
-
-          </div>
-
+          <button
+            type="submit"
+            className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-blue-700"
+          >
+            Simpan Proyek
+          </button>
         </form>
-      </section>
-
+      </div>
     </div>
   );
 }

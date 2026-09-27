@@ -1,16 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 type AdminSidebarProps = {
   email?: string;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
-export default function AdminSidebar({ email }: AdminSidebarProps) {
+export default function AdminSidebar({
+  email,
+  isOpen,
+  onClose,
+}: AdminSidebarProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
 
   const isDashboard = pathname === "/admin";
 
@@ -60,31 +64,10 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
 
   return (
     <>
-      {/* ================= MOBILE TOP BAR (HAMBURGER) ================= */}
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
-        <Link href="/admin" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-black text-white">
-            R
-          </div>
-          <span className="text-sm font-black text-slate-900">
-            Rizal Portfolio
-          </span>
-        </Link>
-
-        <button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          aria-label="Buka menu"
-          className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-slate-700 transition hover:bg-blue-200"
-        >
-          <span className="text-xl leading-none">☰</span>
-        </button>
-      </div>
-
       {/* ================= OVERLAY (MOBILE, SAAT SIDEBAR TERBUKA) ================= */}
       {isOpen && (
         <div
-          onClick={() => setIsOpen(false)}
+          onClick={onClose}
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
         />
       )}
@@ -116,7 +99,7 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
           {/* TOMBOL TUTUP, CUMA MUNCUL DI MOBILE */}
           <button
             type="button"
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
             aria-label="Tutup menu"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 lg:hidden"
           >
@@ -133,7 +116,7 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
           {/* DASHBOARD */}
           <Link
             href="/admin"
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
             className={`mb-2 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-200 ${
               isDashboard
                 ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
@@ -156,7 +139,7 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
           {/* SEMUA PROYEK */}
           <Link
             href="/admin/proyek"
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
             aria-current={isProjects ? "page" : undefined}
             className={menuClass(isProjects)}
           >
@@ -168,7 +151,7 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
           {/* TAMBAH PROYEK */}
           <Link
             href="/admin/proyek/manajemen"
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
             aria-current={isManagement ? "page" : undefined}
             className={menuClass(isManagement)}
           >

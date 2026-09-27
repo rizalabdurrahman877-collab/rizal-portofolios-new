@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { hapusProyekAction } from "@/actions/project-actions";
+import { hapusProyekAction } from "@/actions/proyek-actions";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 

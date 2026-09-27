@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { updateProyekAction } from "@/actions/project-actions";
+import { updateProyekAction } from "@/actions/proyek-actions";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 
@@ -78,7 +78,7 @@ export default async function EditProyekPage({
               name="judul"
               defaultValue={proyek.judul}
               required
-              className="h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-medium outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+              className="h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
             />
           </div>
 
@@ -96,7 +96,7 @@ export default async function EditProyekPage({
               rows={7}
               defaultValue={proyek.deskripsi}
               required
-              className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm font-medium outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+              className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
             />
           </div>
 
@@ -113,7 +113,7 @@ export default async function EditProyekPage({
               name="teknologi"
               defaultValue={proyek.teknologi}
               required
-              className="h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-medium outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+              className="h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-medium text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
             />
           </div>
 

@@ -18,6 +18,14 @@ async function checkAdmin() {
   return supabase;
 }
 
+function revalidateSemua() {
+  revalidatePath("/");
+  revalidatePath("/proyek");
+  revalidatePath("/admin");
+  revalidatePath("/admin/proyek");
+  revalidatePath("/admin/proyek/manajemen");
+}
+
 export async function tambahProyekAction(formData: FormData) {
   const supabase = await checkAdmin();
 
@@ -26,7 +34,11 @@ export async function tambahProyekAction(formData: FormData) {
   const teknologi = String(formData.get("teknologi") ?? "").trim();
 
   if (!judul || !deskripsi || !teknologi) {
-    return;
+    redirect(
+      `/admin?error=${encodeURIComponent(
+        "Judul, deskripsi, dan teknologi wajib diisi.",
+      )}`,
+    );
   }
 
   const { error } = await supabase.from("proyek").insert({
@@ -37,16 +49,18 @@ export async function tambahProyekAction(formData: FormData) {
 
   if (error) {
     console.error("Gagal menambah proyek:", error.message);
-    throw new Error("Gagal menambahkan proyek.");
+    redirect(
+      `/admin?error=${encodeURIComponent(
+        "Gagal menambahkan proyek: " + error.message,
+      )}`,
+    );
   }
 
-  revalidatePath("/");
-  revalidatePath("/proyek");
-  revalidatePath("/admin");
-  revalidatePath("/admin/proyek");
-  revalidatePath("/admin/proyek/manajemen");
+  revalidateSemua();
 
-  redirect("/admin");
+  redirect(
+    `/admin?success=${encodeURIComponent("Proyek berhasil ditambahkan!")}`,
+  );
 }
 
 export async function updateProyekAction(formData: FormData) {
@@ -58,7 +72,11 @@ export async function updateProyekAction(formData: FormData) {
   const teknologi = String(formData.get("teknologi") ?? "").trim();
 
   if (!id || !judul || !deskripsi || !teknologi) {
-    return;
+    redirect(
+      `/admin/proyek/edit/${id}?error=${encodeURIComponent(
+        "Semua field wajib diisi.",
+      )}`,
+    );
   }
 
   const { error } = await supabase
@@ -72,15 +90,20 @@ export async function updateProyekAction(formData: FormData) {
 
   if (error) {
     console.error("Gagal mengupdate proyek:", error.message);
-    throw new Error("Gagal mengupdate proyek.");
+    redirect(
+      `/admin/proyek/edit/${id}?error=${encodeURIComponent(
+        "Gagal menyimpan perubahan: " + error.message,
+      )}`,
+    );
   }
 
-  revalidatePath("/");
-  revalidatePath("/proyek");
-  revalidatePath("/admin");
-  revalidatePath("/admin/proyek");
+  revalidateSemua();
 
-  redirect("/admin/proyek");
+  redirect(
+    `/admin/proyek?success=${encodeURIComponent(
+      "Perubahan berhasil disimpan!",
+    )}`,
+  );
 }
 
 export async function hapusProyekAction(formData: FormData) {
@@ -89,25 +112,27 @@ export async function hapusProyekAction(formData: FormData) {
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
-    return;
+    redirect(
+      `/admin/proyek?error=${encodeURIComponent("ID proyek tidak valid.")}`,
+    );
   }
 
-  const { error } = await supabase
-    .from("proyek")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("proyek").delete().eq("id", id);
 
   if (error) {
     console.error("Gagal menghapus proyek:", error.message);
-    throw new Error("Gagal menghapus proyek.");
+    redirect(
+      `/admin/proyek?error=${encodeURIComponent(
+        "Gagal menghapus proyek: " + error.message,
+      )}`,
+    );
   }
 
-  revalidatePath("/");
-  revalidatePath("/proyek");
-  revalidatePath("/admin");
-  revalidatePath("/admin/proyek");
+  revalidateSemua();
 
-  redirect("/admin/proyek");
+  redirect(
+    `/admin/proyek?success=${encodeURIComponent("Proyek berhasil dihapus!")}`,
+  );
 }
 
 export async function logoutAction() {
