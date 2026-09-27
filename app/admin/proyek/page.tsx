@@ -6,7 +6,7 @@ export default async function AdminProyekPage() {
 
   const { data: proyek, error } = await supabase
     .from("proyek")
-    .select("id, judul, deskripsi, teknologi")
+    .select("id, judul, deskripsi, teknologi, kategori")
     .order("id", { ascending: false });
 
   const jumlahProyek = proyek?.length ?? 0;

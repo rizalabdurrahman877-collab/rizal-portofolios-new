@@ -22,8 +22,7 @@ export default async function ManajemenProyekPage({
           Manajemen Proyek
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          Tambah, ubah, atau hapus data proyek yang tampil di halaman
-          portfolio.
+          Tambah, ubah, atau hapus data proyek yang tampil di halaman portfolio.
         </p>
       </div>
 
@@ -172,19 +171,26 @@ export default async function ManajemenProyekPage({
 
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">
-              URL Gambar
+              Gambar Proyek
             </label>
+
             <input
               name="gambar"
-              type="url"
-              className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              required
+              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
             />
-          </div>
 
-          <label className="flex items-center gap-2 text-sm text-slate-700">
+            <p className="mt-1 text-xs text-slate-500">
+              Format JPG, PNG, atau WEBP. Maksimal 5 MB.
+            </p>
+          </div>
+          <label className="flex items-center gap-2 text-sm text-black">
             <input type="checkbox" name="featured" className="h-4 w-4" />
             Tandai sebagai Featured
           </label>
+          
 
           <button
             type="submit"
