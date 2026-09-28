@@ -27,7 +27,7 @@ export default function SplashScreen() {
               ease: "easeOut",
             },
           }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-9999 flex items-center justify-center overflow-hidden"
         >
           <AnimatedBackground />
 
@@ -49,7 +49,7 @@ export default function SplashScreen() {
                 duration: 0.55,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8d7cff] to-[#b37dff] shadow-[0_0_30px_rgba(141,124,255,0.25)]"
+              className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br from-[#8d7cff] to-[#b37dff] shadow-[0_0_30px_rgba(141,124,255,0.25)]"
             >
               <motion.div
                 animate={{
@@ -117,7 +117,7 @@ export default function SplashScreen() {
               }}
               className="mt-6"
             >
-              <div className="h-[2px] w-36 overflow-hidden rounded-full bg-white/10">
+              <div className="h-0.5 w-36 overflow-hidden rounded-full bg-white/10">
                 <motion.div
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
@@ -125,7 +125,7 @@ export default function SplashScreen() {
                     duration: 1.25,
                     ease: "easeInOut",
                   }}
-                  className="h-full rounded-full bg-gradient-to-r from-[#8d7cff] to-[#b37dff]"
+                  className="h-full rounded-full bg-linear-to-r from-[#8d7cff] to-[#b37dff]"
                 />
               </div>
 
