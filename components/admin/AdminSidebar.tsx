@@ -178,7 +178,7 @@ export default function AdminSidebar({
               ↗
             </span>
 
-            <span>Lihat Portfolio</span>
+            <span>Back to Portofolio</span>
           </a>
         </nav>
 
