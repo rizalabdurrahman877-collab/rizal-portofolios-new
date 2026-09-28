@@ -68,9 +68,9 @@ export default function AdminShell({
               href={siteUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden h-11 items-center justify-center rounded-xl bg-blue-500 px-5 text-sm font-bold text-slate-700 transition hover:bg-blue-400 sm:inline-flex"
+              className="hidden h-11 items-center justify-center rounded-xl bg-blue-500 px-5 text-sm font-bold text-slate-700 transition hover:bg-blue-400 sm:inline-flex "
             >
-              Kembali ke portofolio ↗
+              Back to portofolio ↗
             </Link>
 
             <LogoutButton />
