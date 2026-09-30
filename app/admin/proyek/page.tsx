@@ -13,7 +13,6 @@ export default async function AdminProyekPage() {
 
   return (
     <div className="w-full">
-      {/* HEADER HALAMAN */}
       <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <div className="mb-3 inline-flex rounded-full bg-blue-50 px-4 py-2">
@@ -28,13 +27,17 @@ export default async function AdminProyekPage() {
             Kelola semua proyek yang ada di portfolio kamu.
           </p>
         </div>
-        <span className="text-xl">+</span>
-        Tambah Proyek
+
+        <Link
+          href="/admin/proyek/manajemen"
+          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-black text-white transition hover:bg-blue-700"
+        >
+          <span className="text-xl leading-none">+</span>
+          Tambah Proyek
+        </Link>
       </div>
 
-      {/* LIST */}
       <section className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        {/* Section Header */}
         <div className="flex flex-col gap-3 border-b border-slate-200 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-xl font-black text-slate-950">Daftar Proyek</h2>
@@ -49,7 +52,6 @@ export default async function AdminProyekPage() {
           </span>
         </div>
 
-        {/* ERROR */}
         {error ? (
           <div className="p-6">
             <div className="rounded-xl bg-red-50 p-4 text-sm font-bold text-red-600">
@@ -63,7 +65,6 @@ export default async function AdminProyekPage() {
                 key={item.id}
                 className="grid gap-5 border-b border-slate-100 px-6 py-6 last:border-b-0 hover:bg-slate-50 lg:grid-cols-[70px_minmax(180px,1fr)_minmax(250px,1.5fr)_170px]"
               >
-                {/* NOMOR */}
                 <div className="flex items-start">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
                     <span className="text-sm font-black text-blue-600">
@@ -72,7 +73,6 @@ export default async function AdminProyekPage() {
                   </div>
                 </div>
 
-                {/* JUDUL */}
                 <div>
                   <h3 className="text-base font-black text-slate-950">
                     {item.judul}
@@ -83,7 +83,6 @@ export default async function AdminProyekPage() {
                   </span>
                 </div>
 
-                {/* INFO */}
                 <div>
                   <p className="line-clamp-2 text-sm leading-6 text-slate-500">
                     {item.deskripsi || "Belum ada deskripsi."}
@@ -94,18 +93,17 @@ export default async function AdminProyekPage() {
                   </p>
                 </div>
 
-                {/* AKSI */}
                 <div className="flex items-center gap-2 lg:justify-end">
                   <Link
                     href={`/admin/proyek/edit/${item.id}`}
-                    className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-500 px-4 text-sm font-black text-amber-600 hover:bg-blue-300"
+                    className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-500 px-4 text-sm font-black text-white hover:bg-blue-600"
                   >
                     Edit
                   </Link>
 
                   <Link
                     href={`/admin/proyek/hapus/${item.id}`}
-                    className="inline-flex h-10 items-center justify-center rounded-xl bg-red-500 px-4 text-sm font-black text-red-600 hover:bg-red-300"
+                    className="inline-flex h-10 items-center justify-center rounded-xl bg-red-500 px-4 text-sm font-black text-white hover:bg-red-600"
                   >
                     Hapus
                   </Link>
@@ -129,7 +127,7 @@ export default async function AdminProyekPage() {
 
             <Link
               href="/admin/proyek/manajemen"
-              className="mt-5 inline-flex h-11 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-black text-black hover:bg-blue-700"
+              className="mt-5 inline-flex h-11 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-black text-white hover:bg-blue-700"
             >
               + Tambah Proyek
             </Link>

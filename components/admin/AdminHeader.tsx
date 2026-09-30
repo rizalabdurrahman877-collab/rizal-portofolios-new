@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { logoutAction } from "@/actions/proyek-actions";
+import  LogoutButton  from "@/components/admin/LogoutButton";
 
 type AdminHeaderProps = {
   email?: string;
 };
 
-   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export default function AdminHeader({ email }: AdminHeaderProps) {
   return (
@@ -30,7 +31,6 @@ export default function AdminHeader({ email }: AdminHeaderProps) {
             {email}
           </p>
         </div>
-
         <Link
           href={siteUrl}
           target="_blank"
@@ -39,14 +39,9 @@ export default function AdminHeader({ email }: AdminHeaderProps) {
         >
           Lihat Portfolio
         </Link>
-
+        
         <form action={logoutAction}>
-          <button
-            type="submit"
-            className="rounded-xl bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 transition hover:bg-red-100"
-          >
-            Logout
-          </button>
+          <LogoutButton />
         </form>
       </div>
     </header>

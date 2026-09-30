@@ -28,10 +28,10 @@ export default async function EditProyekPage({
     <div className="w-full">
       {/* ================= HEADER ================= */}
 
-      <div className="mb-8">
+      <div className="mb-8 text-black">
         <Link
           href="/admin/proyek"
-          className="text-sm font-bold text-blue-600 hover:text-blue-700"
+          className="text-sm font-bold text-black"
         >
           ← Kembali ke Semua Proyek
         </Link>

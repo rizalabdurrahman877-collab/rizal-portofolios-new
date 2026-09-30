@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import LoginSubmitButton from "./LoginSubmitButton";
 
 async function loginAction(formData: FormData) {
   "use server";
@@ -22,7 +23,7 @@ async function loginAction(formData: FormData) {
   }
 
   // Login berhasil
-  redirect("/admin");
+  redirect("/admin/dashboard");
 }
 
 export default async function LoginPage({
@@ -38,7 +39,7 @@ export default async function LoginPage({
 
   // Jika sudah login, redirect ke dashboard
   if (user) {
-    redirect("/admin");
+    redirect("/admin/dashboard");
   }
 
   const params = await searchParams;
@@ -55,9 +56,11 @@ export default async function LoginPage({
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-2xl font-black text-white shadow-xl shadow-blue-900/30">
             R
           </div>
+
           <h1 className="mt-5 text-2xl font-black text-white">
             Rizal Portfolio
           </h1>
+
           <p className="mt-2 text-sm font-medium text-slate-400">
             Admin Dashboard
           </p>
@@ -68,6 +71,7 @@ export default async function LoginPage({
             <h2 className="text-xl font-black text-slate-900">
               Selamat Datang
             </h2>
+
             <p className="mt-1 text-sm font-medium text-slate-500">
               Login untuk mengelola portfolio kamu.
             </p>
@@ -75,7 +79,9 @@ export default async function LoginPage({
 
           {params.error && (
             <div className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4">
-              <p className="text-sm font-bold text-red-600">{params.error}</p>
+              <p className="text-sm font-bold text-red-600">
+                {params.error}
+              </p>
             </div>
           )}
 
@@ -88,6 +94,7 @@ export default async function LoginPage({
               >
                 Email
               </label>
+
               <input
                 id="email"
                 name="email"
@@ -95,7 +102,7 @@ export default async function LoginPage({
                 autoComplete="off"
                 placeholder="abcdefg@gmail.com"
                 required
-                className="h-12 w-full rounded-xl border border-white/30 bg-white/20 backdrop-blur-md px-4 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-white/50 focus:ring-4 focus:ring-blue-200/50"
+                className="h-12 w-full rounded-xl border border-white/30 bg-white/20 px-4 text-sm font-medium text-slate-900 outline-none backdrop-blur-md transition placeholder:text-slate-500 focus:border-white/50 focus:ring-4 focus:ring-blue-200/50"
               />
             </div>
 
@@ -107,6 +114,7 @@ export default async function LoginPage({
               >
                 Password
               </label>
+
               <input
                 id="password"
                 name="password"
@@ -114,17 +122,12 @@ export default async function LoginPage({
                 autoComplete="off"
                 placeholder="Masukkan password"
                 required
-                className="h-12 w-full rounded-xl border border-white/30 bg-white/20 backdrop-blur-md px-4 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-white/50 focus:ring-4 focus:ring-blue-200/50"
+                className="h-12 w-full rounded-xl border border-white/30 bg-white/20 px-4 text-sm font-medium text-slate-900 outline-none backdrop-blur-md transition placeholder:text-slate-500 focus:border-white/50 focus:ring-4 focus:ring-blue-200/50"
               />
             </div>
 
             {/* SUBMIT BUTTON */}
-            <button
-              type="submit"
-              className="h-12 w-full rounded-xl bg-blue-600 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 active:scale-[0.99] hover:-translate-y-0.5"
-            >
-              Login Ke Dashboard
-            </button>
+            <LoginSubmitButton />
           </form>
         </div>
 
