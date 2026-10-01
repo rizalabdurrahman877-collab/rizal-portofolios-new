@@ -1,23 +1,23 @@
 "use client";
 
-// 1. Impor komponen Preloader yang sudah dibuat sebelumnya
-import Preloader from "../components/layout/Preloader"; 
 import Navbar from "../components/layout/Navbar";
 import Hero from "../components/section/Hero";
-import TechStack from "../components/section/TechStack";
 import About from "../components/section/About";
 import Projects from "../components/section/Projects";
 import Experience from "../components/section/Experience";
-import Contact from "../components/section/Contact";
-import Footer from "../components/layout/Footer";
 import Skills from "../components/section/Skill";
+import Contact from "../components/section/Contact";
 import SplashScreen from "../components/ui/SplashScreen";
-import AnimatedBackground from "../components/ui/AnimatedBackground";
+import VideoBackground from "../components/ui/VideoBackground";
+import MusicButton from "../components/ui/MusicButton";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[#050816]">
-      <AnimatedBackground />
+    // `isolate` membuat stacking context sendiri, jadi background (fixed, -z-10)
+    // tetap berada di belakang konten tetapi di atas warna <body>.
+    // Jangan beri bg solid di wrapper ini agar video tidak tertutup.
+    <div className="relative isolate min-h-screen">
+      <VideoBackground src="/video/background.mp4" overlay={0.6} />
 
       <div className="relative z-10">
         <SplashScreen />
@@ -43,6 +43,8 @@ export default function Home() {
 
           <Contact />
         </main>
+
+        <MusicButton src="/audio/sound.mp3" volume={0.4} />
       </div>
     </div>
   );
