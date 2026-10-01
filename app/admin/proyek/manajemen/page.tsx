@@ -49,7 +49,7 @@ export default async function ManajemenProyekPage({
 
       {/* ================= TABEL DAFTAR PROYEK ================= */}
       <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full min-w-[640px] text-sm">
+        <table className="w-full min-w-160 text-sm">
           <thead className="border-b border-slate-200 bg-slate-50">
             <tr>
               <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
