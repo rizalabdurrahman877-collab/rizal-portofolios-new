@@ -204,7 +204,7 @@ export default function Hero() {
             >
               <div className="overflow-hidden rounded-3xl">
                 <Image
-                  src="/rizal.jpeg"
+                  src="/rizals.jpeg"
                   alt="Rizal"
                   width={500}
                   height={600}
