@@ -157,9 +157,9 @@ export default function Projects() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
             >
-              Selected{" "}
+             Pilih{" "}
               <span className="bg-linear-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
-                Projects
+                Proyek
               </span>
             </motion.h2>
 

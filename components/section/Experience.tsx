@@ -54,7 +54,7 @@ export default function Experience() {
           </span>
 
           <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Experience that speaks
+            Pengalaman yang berbicara
           </h2>
 
           <p className="mt-5 max-w-xl text-slate-500">

@@ -203,7 +203,7 @@ export default function Contact() {
         {/* HEADER */}
         <div className="mb-10 text-center">
           <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.25em] text-violet-400">
-            Contact
+            Kontak
           </span>
 
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">

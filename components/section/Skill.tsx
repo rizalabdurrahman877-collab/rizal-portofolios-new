@@ -40,11 +40,11 @@ export default function Skills() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-12">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-violet-400">
-            Skills
+            Skill
           </p>
 
           <h2 className="text-4xl font-bold text-white sm:text-5xl">
-            My Skills
+           Keterampilan saya
           </h2>
 
           <p className="mt-4 max-w-2xl text-zinc-400">

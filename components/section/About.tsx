@@ -20,17 +20,17 @@ const cards = [
   {
     icon: Code2,
     title: "Clean Code",
-    text: "Membuat kode yang terstruktur dan mudah dikembangkan.",
+    text: "Membuat kode yang terstruktur, rapi, mudah dipahami, dan mudah dikembangkan.",
   },
   {
     icon: Layers3,
     title: "Fullstack Apps",
-    text: "Mengembangkan aplikasi dari tampilan hingga database.",
+    text: "Mengembangkan aplikasi mulai dari tampilan antarmuka hingga pengelolaan database.",
   },
   {
     icon: Zap,
     title: "Performance",
-    text: "Fokus pada website yang cepat, responsif, dan nyaman digunakan.",
+    text: "Berfokus pada website yang cepat, responsif, interaktif, dan nyaman digunakan.",
   },
 ];
 
@@ -38,7 +38,7 @@ export default function About() {
   return (
     <section id="about" className="relative px-6 py-28 lg:py-36">
       <div className="mx-auto max-w-7xl">
-        {/* Heading */}
+        {/* Judul */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,16 +46,17 @@ export default function About() {
           transition={{ duration: 0.7 }}
         >
           <span className="text-sm font-medium text-blue-400">
-            01 — About
+            01 — Tentang Saya
           </span>
 
           <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            About Me
+            Tentang Saya
           </h2>
         </motion.div>
 
-        {/* Main */}
+        {/* Konten utama */}
         <div className="mt-14 grid gap-12 lg:grid-cols-2">
+          {/* Sisi kiri */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -63,10 +64,12 @@ export default function About() {
             transition={{ duration: 0.7 }}
           >
             <h3 className="max-w-xl text-3xl font-medium leading-tight sm:text-4xl">
-              I build scalable and user-focused web applications.
+              Saya membangun aplikasi web modern yang terstruktur dan
+              berorientasi pada kebutuhan pengguna.
             </h3>
           </motion.div>
 
+          {/* Sisi kanan */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -75,20 +78,20 @@ export default function About() {
             className="text-slate-400"
           >
             <p className="leading-8">
-              Saya adalah siswa kelas XI Rekayasa Perangkat Lunak
-              yang memiliki ketertarikan pada pengembangan website,
-              UI/UX, dan teknologi web modern.
+              Saya adalah siswa kelas XI Rekayasa Perangkat Lunak di
+              SMKN 1 Pasuruan yang memiliki ketertarikan pada pengembangan
+              website, UI/UX, dan teknologi web modern.
             </p>
 
             <p className="mt-5 leading-8">
-              Saya terus mengembangkan kemampuan melalui project
-              sekolah maupun project pribadi dengan fokus pada
-              website yang modern, responsif, dan mudah digunakan.
+              Saya terus mengembangkan kemampuan melalui berbagai proyek
+              sekolah maupun proyek pribadi. Saya berfokus membuat website
+              yang modern, responsif, terstruktur, dan mudah digunakan.
             </p>
           </motion.div>
         </div>
 
-        {/* Skill */}
+        {/* Keahlian */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -99,14 +102,14 @@ export default function About() {
           {skills.map((skill) => (
             <span
               key={skill}
-              className="rounded-full border border-white/10 bg-white/[0.02] px-4 py-2 text-sm text-slate-400 transition duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-blue-500/5 hover:text-blue-300"
+              className="rounded-full border border-white/10 bg-white/2 px-4 py-2 text-sm text-slate-400 transition duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-blue-500/5 hover:text-blue-300"
             >
               {skill}
             </span>
           ))}
         </motion.div>
 
-        {/* Cards */}
+        {/* Kartu keunggulan */}
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {cards.map((card, index) => {
             const Icon = card.icon;
@@ -122,15 +125,13 @@ export default function About() {
                   duration: 0.6,
                 }}
                 whileHover={{ y: -6 }}
-                className="group rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 backdrop-blur-xl transition duration-300 hover:border-blue-400/20 hover:bg-blue-500/[0.03]"
+                className="group rounded-2xl border border-white/[0.07] bg-white/2 p-6 backdrop-blur-xl transition duration-300 hover:border-blue-400/20 hover:bg-blue-500/3"
               >
                 <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10">
                   <Icon className="text-cyan-400" size={20} />
                 </div>
 
-                <h3 className="text-lg font-medium">
-                  {card.title}
-                </h3>
+                <h3 className="text-lg font-medium">{card.title}</h3>
 
                 <p className="mt-3 text-sm leading-6 text-slate-500">
                   {card.text}
