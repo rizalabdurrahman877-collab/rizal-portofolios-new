@@ -127,7 +127,7 @@ export default async function AdminDashboardPage() {
 
           <Link
             href="/admin/proyek/manajemen"
-            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-6 text-sm font-black text-blue-700 shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-50"
+            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-300 px-6 text-sm font-black text-blue-700 shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-500"
           >
             <span className="text-xl leading-none">+</span>
             <span>Tambah Proyek</span>
@@ -204,7 +204,7 @@ export default async function AdminDashboardPage() {
                 {/* Edit */}
                 <Link
                   href={`/admin/proyek/edit/${item.id}`}
-                  className="hidden shrink-0 rounded-lg bg-blue-100 px-3 py-2 text-xs font-bold text-blue-700 transition hover:bg-blue-200 hover:text-blue-800 sm:inline-flex"
+                  className="hidden shrink-0 rounded-lg bg-blue-300 px-3 py-2 text-xs font-bold text-blue-700 transition hover:bg-blue-500 hover:text-blue-800 sm:inline-flex"
                 >
                   Edit
                 </Link>
