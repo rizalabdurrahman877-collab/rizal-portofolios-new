@@ -1,23 +1,26 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://rizal-portofolios.vercel.app";
+// Perbaikan 1 & 2: URL disesuaikan dengan domain yang terverifikasi + hapus trailing slash
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://rizalportofolio.vercel.app"
+).replace(/\/$/, "");
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
   title: {
-    default: "Rizal Abdurrakhman Wakhid | Web Developer",
-    template: "%s | Rizal Abdurrakhman Wakhid",
+    // Perbaikan 3: Ejaan nama disesuaikan
+    default: "Rizal Abdurrahman Wakhid | Web Developer",
+    template: "%s | Rizal Abdurrahman Wakhid",
   },
 
   description:
-    "Portfolio Rizal Abdurrakhman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
+    "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
 
   keywords: [
-    "Rizal Abdurrakhman Wakhid",
-    "Rizal Abdurrakhman",
+    "Rizal Abdurrahman Wakhid",
+    "Rizal Abdurrahman",
     "Web Developer",
     "Frontend Developer",
     "Next.js",
@@ -26,18 +29,18 @@ export const metadata: Metadata = {
     "Portfolio",
   ],
 
-  authors: [{ name: "Rizal Abdurrakhman Wakhid" }],
-  creator: "Rizal Abdurrakhman Wakhid",
-  publisher: "Rizal Abdurrakhman Wakhid",
+  authors: [{ name: "Rizal Abdurrahman Wakhid" }],
+  creator: "Rizal Abdurrahman Wakhid",
+  publisher: "Rizal Abdurrahman Wakhid",
 
   alternates: {
     canonical: SITE_URL,
   },
 
   openGraph: {
-    title: "Rizal Abdurrakhman Wakhid | Web Developer",
+    title: "Rizal Abdurrahman Wakhid | Web Developer",
     description:
-      "Portfolio Rizal Abdurrakhman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
+      "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
     url: SITE_URL,
     siteName: "Rizal Portfolio",
     locale: "id_ID",
@@ -46,9 +49,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Rizal Abdurrakhman Wakhid | Web Developer",
+    title: "Rizal Abdurrahman Wakhid | Web Developer",
     description:
-      "Portfolio Rizal Abdurrakhman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
+      "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
   },
 
   robots: {
