@@ -218,7 +218,7 @@ export default function Contact() {
         </div>
 
         {/* FORM CARD */}
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+        <div className="rounded-3xl border border-white/10 bg-white/4 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
           <form
             onSubmit={handleSubmit}
             className="space-y-6"
@@ -300,7 +300,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={loading}
-              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-violet-900/20 transition duration-300 hover:scale-[1.01] hover:from-violet-500 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-violet-900/20 transition duration-300 hover:scale-[1.01] hover:from-violet-500 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
             >
               {loading ? (
                 <>
