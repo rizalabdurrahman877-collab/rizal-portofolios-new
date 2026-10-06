@@ -1,65 +1,107 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
 
 type Props = {
   /** Path video relatif terhadap folder /public, contoh: /video/background.mp4 */
   src?: string;
   /** (Opsional) versi webm, lebih kecil dan dipilih browser jika didukung */
   webmSrc?: string;
-  /** (Opsional) gambar yang tampil saat video belum siap / dimatikan */
+  /** Gambar poster WebP. Sangat disarankan: ini yang tampil pertama (LCP) */
   poster?: string;
   /** Kegelapan overlay (0 - 1). Naikkan jika teks sulit dibaca */
   overlay?: number;
+  /** Putar video juga di layar mobile (default: false, mobile hanya poster) */
+  mobileVideo?: boolean;
 };
+
+type NetworkInfo = { saveData?: boolean; effectiveType?: string };
 
 export default function VideoBackground({
   src = "/video/background.mp4",
   webmSrc,
   poster,
   overlay = 0.6,
+  mobileVideo = false,
 }: Props) {
-  const reduce = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [enabled, setEnabled] = useState(false);
   const [ready, setReady] = useState(false);
-  const [disabled, setDisabled] = useState(false);
 
-  // Matikan video jika pengguna hemat data
+  // Muat video HANYA setelah halaman selesai dimuat, saat browser idle,
+  // dan hanya jika kondisi pengguna memungkinkan.
   useEffect(() => {
-    const conn = (navigator as Navigator & {
-      connection?: { saveData?: boolean };
-    }).connection;
-    if (conn?.saveData) setDisabled(true);
-  }, []);
+    const conn = (navigator as Navigator & { connection?: NetworkInfo })
+      .connection;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const isSmall = window.matchMedia("(max-width: 767px)").matches;
+    const slow =
+      conn?.saveData || ["slow-2g", "2g"].includes(conn?.effectiveType ?? "");
 
-  // Paksa autoplay (beberapa browser menolak jika tidak dipanggil manual)
+    if (reduceMotion || slow || (isSmall && !mobileVideo)) return;
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let idle: number | undefined;
+
+    const start = () => setEnabled(true);
+    const schedule = () => {
+      if ("requestIdleCallback" in window) {
+        idle = window.requestIdleCallback(start, { timeout: 3000 });
+      } else {
+        timer = setTimeout(start, 1500);
+      }
+    };
+
+    if (document.readyState === "complete") {
+      schedule();
+    } else {
+      window.addEventListener("load", schedule, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener("load", schedule);
+      if (timer) clearTimeout(timer);
+      if (idle !== undefined && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idle);
+      }
+    };
+  }, [mobileVideo]);
+
+  // Jeda saat tab disembunyikan, lanjutkan saat kembali
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || reduce || disabled) return;
-    v.muted = true;
-    v.play().catch(() => setDisabled(true));
-  }, [reduce, disabled]);
-
-  const showVideo = !reduce && !disabled;
+    if (!enabled || !v) return;
+    const onVisibility = () => {
+      if (document.hidden) v.pause();
+      else v.play().catch(() => {});
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, [enabled]);
 
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#050816]"
     >
-      {/* Poster / fallback (hanya dirender jika poster diberikan) */}
+      {/* Poster = elemen LCP: ringan, dimuat dengan prioritas */}
       {poster && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={poster}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          quality={70}
+          className="object-cover"
         />
       )}
 
-      {/* Video */}
-      {showVideo && (
+      {/* Video (dimuat belakangan, fade-in di atas poster) */}
+      {enabled && (
         <video
           ref={videoRef}
           autoPlay
@@ -67,7 +109,6 @@ export default function VideoBackground({
           loop
           playsInline
           preload="auto"
-          poster={poster}
           onCanPlay={() => setReady(true)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
             ready ? "opacity-100" : "opacity-0"
