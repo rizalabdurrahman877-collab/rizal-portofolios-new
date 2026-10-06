@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 
 type Props = {
   /** Path lagu relatif terhadap folder /public, contoh: /audio/lagu.mp3 */
@@ -10,11 +9,12 @@ type Props = {
   volume?: number;
 };
 
+const BAR_DELAYS = [0, 0.2, 0.4, 0.1];
+
 export default function MusicButton({
   src = "/audio/lagu.mp3",
   volume = 0.4,
 }: Props) {
-  const reduce = useReducedMotion();
   const audioRef = useRef<HTMLAudioElement>(null);
   const resumeRef = useRef(false);
   const [playing, setPlaying] = useState(false);
@@ -76,12 +76,10 @@ export default function MusicButton({
 
       <div className="fixed bottom-5 right-5 z-50 md:bottom-8 md:right-8">
         {/* Cincin denyut saat lagu diputar */}
-        {playing && !reduce && (
-          <motion.span
+        {playing && (
+          <span
             aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-[#8d7cff]/40"
-            animate={{ scale: [1, 1.7], opacity: [0.5, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+            className="music-pulse absolute inset-0 rounded-full bg-[#8d7cff]/40"
           />
         )}
 
@@ -96,20 +94,11 @@ export default function MusicButton({
           {playing ? (
             // Equalizer saat diputar
             <span className="flex h-4 items-end gap-[3px]" aria-hidden="true">
-              {[0, 0.2, 0.4, 0.1].map((delay, i) => (
-                <motion.span
+              {BAR_DELAYS.map((delay, i) => (
+                <span
                   key={i}
-                  className="w-[3px] origin-bottom rounded-full bg-[#b9adff]"
-                  style={{ height: "100%" }}
-                  animate={
-                    reduce ? { scaleY: 0.7 } : { scaleY: [0.3, 1, 0.45, 0.9, 0.3] }
-                  }
-                  transition={{
-                    duration: 0.9,
-                    delay,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
+                  className="music-bar h-full w-[3px] origin-bottom rounded-full bg-[#b9adff]"
+                  style={{ animationDelay: `${delay}s` }}
                 />
               ))}
             </span>
