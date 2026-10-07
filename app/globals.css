@@ -1441,3 +1441,94 @@ input:-webkit-autofill:active {
     transform: scaleY(0.7);
   }
 }
+
+/* ==========================================================================
+   Hero (Hero.tsx) - animasi CSS pengganti framer-motion
+   - Pakai "backwards" (bukan "both") supaya transform hover Tailwind tidak ditimpa
+   - h1, deskripsi, dan foto hanya bergeser (tanpa opacity 0) agar LCP tidak tertunda
+   ========================================================================== */
+@keyframes hx-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hx-slide {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes hx-pop {
+  from {
+    transform: translateX(24px) scale(0.96);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes hx-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes hx-float-rotate {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(5deg);
+  }
+}
+@keyframes hx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes hx-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hx-up {
+  animation: hx-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) backwards;
+}
+.hx-slide {
+  animation: hx-slide 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) backwards;
+}
+.hx-pop {
+  animation: hx-pop 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) backwards;
+}
+.hx-float {
+  animation: hx-float 3s ease-in-out infinite;
+}
+.hx-float-rotate {
+  animation: hx-float-rotate 3s ease-in-out infinite;
+}
+.hx-spin {
+  animation: hx-spin 20s linear infinite;
+}
+.hx-caret {
+  animation: hx-caret 1s step-end infinite;
+}
+
+/* Dekorasi hero tidak perlu bergerak di mobile (hemat CPU) */
+@media (max-width: 767px) {
+  .hx-float,
+  .hx-float-rotate,
+  .hx-spin {
+    animation: none;
+  }
+}
