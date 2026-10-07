@@ -1,37 +1,30 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
+import { SITE_URL } from "@/lib/site";
 
-const SITE_URL = "https://rizalportofolio.my.id";
+// Diperbarui paling lambat tiap 1 jam, jadi proyek baru otomatis masuk sitemap
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
+  let proyekIds: Array<number | string> = [];
 
-  const staticPages: MetadataRoute.Sitemap = [
+  try {
+    const { data, error } = await supabase.from("proyek").select("id");
+    if (!error && data) proyekIds = data.map((item) => item.id);
+  } catch {
+    // Jika Supabase gagal, sitemap tetap valid (hanya beranda)
+  }
+
+  return [
     {
       url: SITE_URL,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 1,
     },
+    ...proyekIds.map((id) => ({
+      url: `${SITE_URL}/proyek/${id}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ];
-
-  const { data: daftarProyek, error } = await supabase
-    .from("proyek")
-    .select("id");
-
-  if (error) {
-    console.error("Sitemap proyek error:", error);
-    return staticPages;
-  }
-
-  const halamanProyek: MetadataRoute.Sitemap = (daftarProyek ?? []).map(
-    (item: { id: string | number }) => ({
-      url: `${SITE_URL}/proyek/${item.id}`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    })
-  );
-
-  return [...staticPages, ...halamanProyek];
 }

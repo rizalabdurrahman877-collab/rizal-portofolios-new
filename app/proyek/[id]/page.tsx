@@ -1,8 +1,10 @@
+import { cache } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 type Proyek = {
   id: number | string;
@@ -19,12 +21,24 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-async function getProyek(id: string): Promise<Proyek | null> {
+// Halaman dibuat statis dan disegarkan tiap 1 jam (TTFB cepat, tanpa query tiap kunjungan).
+// Proyek baru yang belum ada saat build tetap dirender saat pertama kali dibuka.
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  try {
+    const { data } = await supabase.from("proyek").select("id");
+    return (data ?? []).map((item) => ({ id: String(item.id) }));
+  } catch {
+    return [];
+  }
+}
+
+// cache(): generateMetadata dan halaman memakai hasil query yang sama (1 query, bukan 2)
+const getProyek = cache(async (id: string): Promise<Proyek | null> => {
   const { data, error } = await supabase
     .from("proyek")
-    .select(
-      "id, judul, kategori, deskripsi, teknologi, gambar, link, featured"
-    )
+    .select("id, judul, kategori, deskripsi, teknologi, gambar, link, featured")
     .eq("id", id)
     .single();
 
@@ -34,7 +48,7 @@ async function getProyek(id: string): Promise<Proyek | null> {
   }
 
   return data;
-}
+});
 
 export async function generateMetadata({
   params,
@@ -46,31 +60,35 @@ export async function generateMetadata({
     return {
       title: "Proyek Tidak Ditemukan",
       description: "Proyek yang kamu cari tidak tersedia.",
+      robots: { index: false, follow: false },
     };
   }
 
   const title = proyek.judul || "Proyek Portfolio";
   const description =
-    proyek.deskripsi ||
-    `Detail proyek ${title} milik Rizal Abdurrakhman Wakhid.`;
+    proyek.deskripsi || `Detail proyek ${title} milik ${SITE_NAME}.`;
+
+  // Gambar proyek jika ada, jika tidak pakai gambar OG utama situs
+  const ogImage = proyek.gambar
+    ? { url: proyek.gambar, width: 1200, height: 630, alt: title }
+    : { url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: title };
 
   return {
     title,
     description,
+    alternates: { canonical: `/proyek/${id}` },
     openGraph: {
       title,
       description,
       type: "article",
-      images: proyek.gambar
-        ? [
-            {
-              url: proyek.gambar,
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ]
-        : undefined,
+      url: `/proyek/${id}`,
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage.url],
     },
   };
 }

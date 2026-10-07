@@ -1,22 +1,29 @@
 import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "@/lib/site";
 
-// Perbaikan 1 & 2: URL disesuaikan dengan domain yang terverifikasi + hapus trailing slash
-const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://rizalportofolio.vercel.app"
-).replace(/\/$/, "");
+// Font dimuat lewat next/font: self-hosted, tanpa render-blocking request.
+// Variabel --font-inter dipakai di globals.css (--font-sans).
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const TITLE = "Rizal Abdurrahman Wakhid | Web Developer";
+const DESCRIPTION =
+  "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
   title: {
-    // Perbaikan 3: Ejaan nama disesuaikan
-    default: "Rizal Abdurrahman Wakhid | Web Developer",
+    default: TITLE,
     template: "%s | Rizal Abdurrahman Wakhid",
   },
 
-  description:
-    "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
+  description: DESCRIPTION,
 
   keywords: [
     "Rizal Abdurrahman Wakhid",
@@ -38,9 +45,8 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Rizal Abdurrahman Wakhid | Web Developer",
-    description:
-      "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
+    title: TITLE,
+    description: DESCRIPTION,
     url: SITE_URL,
     siteName: "Rizal Portfolio",
     locale: "id_ID",
@@ -49,9 +55,8 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Rizal Abdurrahman Wakhid | Web Developer",
-    description:
-      "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.",
+    title: TITLE,
+    description: DESCRIPTION,
   },
 
   robots: {
@@ -85,7 +90,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
+    <html lang="id" className={inter.variable}>
       <body className="min-h-screen bg-[#050816]">{children}</body>
     </html>
   );

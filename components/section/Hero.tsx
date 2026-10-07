@@ -2,10 +2,10 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { ArrowUpRight, MapPin, Sparkles } from "lucide-react";
 import Typewriter from "./Typewriter";
+import image from "next/image";
 
 // Delay animasi masuk (CSS variable --d dibaca oleh class .hx-up / .hx-slide / .hx-pop)
-const delay = (seconds: number) =>
-  ({ "--d": `${seconds}s` }) as CSSProperties;
+const delay = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;
 
 export default function Hero() {
   return (
@@ -52,8 +52,8 @@ export default function Hero() {
             style={delay(0.05)}
           >
             Saya merancang dan membangun website modern, responsif, dan
-            interaktif menggunakan Next.js, React, Tailwind CSS, serta
-            teknologi web terkini.
+            interaktif menggunakan Next.js, React, Tailwind CSS, serta teknologi
+            web terkini.
           </p>
 
           {/* Tombol */}
@@ -118,13 +118,9 @@ export default function Hero() {
               <div className="overflow-hidden rounded-3xl">
                 <Image
                   src="/rizals.jpeg"
-                  alt="Foto Rizal Abdurrakhman Wakhid"
-                  width={500}
-                  height={600}
-                  priority
-                  quality={70}
-                  sizes="(max-width: 640px) 330px, 390px"
-                  className="h-105 w-82.5 object-cover transition duration-700 hover:scale-105 sm:h-125 sm:w-97.5"
+                  alt="Foto profil siswa pemilik portofolio ini"
+                  width={400}
+                  height={400}
                 />
               </div>
             </div>
