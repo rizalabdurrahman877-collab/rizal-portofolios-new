@@ -116,7 +116,7 @@ export default async function DetailProyekPage({ params }: PageProps) {
           ← Kembali ke Portfolio
         </Link>
 
-        <article className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-2xl">
+        <article className="overflow-hidden rounded-3xl border border-white/10 bg-white/4 shadow-2xl">
           {proyek.gambar ? (
             <div className="relative aspect-video w-full overflow-hidden">
               <Image
