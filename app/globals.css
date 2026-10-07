@@ -131,6 +131,278 @@ input:-webkit-autofill:active {
   right: -33rem;
 }
 
+/* ==========================================================================
+   Ambient background (dipakai AnimatedBackground.tsx)
+   - Tampilan dasar STATIS di semua layar
+   - Animasi hanya aktif di desktop dan jika pengguna tidak memilih reduced motion
+   - will-change hanya dipasang saat benar-benar beranimasi
+   ========================================================================== */
+.ambient-background {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(15, 24, 54, 0.5), transparent 62%),
+    #050816;
+  isolation: isolate;
+  contain: layout paint style;
+}
+.ambient-background__aurora,
+.ambient-background__glow,
+.ambient-background__grid,
+.ambient-background__streak,
+.ambient-background__particles,
+.ambient-background__vignette {
+  position: absolute;
+  inset: 0;
+}
+.ambient-background__aurora {
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 90vmax;
+  height: 90vmax;
+  opacity: 0.4;
+  transform: translate3d(-50%, -50%, 0);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(38, 142, 173, 0.2) 65deg,
+    transparent 132deg,
+    rgba(97, 80, 203, 0.24) 218deg,
+    transparent 292deg,
+    rgba(179, 125, 255, 0.18) 330deg,
+    transparent 360deg
+  );
+}
+.ambient-background__glow {
+  inset: auto;
+  width: min(62vw, 52rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0.42;
+}
+.ambient-background__glow--blue {
+  top: -28rem;
+  left: -20rem;
+  background: radial-gradient(
+    circle,
+    rgba(24, 124, 164, 0.34),
+    transparent 68%
+  );
+}
+.ambient-background__glow--violet {
+  right: -22rem;
+  bottom: -34rem;
+  background: radial-gradient(
+    circle,
+    rgba(114, 77, 193, 0.34),
+    transparent 68%
+  );
+}
+.ambient-background__grid {
+  opacity: 0.045;
+  background-image:
+    linear-gradient(rgba(210, 225, 255, 0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(210, 225, 255, 0.8) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 15%, transparent 78%);
+  mask-image: radial-gradient(ellipse at center, #000 15%, transparent 78%);
+}
+.ambient-background__streak {
+  inset: auto auto auto 0;
+  width: 32vw;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(129, 217, 232, 0.65),
+    transparent
+  );
+  opacity: 0;
+}
+.ambient-background__streak--one {
+  top: 31%;
+}
+.ambient-background__streak--two {
+  top: 72%;
+}
+.ambient-background__particles span {
+  position: absolute;
+  top: var(--particle-y);
+  left: var(--particle-x);
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #b8d9ff;
+  box-shadow: 0 0 8px rgba(160, 208, 255, 0.6);
+  opacity: 0.5;
+}
+.ambient-background__particles span:nth-child(1) {
+  --particle-x: 11%;
+  --particle-y: 23%;
+  --particle-delay: -1s;
+}
+.ambient-background__particles span:nth-child(2) {
+  --particle-x: 19%;
+  --particle-y: 71%;
+  --particle-delay: -3s;
+}
+.ambient-background__particles span:nth-child(3) {
+  --particle-x: 28%;
+  --particle-y: 38%;
+  --particle-delay: -2s;
+}
+.ambient-background__particles span:nth-child(4) {
+  --particle-x: 37%;
+  --particle-y: 83%;
+  --particle-delay: -4s;
+}
+.ambient-background__particles span:nth-child(5) {
+  --particle-x: 46%;
+  --particle-y: 18%;
+  --particle-delay: -2.5s;
+}
+.ambient-background__particles span:nth-child(6) {
+  --particle-x: 54%;
+  --particle-y: 62%;
+  --particle-delay: -0.5s;
+}
+.ambient-background__particles span:nth-child(7) {
+  --particle-x: 63%;
+  --particle-y: 34%;
+  --particle-delay: -3.5s;
+}
+.ambient-background__particles span:nth-child(8) {
+  --particle-x: 71%;
+  --particle-y: 78%;
+  --particle-delay: -1.5s;
+}
+.ambient-background__particles span:nth-child(9) {
+  --particle-x: 79%;
+  --particle-y: 21%;
+  --particle-delay: -4.5s;
+}
+.ambient-background__particles span:nth-child(10) {
+  --particle-x: 87%;
+  --particle-y: 56%;
+  --particle-delay: -2s;
+}
+.ambient-background__particles span:nth-child(11) {
+  --particle-x: 94%;
+  --particle-y: 38%;
+  --particle-delay: -3s;
+}
+.ambient-background__particles span:nth-child(12) {
+  --particle-x: 7%;
+  --particle-y: 52%;
+  --particle-delay: -0.5s;
+}
+.ambient-background__vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 25%,
+    rgba(5, 8, 22, 0.74) 100%
+  );
+}
+
+/* Animasi: hanya desktop + tanpa reduced motion */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .ambient-background__aurora {
+    animation: ambient-rotate 90s linear infinite;
+    will-change: transform;
+  }
+  .ambient-background__glow--blue {
+    animation: ambient-drift-blue 26s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .ambient-background__glow--violet {
+    animation: ambient-drift-violet 32s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .ambient-background__streak {
+    animation: ambient-streak 16s linear infinite;
+  }
+  .ambient-background__streak--two {
+    animation-delay: -8s;
+    animation-duration: 21s;
+  }
+  .ambient-background__particles span {
+    animation: ambient-twinkle 5s ease-in-out var(--particle-delay) infinite;
+  }
+}
+
+@keyframes ambient-rotate {
+  from {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+@keyframes ambient-drift-blue {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(7vw, 5vh, 0) scale(1.12);
+  }
+}
+@keyframes ambient-drift-violet {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-6vw, -4vh, 0) scale(1.1);
+  }
+}
+@keyframes ambient-streak {
+  0%,
+  14% {
+    opacity: 0;
+    transform: translate3d(-35vw, 0, 0);
+  }
+  22% {
+    opacity: 0.7;
+  }
+  56%,
+  100% {
+    opacity: 0;
+    transform: translate3d(120vw, 0, 0);
+  }
+}
+@keyframes ambient-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translate3d(0, 5px, 0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+/* Mobile: lebih sedikit elemen, semuanya statis */
+@media (max-width: 767px) {
+  .ambient-background__aurora {
+    width: 130vmax;
+    height: 130vmax;
+    opacity: 0.28;
+  }
+  .ambient-background__glow {
+    width: 90vw;
+    opacity: 0.3;
+  }
+  .ambient-background__grid {
+    background-size: 48px 48px;
+    opacity: 0.035;
+  }
+  .ambient-background__particles span:nth-child(n + 7) {
+    display: none;
+  }
+  .ambient-background__streak {
+    display: none;
+  }
+}
+
 .section,
 .site-header,
 .site-footer {
@@ -978,43 +1250,6 @@ input:-webkit-autofill:active {
   to {
     opacity: 1;
     transform: none;
-  }
-}
-
-/* ==========================================================================
-   Preloader (dipersingkat; sebaiknya dihapus sama sekali)
-   Total tampil ~0.7 detik dan tidak memblokir klik.
-   ========================================================================== */
-.preloader-container {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background-color: #0f172a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-  animation: fadeOut 0.3s ease-in-out 0.4s forwards;
-}
-.preloader-text {
-  color: white;
-  font-size: 2.5rem;
-  animation: fadeInUp 0.4s ease-out;
-}
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 

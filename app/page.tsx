@@ -8,16 +8,14 @@ import Experience from "../components/section/Experience";
 import Skills from "../components/section/Skill";
 import Contact from "../components/section/Contact";
 import SplashScreen from "../components/ui/SplashScreen";
-import VideoBackground from "../components/ui/VideoBackground";
+import AnimatedBackground from "../components/ui/AnimatedBackground";
 import MusicButton from "../components/ui/MusicButton";
 
 export default function Home() {
   return (
-    // `isolate` membuat stacking context sendiri, jadi background (fixed, -z-10)
-    // tetap berada di belakang konten tetapi di atas warna <body>.
-    // Jangan beri bg solid di wrapper ini agar video tidak tertutup.
+    // `isolate` menjaga background fixed tetap berada di belakang konten.
     <div className="relative isolate min-h-screen">
-      <VideoBackground src="/video/background.mp4" overlay={0.6} />
+      <AnimatedBackground />
 
       <div className="relative z-10">
         <SplashScreen />

@@ -19,7 +19,7 @@ type Props = {
 type NetworkInfo = { saveData?: boolean; effectiveType?: string };
 
 export default function VideoBackground({
-  src = "/video/background.mp4",
+  src = "/video/background.mp4fwef",
   webmSrc,
   poster,
   overlay = 0.6,
