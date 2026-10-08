@@ -12,7 +12,7 @@ type Props = {
 const BAR_DELAYS = [0, 0.2, 0.4, 0.1];
 
 export default function MusicButton({
-  src = "/audio/lagu.mp3",
+  src = "/audio/sound.mp3",
   volume = 0.4,
 }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -93,11 +93,11 @@ export default function MusicButton({
         >
           {playing ? (
             // Equalizer saat diputar
-            <span className="flex h-4 items-end gap-[3px]" aria-hidden="true">
+            <span className="flex h-4 items-end gap-0.75" aria-hidden="true">
               {BAR_DELAYS.map((delay, i) => (
                 <span
                   key={i}
-                  className="music-bar h-full w-[3px] origin-bottom rounded-full bg-[#b9adff]"
+                  className="music-bar h-full w-0.75 origin-bottom rounded-full bg-[#b9adff]"
                   style={{ animationDelay: `${delay}s` }}
                 />
               ))}

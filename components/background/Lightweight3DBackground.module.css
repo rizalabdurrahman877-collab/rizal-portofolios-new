@@ -1,0 +1,1021 @@
+.background {
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  --parallax-x-mid: 0px;
+  --parallax-y-mid: 0px;
+  --parallax-x-back: 0px;
+  --parallax-y-back: 0px;
+
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  background: #03050d;
+}
+
+/* =========================================================
+   BASE
+========================================================= */
+
+.base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(44, 61, 125, 0.16),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(36, 85, 150, 0.09),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 87% 14%,
+      rgba(108, 74, 181, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #03050d 0%,
+      #050816 48%,
+      #080b18 100%
+    );
+}
+
+/* =========================================================
+   BACKGROUND LAYER
+========================================================= */
+
+.backLayer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(
+    var(--parallax-x-back),
+    var(--parallax-y-back),
+    0
+  );
+  transition: transform 0.15s linear;
+}
+
+/* =========================================================
+   AURORA
+========================================================= */
+
+.aurora {
+  position: absolute;
+  width: 70vw;
+  height: 42vw;
+  min-width: 520px;
+  min-height: 320px;
+  opacity: 0.11;
+  filter: blur(34px);
+  mix-blend-mode: screen;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.auroraOne {
+  top: -12%;
+  left: -12%;
+  background:
+    radial-gradient(
+      ellipse at 45% 55%,
+      rgba(53, 173, 255, 0.42),
+      transparent 58%
+    );
+  transform: rotate(-16deg);
+  animation: auroraFlowOne 22s ease-in-out infinite alternate;
+}
+
+.auroraTwo {
+  top: 12%;
+  right: -20%;
+  background:
+    radial-gradient(
+      ellipse at 42% 45%,
+      rgba(129, 76, 255, 0.34),
+      transparent 60%
+    );
+  transform: rotate(24deg);
+  animation: auroraFlowTwo 26s ease-in-out infinite alternate;
+}
+
+.auroraThree {
+  bottom: -25%;
+  left: 20%;
+  width: 80vw;
+  background:
+    conic-gradient(
+      from 210deg,
+      transparent,
+      rgba(46, 203, 255, 0.18),
+      rgba(115, 78, 255, 0.14),
+      transparent
+    );
+  opacity: 0.08;
+  animation: auroraFlowThree 30s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   PREMIUM ORBS
+========================================================= */
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.13;
+  will-change: transform, opacity;
+}
+
+.orbOne {
+  top: 5%;
+  right: 4%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(
+    circle,
+    rgba(41, 204, 255, 0.52),
+    transparent 68%
+  );
+  animation: orbFloatOne 18s ease-in-out infinite alternate;
+}
+
+.orbTwo {
+  bottom: 8%;
+  left: 2%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(117, 67, 255, 0.45),
+    transparent 68%
+  );
+  animation: orbFloatTwo 22s ease-in-out infinite alternate;
+}
+
+.orbThree {
+  top: 39%;
+  left: 43%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    rgba(177, 215, 255, 0.28),
+    transparent 68%
+  );
+  animation: orbFloatThree 20s ease-in-out infinite alternate;
+}
+
+.orbFour {
+  right: 25%;
+  bottom: -10%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(
+    circle,
+    rgba(77, 108, 255, 0.24),
+    transparent 68%
+  );
+  animation: orbFloatFour 24s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+.particleLayer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(
+    var(--parallax-x-back),
+    var(--parallax-y-back),
+    0
+  );
+}
+
+.particle {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  background: rgba(216, 239, 255, 0.78);
+  box-shadow: 0 0 8px rgba(94, 204, 255, 0.2);
+  animation: particleFloat linear infinite;
+  will-change: transform, opacity;
+}
+
+.glowingParticle {
+  background: rgba(230, 250, 255, 0.95);
+  box-shadow:
+    0 0 7px rgba(77, 211, 255, 0.7),
+    0 0 16px rgba(103, 107, 255, 0.2);
+}
+
+/* =========================================================
+   DIGITAL RAIN
+========================================================= */
+
+.rainLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: translate3d(
+    var(--parallax-x-mid),
+    var(--parallax-y-mid),
+    0
+  );
+}
+
+.rain {
+  position: absolute;
+  top: -15%;
+  display: block;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(105, 212, 255, 0.42) 48%,
+    rgba(143, 120, 255, 0.2) 72%,
+    transparent 100%
+  );
+  animation: digitalRain linear infinite;
+  will-change: transform;
+}
+
+.rainWithTrail::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -35px;
+  width: 1px;
+  height: 42px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    rgba(77, 214, 255, 0.16),
+    transparent
+  );
+}
+
+/* =========================================================
+   LIGHT BEAMS
+========================================================= */
+
+.beamLayer {
+  position: absolute;
+  inset: -30%;
+  overflow: hidden;
+  transform: translate3d(
+    var(--parallax-x-mid),
+    var(--parallax-y-mid),
+    0
+  );
+}
+
+.lightBeam {
+  position: absolute;
+  width: 42%;
+  height: 1px;
+  opacity: 0.1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(111, 215, 255, 0.5),
+    rgba(139, 115, 255, 0.2),
+    transparent
+  );
+  transform: rotate(-25deg);
+  will-change: transform;
+}
+
+.beamOne {
+  top: 25%;
+  left: -10%;
+  animation: beamMoveOne 17s ease-in-out infinite alternate;
+}
+
+.beamTwo {
+  top: 53%;
+  left: 20%;
+  opacity: 0.07;
+  animation: beamMoveTwo 21s ease-in-out infinite alternate;
+}
+
+.beamThree {
+  top: 75%;
+  left: 58%;
+  opacity: 0.06;
+  animation: beamMoveThree 19s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   3D CRYSTAL
+========================================================= */
+
+.middleLayer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(
+    var(--parallax-x-mid),
+    var(--parallax-y-mid),
+    0
+  );
+}
+
+.crystalSystem {
+  position: absolute;
+  top: 47%;
+  left: 72%;
+  width: 230px;
+  height: 230px;
+  transform: translate(-50%, -50%);
+  perspective: 900px;
+}
+
+.crystalParallax {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: crystalFloat 15s ease-in-out infinite;
+}
+
+.crystal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 94px;
+  height: 94px;
+  transform:
+    translate(-50%, -50%)
+    rotateX(58deg)
+    rotateY(-36deg)
+    rotateZ(28deg);
+  transform-style: preserve-3d;
+  animation: crystalRotate 25s linear infinite;
+}
+
+.crystalFace {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(151, 226, 255, 0.15);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(135, 215, 255, 0.055),
+      rgba(116, 82, 255, 0.025)
+    );
+  box-shadow:
+    inset 0 0 24px rgba(93, 194, 255, 0.045),
+    0 0 35px rgba(71, 148, 255, 0.055);
+  backdrop-filter: blur(4px);
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    88% 80%,
+    50% 100%,
+    12% 80%,
+    0% 25%
+  );
+}
+
+.crystalEdge {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(164, 127, 255, 0.14);
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    88% 80%,
+    50% 100%,
+    12% 80%,
+    0% 25%
+  );
+}
+
+.crystalHighlight {
+  position: absolute;
+  top: 10%;
+  left: 24%;
+  width: 22%;
+  height: 62%;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    rgba(226, 250, 255, 0.18),
+    transparent
+  );
+  filter: blur(3px);
+  transform: rotate(12deg);
+}
+
+.crystalCore {
+  position: absolute;
+  inset: 25%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(161, 226, 255, 0.14),
+    transparent 70%
+  );
+  filter: blur(5px);
+}
+
+/* =========================================================
+   ORBIT RINGS
+========================================================= */
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(116, 208, 255, 0.12);
+  border-radius: 50%;
+  transform-style: preserve-3d;
+}
+
+.orbit span {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(158, 231, 255, 0.65);
+  box-shadow: 0 0 12px rgba(86, 209, 255, 0.5);
+  transform: translate(-50%, -50%);
+}
+
+.orbitOne {
+  width: 180px;
+  height: 72px;
+  transform:
+    translate(-50%, -50%)
+    rotateX(68deg)
+    rotateZ(14deg);
+  animation: orbitRotateOne 18s linear infinite;
+}
+
+.orbitTwo {
+  width: 215px;
+  height: 90px;
+  border-color: rgba(139, 110, 255, 0.1);
+  transform:
+    translate(-50%, -50%)
+    rotateX(66deg)
+    rotateY(18deg)
+    rotateZ(-20deg);
+  animation: orbitRotateTwo 24s linear infinite reverse;
+}
+
+.orbitThree {
+  width: 145px;
+  height: 145px;
+  border-color: rgba(170, 218, 255, 0.075);
+  transform:
+    translate(-50%, -50%)
+    rotateX(70deg)
+    rotateY(25deg);
+  animation: orbitRotateThree 30s linear infinite;
+}
+
+/* =========================================================
+   FOREGROUND
+========================================================= */
+
+.foregroundLayer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(
+    var(--parallax-x),
+    var(--parallax-y),
+    0
+  );
+}
+
+.foregroundParticle {
+  position: absolute;
+  display: block;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(220, 248, 255, 0.8);
+  box-shadow: 0 0 12px rgba(88, 207, 255, 0.45);
+  animation: foregroundFloat 10s ease-in-out infinite;
+}
+
+.fpOne {
+  top: 22%;
+  left: 18%;
+}
+
+.fpTwo {
+  top: 34%;
+  left: 83%;
+  animation-delay: -3s;
+}
+
+.fpThree {
+  top: 66%;
+  left: 11%;
+  animation-delay: -6s;
+}
+
+.fpFour {
+  top: 74%;
+  left: 78%;
+  animation-delay: -1s;
+}
+
+.fpFive {
+  top: 18%;
+  left: 63%;
+  animation-delay: -5s;
+}
+
+.fpSix {
+  top: 58%;
+  left: 48%;
+  animation-delay: -8s;
+}
+
+/* =========================================================
+   HORIZON
+========================================================= */
+
+.horizon {
+  position: absolute;
+  right: -10%;
+  bottom: 5%;
+  left: -10%;
+  height: 100px;
+  transform: translate3d(
+    var(--parallax-x-back),
+    var(--parallax-y-back),
+    0
+  );
+}
+
+.horizonGlow {
+  position: absolute;
+  right: 10%;
+  bottom: 0;
+  left: 10%;
+  height: 75px;
+  background:
+    radial-gradient(
+      ellipse at center bottom,
+      rgba(60, 193, 255, 0.14),
+      transparent 65%
+    );
+  filter: blur(15px);
+}
+
+.horizonLine {
+  position: absolute;
+  right: 18%;
+  bottom: 18px;
+  left: 18%;
+  height: 1px;
+  opacity: 0.25;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(68, 198, 255, 0.25),
+    rgba(156, 126, 255, 0.32),
+    rgba(68, 198, 255, 0.25),
+    transparent
+  );
+  box-shadow:
+    0 0 12px rgba(72, 198, 255, 0.12),
+    0 0 35px rgba(107, 91, 255, 0.08);
+}
+
+/* =========================================================
+   MOUSE GLOW
+========================================================= */
+
+.mouseGlow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+  background:
+    radial-gradient(
+      circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(75, 194, 255, 0.045),
+      transparent 70%
+    );
+  transition: opacity 0.4s ease;
+}
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 36%,
+      rgba(1, 3, 10, 0.16) 68%,
+      rgba(1, 3, 10, 0.58) 100%
+    );
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes digitalRain {
+  from {
+    transform: translate3d(0, -15vh, 0);
+  }
+
+  to {
+    transform: translate3d(0, 125vh, 0);
+  }
+}
+
+@keyframes particleFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: translate3d(
+      calc(var(--particle-drift) * 0.35),
+      -18px,
+      0
+    );
+  }
+
+  50% {
+    transform: translate3d(
+      var(--particle-drift),
+      2px,
+      0
+    );
+  }
+
+  75% {
+    transform: translate3d(
+      calc(var(--particle-drift) * -0.3),
+      18px,
+      0
+    );
+  }
+}
+
+@keyframes foregroundFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.25;
+  }
+
+  50% {
+    transform: translate3d(15px, -24px, 0);
+    opacity: 0.8;
+  }
+}
+
+@keyframes crystalFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(7px, -12px, 18px);
+  }
+}
+
+@keyframes crystalRotate {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateX(58deg)
+      rotateY(-36deg)
+      rotateZ(28deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateX(64deg)
+      rotateY(324deg)
+      rotateZ(388deg);
+  }
+}
+
+@keyframes orbitRotateOne {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateX(68deg)
+      rotateZ(14deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateX(68deg)
+      rotateZ(374deg);
+  }
+}
+
+@keyframes orbitRotateTwo {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateX(66deg)
+      rotateY(18deg)
+      rotateZ(-20deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateX(66deg)
+      rotateY(378deg)
+      rotateZ(340deg);
+  }
+}
+
+@keyframes orbitRotateThree {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateX(70deg)
+      rotateY(25deg)
+      rotateZ(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateX(70deg)
+      rotateY(385deg)
+      rotateZ(360deg);
+  }
+}
+
+@keyframes auroraFlowOne {
+  from {
+    transform: translate3d(-3%, 0, 0) rotate(-16deg) scale(1);
+  }
+
+  to {
+    transform: translate3d(9%, 6%, 0) rotate(-10deg) scale(1.08);
+  }
+}
+
+@keyframes auroraFlowTwo {
+  from {
+    transform: translate3d(4%, -2%, 0) rotate(24deg) scale(1);
+  }
+
+  to {
+    transform: translate3d(-7%, 7%, 0) rotate(18deg) scale(1.1);
+  }
+}
+
+@keyframes auroraFlowThree {
+  from {
+    transform: translate3d(-5%, 0, 0) rotate(0deg) scale(1);
+  }
+
+  to {
+    transform: translate3d(8%, -4%, 0) rotate(8deg) scale(1.08);
+  }
+}
+
+@keyframes orbFloatOne {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.1;
+  }
+
+  to {
+    transform: translate3d(-35px, 24px, 0) scale(1.08);
+    opacity: 0.15;
+  }
+}
+
+@keyframes orbFloatTwo {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.1;
+  }
+
+  to {
+    transform: translate3d(32px, -28px, 0) scale(1.06);
+    opacity: 0.15;
+  }
+}
+
+@keyframes orbFloatThree {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(18px, -20px, 0) scale(1.1);
+  }
+}
+
+@keyframes orbFloatFour {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(-25px, -18px, 0) scale(1.08);
+  }
+}
+
+@keyframes beamMoveOne {
+  from {
+    transform: translate3d(-12%, -5%, 0) rotate(-25deg);
+  }
+
+  to {
+    transform: translate3d(125%, 45%, 0) rotate(-25deg);
+  }
+}
+
+@keyframes beamMoveTwo {
+  from {
+    transform: translate3d(20%, 20%, 0) rotate(-25deg);
+  }
+
+  to {
+    transform: translate3d(-80%, -30%, 0) rotate(-25deg);
+  }
+}
+
+@keyframes beamMoveThree {
+  from {
+    transform: translate3d(-15%, 0, 0) rotate(-25deg);
+  }
+
+  to {
+    transform: translate3d(80%, 30%, 0) rotate(-25deg);
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+  .aurora {
+    filter: blur(24px);
+    opacity: 0.075;
+  }
+
+  .auroraOne {
+    width: 110vw;
+    height: 70vw;
+  }
+
+  .auroraTwo {
+    width: 105vw;
+    height: 70vw;
+  }
+
+  .orb {
+    filter: blur(20px);
+    opacity: 0.075;
+  }
+
+  .orbOne {
+    width: 180px;
+    height: 180px;
+  }
+
+  .orbTwo {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orbThree {
+    width: 150px;
+    height: 150px;
+  }
+
+  .particleLayer .particle:nth-child(n + 17) {
+    display: none;
+  }
+
+  .rainLayer .rain:nth-child(n + 23) {
+    display: none;
+  }
+
+  .beamLayer {
+    display: none;
+  }
+
+  .crystalSystem {
+    top: 43%;
+    left: 72%;
+    width: 150px;
+    height: 150px;
+    opacity: 0.6;
+  }
+
+  .crystal {
+    width: 62px;
+    height: 62px;
+  }
+
+  .orbitOne {
+    width: 120px;
+    height: 48px;
+  }
+
+  .orbitTwo {
+    width: 145px;
+    height: 62px;
+  }
+
+  .orbitThree {
+    width: 100px;
+    height: 100px;
+  }
+
+  .horizon {
+    bottom: 3%;
+  }
+
+  .horizonGlow {
+    filter: blur(10px);
+  }
+
+  .mouseGlow {
+    display: none;
+  }
+
+  .vignette {
+    background:
+      radial-gradient(
+        ellipse at center,
+        transparent 32%,
+        rgba(1, 3, 10, 0.22) 70%,
+        rgba(1, 3, 10, 0.62) 100%
+      );
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora,
+  .orb,
+  .particle,
+  .rain,
+  .lightBeam,
+  .crystalParallax,
+  .crystal,
+  .orbit,
+  .foregroundParticle {
+    animation: none !important;
+  }
+
+  .background * {
+    scroll-behavior: auto !important;
+  }
+
+  .mouseGlow {
+    display: none;
+  }
+
+  .crystalParallax {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   GPU / LOW POWER OPTIMIZATION
+========================================================= */
+
+@media (max-width: 767px) {
+  .crystalFace {
+    backdrop-filter: none;
+  }
+
+  .crystal {
+    animation-duration: 32s;
+  }
+}
