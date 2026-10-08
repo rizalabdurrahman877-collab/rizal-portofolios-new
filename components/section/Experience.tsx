@@ -1,7 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 const experiences = [
   {
     year: "01",
@@ -37,6 +33,7 @@ const experiences = [
   },
 ];
 
+// Server Component: tanpa JavaScript di browser.
 export default function Experience() {
   return (
     <section
@@ -44,11 +41,7 @@ export default function Experience() {
       className="relative px-6 py-28 lg:py-36"
     >
       <div className="mx-auto max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
+        <div className="reveal-view">
           <span className="text-sm font-medium text-blue-400">
             03 — Experience
           </span>
@@ -61,24 +54,17 @@ export default function Experience() {
             Perjalanan saya dalam mempelajari programming dan
             pengembangan aplikasi.
           </p>
-        </motion.div>
+        </div>
 
         <div className="relative mt-16">
           {/* Timeline */}
           <div className="absolute bottom-0 left-1.75 top-0 w-px bg-linear-to-b from-blue-500/50 via-cyan-400/20 to-transparent" />
 
           <div className="space-y-12">
-            {experiences.map((item, index) => (
-              <motion.div
+            {experiences.map((item) => (
+              <div
                 key={item.year}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.1,
-                }}
-                className="relative pl-10"
+                className="reveal-view reveal-left relative pl-10"
               >
                 {/* Dot */}
                 <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-blue-400 bg-[#050816] shadow-lg shadow-blue-500/30" />
@@ -115,7 +101,7 @@ export default function Experience() {
                     {item.description}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

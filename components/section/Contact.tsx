@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import emailjs from "@emailjs/browser";
 import {
   Mail,
   Send,
@@ -9,7 +8,6 @@ import {
   MessageSquare,
   Loader2,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -68,6 +66,13 @@ export default function Contact() {
     setLoading(true);
 
     try {
+      // Pustaka EmailJS & Supabase dimuat hanya saat form dikirim,
+      // supaya tidak ikut membebani JavaScript awal halaman.
+      const [{ default: emailjs }, { supabase }] = await Promise.all([
+        import("@emailjs/browser"),
+        import("@/lib/supabase"),
+      ]);
+
       // =========================
       // 1. SIMPAN KE SUPABASE
       // =========================

@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { Code2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -11,15 +8,8 @@ type Skill = {
   level: number;
 };
 
-export default function Skills() {
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchSkills();
-  }, []);
-
-  const fetchSkills = async () => {
+async function getSkills(): Promise<Skill[]> {
+  try {
     const { data, error } = await supabase
       .from("skills")
       .select("id, nama, kategori, level")
@@ -27,13 +17,20 @@ export default function Skills() {
 
     if (error) {
       console.error("SKILLS ERROR:", error);
-      setLoading(false);
-      return;
+      return [];
     }
 
-    setSkills(data || []);
-    setLoading(false);
-  };
+    return data || [];
+  } catch (err) {
+    console.error("SKILLS FETCH ERROR:", err);
+    return [];
+  }
+}
+
+// Server Component: data diambil di server (statis + revalidate dari app/page.tsx),
+// jadi daftar skill sudah ada di HTML tanpa skeleton dan tanpa JavaScript di browser.
+export default async function Skills() {
+  const skills = await getSkills();
 
   return (
     <section id="skills" className="relative px-6 py-24 sm:py-32">
@@ -53,16 +50,7 @@ export default function Skills() {
           </p>
         </div>
 
-        {loading ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-32 animate-pulse rounded-2xl border border-white/10 bg-white/3"
-              />
-            ))}
-          </div>
-        ) : skills.length === 0 ? (
+        {skills.length === 0 ? (
           <div className="rounded-2xl border border-white/10 bg-white/3 p-10 text-center text-zinc-500">
             Belum ada skills.
           </div>

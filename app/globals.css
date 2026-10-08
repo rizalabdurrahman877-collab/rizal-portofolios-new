@@ -1562,3 +1562,166 @@ input:-webkit-autofill:active {
 .nav-drop {
   animation: nav-drop 0.2s ease-out backwards;
 }
+
+/* ==========================================================================
+   Projects (ProjectsClient.tsx) - pengganti framer-motion
+   ========================================================================== */
+@keyframes pj-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pj-pop {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pj-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pj-fade {
+  animation: pj-fade 0.2s ease-out backwards;
+}
+.pj-pop {
+  animation: pj-pop 0.25s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.pj-card-in {
+  animation: pj-in 0.3s ease-out backwards;
+}
+
+/* ==========================================================================
+   Reveal saat scroll TANPA JavaScript (pengganti framer-motion whileInView)
+   Pakai: className="reveal-view" (+ "reveal-left" / "reveal-right" untuk arah)
+   - Browser yang belum mendukung: konten tampil normal tanpa animasi
+   - "backwards" agar transform hover pada elemen yang sama tidak ditimpa
+   - Jangan dipasang di elemen LCP / di atas lipatan
+   ========================================================================== */
+@keyframes reveal-view {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--rx, 0px), var(--ry, 30px), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal-left {
+  --rx: -30px;
+  --ry: 0px;
+}
+.reveal-right {
+  --rx: 30px;
+  --ry: 0px;
+}
+@supports (animation-timeline: view()) {
+  .reveal-view {
+    animation: reveal-view linear backwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-view {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Splash screen (SplashScreen.tsx) - CSS saja, durasi sama seperti sebelumnya:
+   tampil 1,9 detik, memudar 0,5 detik. Tanpa JavaScript.
+   ========================================================================== */
+.sp-out {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(15, 24, 54, 0.5), transparent 62%),
+    radial-gradient(circle at 85% 5%, rgba(37, 99, 235, 0.18), transparent 45%),
+    radial-gradient(circle at 10% 95%, rgba(114, 77, 193, 0.2), transparent 45%),
+    #050816;
+  animation: sp-out 0.5s ease-out 1.9s forwards;
+}
+@keyframes sp-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.sp-logo {
+  animation: sp-logo 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes sp-logo {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.sp-ring {
+  animation: sp-ring 2s ease-in-out infinite;
+}
+@keyframes sp-ring {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+.sp-name {
+  animation: sp-up 0.4s ease-out 0.2s backwards;
+  --sy: 10px;
+}
+.sp-load {
+  animation: sp-up 0.3s ease-out 0.35s backwards;
+  --sy: 5px;
+}
+.sp-sub {
+  animation: sp-fade 0.35s ease-out 0.4s backwards;
+}
+@keyframes sp-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--sy, 10px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.sp-bar {
+  animation: sp-bar 1.25s ease-in-out backwards;
+}
+@keyframes sp-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

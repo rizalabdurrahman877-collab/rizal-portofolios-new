@@ -1,30 +1,31 @@
 import type { MetadataRoute } from "next";
-import { supabase } from "@/lib/supabase";
-import { SITE_URL } from "@/lib/site";
-
-// Diperbarui paling lambat tiap 1 jam, jadi proyek baru otomatis masuk sitemap
-export const revalidate = 3600;
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let proyekIds: Array<number | string> = [];
+  const supabase = await createSupabaseServerClient();
 
-  try {
-    const { data, error } = await supabase.from("proyek").select("id");
-    if (!error && data) proyekIds = data.map((item) => item.id);
-  } catch {
-    // Jika Supabase gagal, sitemap tetap valid (hanya beranda)
-  }
+  const { data: proyek } = await supabase
+    .from("proyek")
+    .select("id")
+    .order("id", { ascending: false });
+
+  const baseUrl = "https://www.rizalportofolio.my.id";
+
+  const projectUrls =
+    proyek?.map((item) => ({
+      url: `${baseUrl}/proyek/${item.id}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })) ?? [];
 
   return [
     {
-      url: SITE_URL,
+      url: baseUrl,
+      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
-    ...proyekIds.map((id) => ({
-      url: `${SITE_URL}/proyek/${id}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
+    ...projectUrls,
   ];
 }

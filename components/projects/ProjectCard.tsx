@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Image from "next/image";
 import { ArrowUpRight, Star } from "lucide-react";
 
 type Project = {
@@ -25,21 +25,21 @@ export default function ProjectCard({
   onClick,
 }: ProjectCardProps) {
   return (
-    <motion.button
+    <button
       type="button"
       onClick={onClick}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
-      className="group w-full text-left"
+      className="group w-full text-left transition-transform duration-200 hover:-translate-y-1"
     >
       <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-none transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-lg hover:shadow-blue-500/10">
 
         {/* Image */}
-        <div className="relative overflow-hidden">
-          <img
+        <div className="relative h-64 overflow-hidden">
+          <Image
             src={project.image}
-            alt={project.title}
-            className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+            alt={`Tampilan proyek ${project.title}`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition duration-500 group-hover:scale-105"
           />
 
           {/* Overlay */}
@@ -91,6 +91,6 @@ export default function ProjectCard({
           </div>
         </div>
       </div>
-    </motion.button>
+    </button>
   );
 }
