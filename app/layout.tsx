@@ -22,39 +22,40 @@ const GOOGLE_VERIFICATION = "4KtIvzpV2KoTGv6WsrTsWV5gsKo4PpFNwCkM-kGgSyM";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-
   title: {
     default: TITLE,
     template: "%s | Rizal Abdurrahman Wakhid",
   },
-
   description: DESCRIPTION,
-
   keywords: [
+    // Brand
     "Rizal Abdurrahman Wakhid",
     "Rizal Abdurrahman",
-    "Web Developer",
-    "Frontend Developer",
-    "Next.js",
-    "Supabase",
-    "SMKN 1 Pasuruan",
-    "Portfolio",
+    "Rizal Wakhid",
+    "Rizal Portofolio",
+    // Niche + Lokal
+    "Web Developer Pasuruan",
+    "Frontend Developer Pasuruan",
+    "Siswa RPL SMKN 1 Pasuruan",
+    "Portofolio Siswa SMK",
+    "Web Developer SMK",
+    // Teknis
+    "Next.js Developer",
+    "React Developer Indonesia",
+    "Supabase Developer",
+    "Tailwind CSS Developer",
   ],
-
   authors: [{ name: "Rizal Abdurrahman Wakhid" }],
   creator: "Rizal Abdurrahman Wakhid",
   publisher: "Rizal Abdurrahman Wakhid",
   category: "technology",
-
   alternates: {
     canonical: SITE_URL,
   },
-
-  // ✅ Verifikasi Google Search Console
+  // ⚠️ PENTING: JANGAN HAPUS BAGIAN INI
   verification: {
-    google: GOOGLE_VERIFICATION,
+    google: "4KtIvzpV2KoTGv6WsrTsWV5gsKo4PpFNwCkM-kGgSyM",
   },
-
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -63,13 +64,11 @@ export const metadata: Metadata = {
     locale: "id_ID",
     type: "website",
   },
-
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
   },
-
   robots: {
     index: true,
     follow: true,
@@ -81,7 +80,6 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-
   icons: {
     icon: [
       {
