@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SITE_URL } from "@/lib/site";
 
-// Font dimuat lewat next/font: self-hosted, tanpa render-blocking request.
-// Variabel --font-inter dipakai di globals.css (--font-sans).
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -12,50 +10,59 @@ const inter = Inter({
 });
 
 const TITLE = "Rizal Abdurrahman Wakhid | Web Developer";
+
 const DESCRIPTION =
   "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.";
 
-// ⚠️ GANTI nilai di bawah dengan kode dari Google Search Console Anda.
-// Caranya: GSC → Verify ownership → Other verification methods → HTML tag
-// Copy HANYA nilai content-nya (tanpa tanda kutip).
-const GOOGLE_VERIFICATION = "4KtIvzpV2KoTGv6WsrTsWV5gsKo4PpFNwCkM-kGgSyM";
+const GOOGLE_VERIFICATION =
+  "4KtIvzpV2KoTGv6WsrTsWV5gsKo4PpFNwCkM-kGgSyM";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+
   title: {
     default: TITLE,
     template: "%s | Rizal Abdurrahman Wakhid",
   },
+
   description: DESCRIPTION,
+
   keywords: [
-    // Brand
     "Rizal Abdurrahman Wakhid",
     "Rizal Abdurrahman",
     "Rizal Wakhid",
     "Rizal Portofolio",
-    // Niche + Lokal
+
     "Web Developer Pasuruan",
     "Frontend Developer Pasuruan",
     "Siswa RPL SMKN 1 Pasuruan",
     "Portofolio Siswa SMK",
     "Web Developer SMK",
-    // Teknis
+
     "Next.js Developer",
     "React Developer Indonesia",
     "Supabase Developer",
     "Tailwind CSS Developer",
   ],
-  authors: [{ name: "Rizal Abdurrahman Wakhid" }],
+
+  authors: [
+    {
+      name: "Rizal Abdurrahman Wakhid",
+    },
+  ],
+
   creator: "Rizal Abdurrahman Wakhid",
   publisher: "Rizal Abdurrahman Wakhid",
   category: "technology",
+
   alternates: {
     canonical: SITE_URL,
   },
-  // ⚠️ PENTING: JANGAN HAPUS BAGIAN INI
+
   verification: {
-    google: "4KtIvzpV2KoTGv6WsrTsWV5gsKo4PpFNwCkM-kGgSyM",
+    google: GOOGLE_VERIFICATION,
   },
+
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -64,14 +71,17 @@ export const metadata: Metadata = {
     locale: "id_ID",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
   },
+
   robots: {
     index: true,
     follow: true,
+
     googleBot: {
       index: true,
       follow: true,
@@ -80,13 +90,17 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+
+  // FAVICON / LOGO WEBSITE
   icons: {
     icon: [
       {
-        url: "/icon-dark-32x32.png",
-        type: "/icon.png",
+        url: "/icon.png",
+        type: "image/png",
       },
     ],
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
@@ -103,7 +117,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={inter.variable}>
-      <body className="min-h-screen bg-[#050816]">{children}</body>
+      <body className="min-h-screen bg-[#050816]">
+        {children}
+      </body>
     </html>
   );
 }
