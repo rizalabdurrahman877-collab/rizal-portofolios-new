@@ -15,6 +15,11 @@ const TITLE = "Rizal Abdurrahman Wakhid | Web Developer";
 const DESCRIPTION =
   "Portfolio Rizal Abdurrahman Wakhid, Web Developer dan siswa Rekayasa Perangkat Lunak SMKN 1 Pasuruan.";
 
+// ⚠️ GANTI nilai di bawah dengan kode dari Google Search Console Anda.
+// Caranya: GSC → Verify ownership → Other verification methods → HTML tag
+// Copy HANYA nilai content-nya (tanpa tanda kutip).
+const GOOGLE_VERIFICATION = "4KtIvzpV2KoTGv6WsrTsWV5gsKo4PpFNwCkM-kGgSyM";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
@@ -39,9 +44,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Rizal Abdurrahman Wakhid" }],
   creator: "Rizal Abdurrahman Wakhid",
   publisher: "Rizal Abdurrahman Wakhid",
+  category: "technology",
 
   alternates: {
     canonical: SITE_URL,
+  },
+
+  // ✅ Verifikasi Google Search Console
+  verification: {
+    google: GOOGLE_VERIFICATION,
   },
 
   openGraph: {
@@ -65,6 +76,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 
