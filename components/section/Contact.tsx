@@ -207,7 +207,7 @@ export default function Contact() {
 
         {/* HEADER */}
         <div className="mb-10 text-center">
-          <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.25em] text-violet-400">
+          <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.25em] text-[#e5c783]">
             Kontak
           </span>
 
@@ -215,7 +215,7 @@ export default function Contact() {
             Mari Terhubung
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#aaa69d] sm:text-base">
             Punya pertanyaan, ide project, atau ingin
             bekerja sama? Kirim pesan melalui form di
             bawah ini.
@@ -223,7 +223,7 @@ export default function Contact() {
         </div>
 
         {/* FORM CARD */}
-        <div className="rounded-3xl border border-white/10 bg-white/4 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+        <div className="luxury-card rounded-3xl p-6 backdrop-blur-xl sm:p-8">
           <form
             onSubmit={handleSubmit}
             className="space-y-6"
@@ -249,7 +249,7 @@ export default function Contact() {
                 placeholder="Masukkan nama kamu"
                 disabled={loading}
                 required
-                className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/10 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none transition placeholder:text-[#777168] focus:border-[#e5c783]/60 focus:ring-2 focus:ring-[#e5c783]/10 disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
 
@@ -273,7 +273,7 @@ export default function Contact() {
                 placeholder="nama@email.com"
                 disabled={loading}
                 required
-                className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/10 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none transition placeholder:text-[#777168] focus:border-[#e5c783]/60 focus:ring-2 focus:ring-[#e5c783]/10 disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
 
@@ -297,7 +297,7 @@ export default function Contact() {
                 rows={6}
                 disabled={loading}
                 required
-                className="w-full resize-none rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/10 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full resize-none rounded-xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none transition placeholder:text-[#777168] focus:border-[#e5c783]/60 focus:ring-2 focus:ring-[#e5c783]/10 disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
 
@@ -305,7 +305,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={loading}
-              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-violet-900/20 transition duration-300 hover:scale-[1.01] hover:from-violet-500 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#f1d79c] to-[#b88b48] px-6 py-3.5 font-semibold text-[#17130c] shadow-lg shadow-[#c59c5b]/15 transition duration-300 hover:scale-[1.01] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
             >
               {loading ? (
                 <>

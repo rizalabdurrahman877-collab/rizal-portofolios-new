@@ -84,20 +84,20 @@ export default function ProjectsClient({ projects, error }: Props) {
         <div className="mb-10 flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="mb-4 flex items-center gap-3">
-              <span className="h-px w-10 bg-violet-400" />
-              <span className="text-sm font-medium uppercase tracking-[0.3em] text-violet-300">
-                Portfolio
+              <span className="h-px w-10 bg-[#e5c783]" />
+              <span className="text-sm font-medium uppercase tracking-[0.3em] text-[#e5c783]">
+                Pilihan karya
               </span>
             </div>
 
             <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Pilih{" "}
-              <span className="bg-linear-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-[#f1d79c] to-[#a77c3d] bg-clip-text text-transparent">
                 Proyek
               </span>
             </h2>
 
-            <p className="mt-4 max-w-2xl text-zinc-300">
+            <p className="mt-4 max-w-2xl text-[#b7b3aa]">
               Beberapa project yang saya kerjakan menggunakan teknologi modern.
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function ProjectsClient({ projects, error }: Props) {
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Cari project..."
                   aria-label="Cari project"
-                  className="box-border h-12 w-full rounded-xl border border-zinc-700 bg-zinc-900 pl-11 pr-4 text-sm leading-normal text-white outline-none transition placeholder:text-zinc-300 focus:border-violet-500/50 focus:bg-white/6"
+                  className="box-border h-12 w-full rounded-xl border border-[#d7b979]/20 bg-[#11100c]/80 pl-11 pr-4 text-sm leading-normal text-white outline-none transition placeholder:text-[#8e897f] focus:border-[#e5c783]/50 focus:bg-white/6"
                 />
               </div>
 
@@ -124,7 +124,7 @@ export default function ProjectsClient({ projects, error }: Props) {
               <Link
                 href="/admin/proyek/manajemen"
                 prefetch={false}
-                className="box-border inline-flex h-12 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-violet-500 px-5 text-sm font-semibold leading-none text-white transition hover:bg-violet-400 hover:shadow-lg hover:shadow-violet-500/20"
+                className="box-border inline-flex h-12 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-linear-to-r from-[#f1d79c] to-[#b88b48] px-5 text-sm font-semibold leading-none text-[#17130c] transition hover:shadow-lg hover:shadow-[#c59c5b]/20"
               >
                 <span aria-hidden="true" className="text-lg leading-none">
                   +
@@ -142,8 +142,8 @@ export default function ProjectsClient({ projects, error }: Props) {
                   aria-pressed={activeCategory === category}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                     activeCategory === category
-                      ? "bg-violet-500 text-white shadow-lg shadow-violet-500/20"
-                      : "border border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800 hover:text-white"
+                      ? "bg-[#d7b979] text-[#17130c] shadow-lg shadow-[#c59c5b]/15"
+                      : "border border-[#d7b979]/15 bg-[#11100c]/80 text-[#c1bbaf] hover:border-[#e5c783]/35 hover:bg-[#d7b979]/8 hover:text-white"
                   }`}
                 >
                   {category}
@@ -155,9 +155,9 @@ export default function ProjectsClient({ projects, error }: Props) {
 
         {/* ================= COUNT ================= */}
         {!error && (
-          <div className="mb-6 text-sm text-zinc-400">
+          <div className="mb-6 text-sm text-[#aaa69d]">
             Menampilkan{" "}
-            <span className="font-medium text-zinc-300">
+            <span             className="font-medium text-[#f1d79c]">
               {cardProjects.length}
             </span>{" "}
             project
@@ -170,7 +170,7 @@ export default function ProjectsClient({ projects, error }: Props) {
             <p className="text-sm font-medium text-red-400">
               Gagal mengambil data project
             </p>
-            <p className="mt-2 text-sm text-zinc-400">{error}</p>
+            <p className="mt-2 text-sm text-[#aaa69d]">{error}</p>
             <button
               type="button"
               onClick={() => window.location.reload()}
@@ -197,15 +197,15 @@ export default function ProjectsClient({ projects, error }: Props) {
 
         {/* ================= EMPTY ================= */}
         {!error && cardProjects.length === 0 && (
-          <div className="rounded-3xl border border-white/10 bg-white/3 py-20 text-center">
+          <div className="luxury-card rounded-3xl py-20 text-center">
             <Search
               aria-hidden="true"
-              className="mx-auto mb-4 h-8 w-8 text-zinc-500"
+              className="mx-auto mb-4 h-8 w-8 text-[#8e897f]"
             />
             <h3 className="text-lg font-semibold text-white">
               Project tidak ditemukan
             </h3>
-            <p className="mt-2 text-sm text-zinc-400">
+            <p className="mt-2 text-sm text-[#aaa69d]">
               Coba gunakan kata kunci atau kategori lain.
             </p>
           </div>
@@ -223,13 +223,13 @@ export default function ProjectsClient({ projects, error }: Props) {
             aria-modal="true"
             aria-labelledby="project-modal-title"
             onClick={(e) => e.stopPropagation()}
-            className="pj-pop relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-white/10 bg-[#0c0d1b] shadow-2xl"
+            className="pj-pop relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-[#d7b979]/20 bg-[#11100c] shadow-[0_25px_100px_rgba(0,0,0,0.65)]"
           >
             <button
               ref={closeRef}
               type="button"
               onClick={() => setSelectedProject(null)}
-              className="absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/60 p-2 text-zinc-300 transition hover:text-white"
+              className="absolute right-4 top-4 z-10 rounded-full border border-white/15 bg-black/60 p-2 text-zinc-300 transition hover:border-[#e5c783]/45 hover:text-white"
               aria-label="Tutup"
             >
               <X className="h-5 w-5" aria-hidden="true" />
@@ -247,12 +247,12 @@ export default function ProjectsClient({ projects, error }: Props) {
 
             <div className="p-6 sm:p-8">
               <div className="mb-3 flex flex-wrap items-center gap-3">
-                <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-300">
+                <span className="rounded-full border border-[#d7b979]/20 bg-[#d7b979]/8 px-3 py-1 text-xs font-medium text-[#e5c783]">
                   {selectedProject.category}
                 </span>
 
                 {selectedProject.featured && (
-                  <span className="flex items-center gap-1 rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-medium text-yellow-300">
+                  <span className="flex items-center gap-1 rounded-full border border-[#e5c783]/25 bg-[#d7b979]/8 px-3 py-1 text-xs font-medium text-[#f1d79c]">
                     <Star className="h-3 w-3 fill-current" aria-hidden="true" />
                     Featured
                   </span>
@@ -266,7 +266,7 @@ export default function ProjectsClient({ projects, error }: Props) {
                 {selectedProject.title}
               </h3>
 
-              <p className="mt-4 leading-7 text-zinc-300">
+              <p className="mt-4 leading-7 text-[#c1bbaf]">
                 {selectedProject.description}
               </p>
 
@@ -275,7 +275,7 @@ export default function ProjectsClient({ projects, error }: Props) {
                   {selectedProject.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-lg border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-zinc-300"
+                      className="rounded-lg border border-white/10 bg-white/4 px-3 py-1.5 text-xs text-[#c1bbaf]"
                     >
                       {tag}
                     </span>
@@ -289,7 +289,7 @@ export default function ProjectsClient({ projects, error }: Props) {
                     href={selectedProject.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-sm font-semibold text-black transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 hover:bg-blue-400 hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] active:scale-95"
+                    className="group inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-[#f1d79c] to-[#b88b48] px-5 py-3 text-sm font-semibold text-[#17130c] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 hover:shadow-[0_0_25px_rgba(215,185,121,0.25)] active:scale-95"
                   >
                     <ExternalLink
                       className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"

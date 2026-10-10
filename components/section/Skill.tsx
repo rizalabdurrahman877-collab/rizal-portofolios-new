@@ -36,22 +36,22 @@ export default async function Skills() {
     <section id="skills" className="relative px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12">
-          <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-violet-400">
-            Skill
+          <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-[#e5c783]">
+            Keahlian
           </p>
 
           <h2 className="text-4xl font-bold text-white sm:text-5xl">
            Keterampilan saya
           </h2>
 
-          <p className="mt-4 max-w-2xl text-zinc-400">
+          <p className="mt-4 max-w-2xl text-[#aaa69d]">
             Teknologi dan tools yang saya gunakan dalam mengembangkan berbagai
             project.
           </p>
         </div>
 
         {skills.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-white/3 p-10 text-center text-zinc-500">
+          <div className="luxury-card rounded-2xl p-10 text-center text-[#aaa69d]">
             Belum ada skills.
           </div>
         ) : (
@@ -59,31 +59,31 @@ export default async function Skills() {
             {skills.map((skill) => (
               <div
                 key={skill.id}
-                className="group rounded-2xl border border-white/10 bg-white/3 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:bg-white/5"
+                className="luxury-card group rounded-2xl p-5"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-violet-500/10 p-2.5 text-violet-400">
+                    <div className="rounded-xl border border-[#d7b979]/15 bg-[#d7b979]/8 p-2.5 text-[#e5c783]">
                       <Code2 className="h-5 w-5" />
                     </div>
 
                     <div>
                       <h3 className="font-semibold text-white">{skill.nama}</h3>
 
-                      <p className="text-xs text-zinc-500">
+                      <p className="text-xs text-[#8e897f]">
                         {skill.kategori || "Technology"}
                       </p>
                     </div>
                   </div>
 
-                  <span className="text-sm font-semibold text-violet-400">
+                  <span className="text-sm font-semibold text-[#e5c783]">
                     {skill.level}%
                   </span>
                 </div>
 
                 <div className="h-2 overflow-hidden rounded-full bg-white/10">
                   <div
-                    className="h-full rounded-full bg-linear-to-r from-violet-500 to-blue-500 transition-all duration-1000"
+                    className="h-full rounded-full bg-linear-to-r from-[#f1d79c] to-[#a77c3d] transition-all duration-1000"
                     style={{
                       width: `${Math.min(Math.max(skill.level, 0), 100)}%`,
                     }}

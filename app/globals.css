@@ -2350,3 +2350,437 @@ input:-webkit-autofill:active {
     visibility: hidden;
   }
 }
+
+.scene {
+  --shift-x: 0px;
+  --shift-y: 0px;
+  --orb-x: 0px;
+  --orb-y: 0px;
+
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  background: #09090d;
+  contain: strict;
+}
+
+.base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 50% -20%,
+      rgba(160, 121, 58, 0.16),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 100% 100%,
+      rgba(120, 88, 40, 0.12),
+      transparent 45%
+    ),
+    #09090d;
+}
+
+.aurora {
+  position: absolute;
+  inset: -20%;
+  filter: blur(75px);
+  opacity: 0.65;
+  transform: translate3d(var(--shift-x), var(--shift-y), 0);
+  will-change: transform;
+  animation: auroraDrift 22s ease-in-out infinite alternate;
+}
+
+.glow {
+  position: absolute;
+  width: min(58vw, 720px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+
+.glowPurple {
+  top: 2%;
+  left: -12%;
+  background: radial-gradient(
+    circle,
+    rgba(190, 151, 81, 0.2),
+    rgba(146, 108, 47, 0.06) 42%,
+    transparent 70%
+  );
+  animation: glowFloat 18s ease-in-out infinite alternate;
+}
+
+.glowBlue {
+  top: 18%;
+  right: -18%;
+  background: radial-gradient(
+    circle,
+    rgba(135, 139, 151, 0.13),
+    rgba(100, 103, 117, 0.04) 45%,
+    transparent 70%
+  );
+  animation: glowFloat 24s ease-in-out infinite alternate-reverse;
+}
+
+.glowPink {
+  bottom: -48%;
+  left: 25%;
+  background: radial-gradient(
+    circle,
+    rgba(150, 105, 62, 0.12),
+    transparent 68%
+  );
+  animation: glowFloat 20s ease-in-out infinite alternate;
+}
+
+.orbScene {
+  position: absolute;
+  top: 12%;
+  right: 8%;
+  width: clamp(150px, 26vw, 350px);
+  aspect-ratio: 1;
+  perspective: 1000px;
+  transform: translate3d(var(--orb-x), var(--orb-y), 0);
+  transition: transform 500ms ease-out;
+  opacity: 0.62;
+}
+
+.orb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: orbRotate 28s linear infinite;
+}
+
+.orbCore {
+  position: absolute;
+  inset: 17%;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      rgba(255, 255, 255, 0.9),
+      rgba(196, 181, 253, 0.45) 5%,
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(188, 148, 76, 0.52),
+      rgba(105, 77, 39, 0.2) 45%,
+      rgba(9, 9, 13, 0.05) 72%
+    );
+  box-shadow:
+    inset -20px -25px 55px rgba(2, 6, 23, 0.7),
+    inset 8px 8px 28px rgba(237, 215, 171, 0.18),
+    0 0 55px rgba(199, 161, 91, 0.14);
+  filter: saturate(1.2);
+}
+
+.orbRing,
+.orbRingTwo {
+  position: absolute;
+  inset: 8%;
+  border: 1px solid rgba(221, 190, 126, 0.35);
+  border-radius: 50%;
+  box-shadow:
+    0 0 20px rgba(199, 161, 91, 0.1),
+    inset 0 0 20px rgba(237, 215, 171, 0.06);
+  transform: rotateX(68deg) rotateY(-22deg);
+}
+
+.orbRingTwo {
+  inset: 0;
+  border-color: rgba(221, 190, 126, 0.25);
+  transform: rotateX(55deg) rotateY(55deg);
+  animation: ringRotate 14s linear infinite;
+}
+
+.orbHighlight {
+  position: absolute;
+  inset: 25%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transform: translateZ(40px) rotateX(70deg);
+}
+
+.gridFloor {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: -43%;
+  height: 90%;
+  background-image:
+    linear-gradient(
+      rgba(221, 190, 126, 0.14) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(221, 190, 126, 0.1) 1px,
+      transparent 1px
+    );
+  background-size: 58px 58px;
+  transform: perspective(450px) rotateX(63deg);
+  transform-origin: center top;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 20%,
+    black 65%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 20%,
+    black 65%,
+    transparent
+  );
+  opacity: 0.5;
+  animation: gridMove 18s linear infinite;
+}
+
+.gridFade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 55%,
+    transparent 0%,
+    rgba(5, 8, 22, 0.12) 55%,
+    #09090d 100%
+  );
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: #e8c982;
+  opacity: 0;
+  box-shadow:
+    0 0 8px rgba(232, 201, 130, 0.7),
+    0 0 18px rgba(232, 201, 130, 0.2);
+  animation: particleFloat var(--duration) var(--delay) ease-in-out infinite;
+}
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(225, 210, 180, 0.04) 4px
+  );
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 160px 35px rgba(0, 0, 0, 0.22);
+}
+
+.luxury-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(215, 185, 121, 0.14);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), transparent 46%),
+    rgba(17, 16, 12, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 16px 45px rgba(0, 0, 0, 0.12);
+  transform-style: preserve-3d;
+  transition:
+    transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 500ms ease,
+    box-shadow 500ms ease,
+    background-color 500ms ease;
+}
+
+.luxury-card::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 15%,
+    rgba(241, 215, 156, 0.055) 48%,
+    transparent 78%
+  );
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-35%);
+  transition:
+    opacity 500ms ease,
+    transform 700ms ease;
+}
+
+.luxury-card:hover {
+  border-color: rgba(229, 199, 131, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 28px 70px rgba(0, 0, 0, 0.28),
+    0 0 36px rgba(199, 161, 91, 0.055);
+  transform: perspective(1000px) translateY(-5px) rotateX(1deg);
+}
+
+.luxury-card:hover::before {
+  opacity: 1;
+  transform: translateX(35%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .luxury-card,
+  .luxury-card::before {
+    transition: none;
+  }
+
+  .luxury-card:hover {
+    transform: none;
+  }
+}
+
+@keyframes auroraDrift {
+  from {
+    transform: translate3d(-1%, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2%, 2%, 0) scale(1.06);
+  }
+}
+
+@keyframes glowFloat {
+  0% {
+    translate: -3% -2%;
+    scale: 0.95;
+  }
+  50% {
+    translate: 3% 2%;
+    scale: 1.06;
+  }
+  100% {
+    translate: 0 4%;
+    scale: 1;
+  }
+}
+
+@keyframes orbRotate {
+  from {
+    transform: rotateX(-12deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-12deg) rotateY(360deg);
+  }
+}
+
+@keyframes ringRotate {
+  from {
+    transform: rotateX(55deg) rotateY(55deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(55deg) rotateY(55deg) rotateZ(360deg);
+  }
+}
+
+@keyframes gridMove {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 58px;
+  }
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0) scale(0.7);
+  }
+  25% {
+    opacity: 0.7;
+  }
+  65% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(18px, -65px, 0) scale(1.2);
+  }
+}
+
+@media (max-width: 768px) {
+  .aurora {
+    filter: blur(55px);
+    opacity: 0.55;
+  }
+
+  .orbScene {
+    top: 14%;
+    right: -18%;
+    width: 230px;
+    opacity: 0.35;
+  }
+
+  .gridFloor {
+    background-size: 42px 42px;
+    opacity: 0.3;
+  }
+
+  .scanline {
+    opacity: 0.06;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora,
+  .glow,
+  .orb,
+  .orbRingTwo,
+  .gridFloor,
+  .particle {
+    animation: none !important;
+  }
+
+  .orbScene,
+  .aurora {
+    transform: none;
+    will-change: auto;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #050816;
+}
+
+body {
+  min-height: 100vh;
+  background: #050816;
+}
+
+::selection {
+  color: #ffffff;
+  background: rgba(139, 92, 246, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

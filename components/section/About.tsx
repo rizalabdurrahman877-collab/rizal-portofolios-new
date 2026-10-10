@@ -39,8 +39,8 @@ export default function About() {
       <div className="mx-auto max-w-7xl">
         {/* Judul */}
         <div className="reveal-view">
-          <span className="text-sm font-medium text-blue-400">
-            01 — Tentang Saya
+          <span className="text-sm font-medium tracking-wide text-[#e5c783]">
+            01 — PROFIL
           </span>
 
           <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -59,7 +59,7 @@ export default function About() {
           </div>
 
           {/* Sisi kanan */}
-          <div className="reveal-view reveal-right text-slate-400">
+          <div className="reveal-view reveal-right text-[#b7b3aa]">
             <p className="leading-8">
               Saya adalah siswa kelas XI Rekayasa Perangkat Lunak di
               SMKN 1 Pasuruan yang memiliki ketertarikan pada pengembangan
@@ -79,7 +79,7 @@ export default function About() {
           {skills.map((skill) => (
             <span
               key={skill}
-              className="rounded-full border border-white/10 bg-white/2 px-4 py-2 text-sm text-slate-400 transition duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-blue-500/5 hover:text-blue-300"
+              className="rounded-full border border-[#d7b979]/15 bg-[#d7b979]/5 px-4 py-2 text-sm text-[#c1bbaf] transition duration-300 hover:-translate-y-1 hover:border-[#e5c783]/40 hover:bg-[#d7b979]/10 hover:text-[#f1d79c]"
             >
               {skill}
             </span>
@@ -94,15 +94,15 @@ export default function About() {
             return (
               <div
                 key={card.title}
-                className="reveal-view group rounded-2xl border border-white/[0.07] bg-white/2 p-6 backdrop-blur-xl transition duration-300 hover:-translate-y-1.5 hover:border-blue-400/20 hover:bg-blue-500/3"
+                className="luxury-card reveal-view group rounded-2xl p-6 backdrop-blur-xl"
               >
-                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10">
-                  <Icon className="text-cyan-400" size={20} />
+                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-[#d7b979]/25 bg-[#d7b979]/10">
+                  <Icon className="text-[#e5c783]" size={20} />
                 </div>
 
                 <h3 className="text-lg font-medium">{card.title}</h3>
 
-                <p className="mt-3 text-sm leading-6 text-slate-500">
+                <p className="mt-3 text-sm leading-6 text-[#aaa69d]">
                   {card.text}
                 </p>
               </div>

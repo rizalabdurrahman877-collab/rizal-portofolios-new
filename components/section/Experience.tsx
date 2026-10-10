@@ -42,15 +42,15 @@ export default function Experience() {
     >
       <div className="mx-auto max-w-7xl">
         <div className="reveal-view">
-          <span className="text-sm font-medium text-blue-400">
-            03 — Experience
+          <span className="text-sm font-medium tracking-wide text-[#e5c783]">
+            03 — PERJALANAN
           </span>
 
           <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Pengalaman yang berbicara
+            Bertumbuh lewat karya
           </h2>
 
-          <p className="mt-5 max-w-xl text-slate-500">
+          <p className="mt-5 max-w-xl text-[#aaa69d]">
             Perjalanan saya dalam mempelajari programming dan
             pengembangan aplikasi.
           </p>
@@ -58,7 +58,7 @@ export default function Experience() {
 
         <div className="relative mt-16">
           {/* Timeline */}
-          <div className="absolute bottom-0 left-1.75 top-0 w-px bg-linear-to-b from-blue-500/50 via-cyan-400/20 to-transparent" />
+          <div className="absolute bottom-0 left-1.75 top-0 w-px bg-linear-to-b from-[#e5c783]/60 via-[#d7b979]/20 to-transparent" />
 
           <div className="space-y-12">
             {experiences.map((item) => (
@@ -67,12 +67,12 @@ export default function Experience() {
                 className="reveal-view reveal-left relative pl-10"
               >
                 {/* Dot */}
-                <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-blue-400 bg-[#050816] shadow-lg shadow-blue-500/30" />
+                <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-[#e5c783] bg-[#09090d] shadow-lg shadow-[#d7b979]/20" />
 
-                <div className="rounded-2xl border border-white/6 bg-white/2 p-6 transition duration-300 hover:border-blue-400/20 hover:bg-blue-500/2 sm:p-7">
+                <div className="luxury-card rounded-2xl p-6 sm:p-7">
                   <div className="flex flex-col justify-between gap-3 sm:flex-row">
                     <div>
-                      <p className="text-sm text-blue-400">
+                      <p className="text-sm text-[#e5c783]">
                         {item.place}
                       </p>
 
@@ -81,7 +81,7 @@ export default function Experience() {
                       </h3>
                     </div>
 
-                    <span className="text-xs text-slate-700">
+                    <span className="text-xs tracking-[0.2em] text-[#777168]">
                       {item.year}
                     </span>
                   </div>
@@ -90,14 +90,14 @@ export default function Experience() {
                     {item.tech.map((tech) => (
                       <span
                         key={tech}
-                        className="rounded-full bg-blue-500/5 px-3 py-1.5 text-xs text-slate-500"
+                        className="rounded-full border border-[#d7b979]/10 bg-[#d7b979]/5 px-3 py-1.5 text-xs text-[#aaa69d]"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                  <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-500">
+                  <p className="mt-5 max-w-2xl text-sm leading-7 text-[#aaa69d]">
                     {item.description}
                   </p>
                 </div>

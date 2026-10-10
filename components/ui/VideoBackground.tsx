@@ -1,138 +1,118 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-
 type Props = {
-  /** Path video relatif terhadap folder /public, contoh: /video/background.mp4 */
-  src?: string;
-  /** (Opsional) versi webm, lebih kecil dan dipilih browser jika didukung */
-  webmSrc?: string;
-  /** Gambar poster WebP. Sangat disarankan: ini yang tampil pertama (LCP) */
-  poster?: string;
-  /** Kegelapan overlay (0 - 1). Naikkan jika teks sulit dibaca */
+  /** Kegelapan overlay, nilai 0 sampai 1 */
   overlay?: number;
-  /** Putar video juga di layar mobile (default: false, mobile hanya poster) */
-  mobileVideo?: boolean;
 };
 
-type NetworkInfo = { saveData?: boolean; effectiveType?: string };
-
 export default function VideoBackground({
-  src = "/video/background.mp4fwef",
-  webmSrc,
-  poster,
   overlay = 0.6,
-  mobileVideo = false,
 }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [enabled, setEnabled] = useState(false);
-  const [ready, setReady] = useState(false);
-
-  // Muat video HANYA setelah halaman selesai dimuat, saat browser idle,
-  // dan hanya jika kondisi pengguna memungkinkan.
-  useEffect(() => {
-    const conn = (navigator as Navigator & { connection?: NetworkInfo })
-      .connection;
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    const isSmall = window.matchMedia("(max-width: 767px)").matches;
-    const slow =
-      conn?.saveData || ["slow-2g", "2g"].includes(conn?.effectiveType ?? "");
-
-    if (reduceMotion || slow || (isSmall && !mobileVideo)) return;
-
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    let idle: number | undefined;
-
-    const start = () => setEnabled(true);
-    const schedule = () => {
-      if ("requestIdleCallback" in window) {
-        idle = window.requestIdleCallback(start, { timeout: 3000 });
-      } else {
-        timer = setTimeout(start, 1500);
-      }
-    };
-
-    if (document.readyState === "complete") {
-      schedule();
-    } else {
-      window.addEventListener("load", schedule, { once: true });
-    }
-
-    return () => {
-      window.removeEventListener("load", schedule);
-      if (timer) clearTimeout(timer);
-      if (idle !== undefined && "cancelIdleCallback" in window) {
-        window.cancelIdleCallback(idle);
-      }
-    };
-  }, [mobileVideo]);
-
-  // Jeda saat tab disembunyikan, lanjutkan saat kembali
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!enabled || !v) return;
-    const onVisibility = () => {
-      if (document.hidden) v.pause();
-      else v.play().catch(() => {});
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, [enabled]);
-
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#050816]"
     >
-      {/* Poster = elemen LCP: ringan, dimuat dengan prioritas */}
-      {poster && (
-        <Image
-          src={poster}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          quality={70}
-          className="object-cover"
-        />
-      )}
+      {/* Background gradient premium */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(
+              ellipse at 15% 20%,
+              rgba(91, 60, 180, 0.22),
+              transparent 42%
+            ),
+            radial-gradient(
+              ellipse at 85% 25%,
+              rgba(35, 95, 190, 0.18),
+              transparent 40%
+            ),
+            radial-gradient(
+              ellipse at 50% 85%,
+              rgba(104, 55, 160, 0.13),
+              transparent 45%
+            ),
+            #050816
+          `,
+        }}
+      />
 
-      {/* Video (dimuat belakangan, fade-in di atas poster) */}
-      {enabled && (
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onCanPlay={() => setReady(true)}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-            ready ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          {webmSrc && <source src={webmSrc} type="video/webm" />}
-          <source src={src} type="video/mp4" />
-        </video>
-      )}
+      {/* Grid halus */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(
+              rgba(148, 163, 184, 0.045) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(148, 163, 184, 0.045) 1px,
+              transparent 1px
+            )
+          `,
+          backgroundSize: "60px 60px",
+          maskImage:
+            "linear-gradient(to bottom, black, transparent 90%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black, transparent 90%)",
+        }}
+      />
 
-      {/* Overlay gelap supaya teks tetap terbaca */}
+      {/* Orb bercahaya kiri */}
+      <div
+        className="absolute -left-40 top-20 h-96 w-96 rounded-full blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(124, 58, 237, 0.2), transparent 70%)",
+          animation: "vb-float 12s ease-in-out infinite alternate",
+        }}
+      />
+
+      {/* Orb bercahaya kanan */}
+      <div
+        className="absolute -right-40 top-1/3 h-96 w-96 rounded-full blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(59, 130, 246, 0.16), transparent 70%)",
+          animation: "vb-float 15s ease-in-out infinite alternate-reverse",
+        }}
+      />
+
+      {/* Overlay untuk menjaga keterbacaan teks */}
       <div
         className="absolute inset-0 bg-[#050816]"
         style={{ opacity: overlay }}
       />
 
-      {/* Vignette di tepi layar */}
+      {/* Vignette */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 35%, rgba(5,8,22,0.8) 100%)",
+            "radial-gradient(ellipse at center, transparent 25%, rgba(5, 8, 22, 0.7) 100%)",
         }}
       />
+
+      {/* Animasi ringan */}
+      <style jsx>{`
+        @keyframes vb-float {
+          from {
+            transform: translate3d(0, -15px, 0) scale(1);
+          }
+          to {
+            transform: translate3d(20px, 20px, 0) scale(1.12);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          div {
+            animation: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

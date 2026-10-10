@@ -28,7 +28,7 @@ export default function MobileMenu({ links }: { links: NavLink[] }) {
         aria-label={open ? "Tutup menu navigasi" : "Buka menu navigasi"}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-all duration-300 hover:scale-105 hover:border-violet-400/40 hover:bg-violet-500/10"
+        className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-[#d7b979]/20 bg-white/5 text-white transition-all duration-300 hover:scale-105 hover:border-[#e5c783]/45 hover:bg-[#d7b979]/10"
       >
         {open ? (
           <X size={22} aria-hidden="true" />
@@ -40,7 +40,7 @@ export default function MobileMenu({ links }: { links: NavLink[] }) {
       {open && (
         <div
           id="mobile-menu"
-          className="nav-drop absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-white/6 bg-[#050816]"
+          className="nav-drop absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-[#d7b979]/15 bg-[#09090d]/95 backdrop-blur-2xl"
         >
           <div className="mx-auto max-w-7xl px-5 pb-5 sm:px-6">
             <div className="flex flex-col">
@@ -49,7 +49,7 @@ export default function MobileMenu({ links }: { links: NavLink[] }) {
                   key={link.name}
                   href={link.href}
                   onClick={close}
-                  className="group flex min-h-13 items-center justify-between border-b border-white/5 py-4 text-sm font-medium text-slate-300 transition-all duration-200 hover:pl-2 hover:text-violet-400"
+                  className="group flex min-h-13 items-center justify-between border-b border-white/5 py-4 text-sm font-medium text-slate-300 transition-all duration-200 hover:pl-2 hover:text-[#f1d79c]"
                 >
                   <span>{link.name}</span>
                   <ArrowRight
@@ -63,9 +63,9 @@ export default function MobileMenu({ links }: { links: NavLink[] }) {
               <a
                 href="#contact"
                 onClick={close}
-                className="group mt-4 flex min-h-12 items-center justify-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/10 px-5 py-3 text-sm font-medium text-blue-300 transition-all duration-300 hover:scale-[1.02] hover:border-violet-400/50 hover:bg-linear-to-r hover:from-violet-600/20 hover:to-blue-600/20 hover:text-white"
+                className="group mt-4 flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#d7b979]/25 bg-[#d7b979]/8 px-5 py-3 text-sm font-medium text-[#e5c783] transition-all duration-300 hover:scale-[1.02] hover:border-[#e5c783]/50 hover:bg-[#d7b979]/15 hover:text-white"
               >
-                Let&apos;s Talk
+                Mari Terhubung
                 <ArrowRight
                   size={16}
                   aria-hidden="true"
@@ -76,7 +76,7 @@ export default function MobileMenu({ links }: { links: NavLink[] }) {
               <a
                 href="/admin/login"
                 onClick={close}
-                className="mt-3 flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/3 px-5 py-3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-violet-400/40 hover:bg-violet-500/10 hover:text-white"
+                className="mt-3 flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/3 px-5 py-3 text-sm font-medium text-slate-300 transition-all duration-300 hover:border-[#e5c783]/35 hover:bg-[#d7b979]/8 hover:text-white"
               >
                 Admin Login
               </a>
