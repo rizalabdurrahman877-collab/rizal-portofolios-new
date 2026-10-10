@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 const experiences = [
   {
     year: "01",
@@ -33,73 +35,97 @@ const experiences = [
   },
 ];
 
-// Server Component: tanpa JavaScript di browser.
 export default function Experience() {
   return (
-    <section
-      id="experience"
-      className="relative px-6 py-28 lg:py-36"
-    >
+    <section id="experience" className="relative overflow-hidden px-6 py-28 lg:py-36">
+      {/* Filter SVG untuk efek liquid (distorsi organik) */}
+      <svg className="absolute h-0 w-0" aria-hidden="true">
+        <defs>
+          <filter id="liquid" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.012 0.018"
+              numOctaves="2"
+              seed="4"
+              result="noise"
+            >
+              <animate
+                attributeName="baseFrequency"
+                dur="18s"
+                values="0.012 0.018;0.018 0.012;0.012 0.018"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="28" />
+          </filter>
+        </defs>
+      </svg>
+
+      {/* Ambient orbs di belakang agar efek glass terlihat */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="gl-orb gl-orb-a" />
+        <div className="gl-orb gl-orb-b" />
+      </div>
+
       <div className="mx-auto max-w-7xl">
         <div className="reveal-view">
-          <span className="text-sm font-medium tracking-wide text-[#e5c783]">
+          <span className="text-sm font-medium tracking-wide text-[#7dd3fc]">
             03 — PERJALANAN
           </span>
-
           <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
             Bertumbuh lewat karya
           </h2>
-
-          <p className="mt-5 max-w-xl text-[#aaa69d]">
-            Perjalanan saya dalam mempelajari programming dan
-            pengembangan aplikasi.
+          <p className="mt-5 max-w-xl text-[#a9b0d0]">
+            Perjalanan saya dalam mempelajari programming dan pengembangan aplikasi.
           </p>
         </div>
 
         <div className="relative mt-16">
-          {/* Timeline */}
-          <div className="absolute bottom-0 left-1.75 top-0 w-px bg-linear-to-b from-[#e5c783]/60 via-[#d7b979]/20 to-transparent" />
+          {/* Timeline: tumbuh dari atas + cahaya mengalir */}
+          <div className="timeline-line absolute bottom-0 left-1.75 top-0 w-px" />
 
           <div className="space-y-12">
-            {experiences.map((item) => (
+            {experiences.map((item, i) => (
               <div
                 key={item.year}
-                className="reveal-view reveal-left relative pl-10"
+                className="glass-enter relative pl-10"
+                style={{ "--i": i } as CSSProperties}
               >
-                {/* Dot */}
-                <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-[#e5c783] bg-[#09090d] shadow-lg shadow-[#d7b979]/20" />
+                {/* Dot dengan ring berdenyut */}
+                <div className="timeline-dot absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-[#7dd3fc] bg-[#050816]" />
 
-                <div className="luxury-card rounded-2xl p-6 sm:p-7">
-                  <div className="flex flex-col justify-between gap-3 sm:flex-row">
-                    <div>
-                      <p className="text-sm text-[#e5c783]">
-                        {item.place}
-                      </p>
-
-                      <h3 className="mt-2 text-xl font-medium">
-                        {item.title}
-                      </h3>
-                    </div>
-
-                    <span className="text-xs tracking-[0.2em] text-[#777168]">
-                      {item.year}
+                {/* Wrapper perspective untuk efek 3D */}
+                <div className="glass-scene">
+                  <article className="glass-card rounded-3xl p-6 sm:p-8">
+                    <span className="glass-bg" aria-hidden="true">
+                      <span className="glass-blob" />
+                      <span className="glass-sheen" />
                     </span>
-                  </div>
 
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {item.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-full border border-[#d7b979]/10 bg-[#d7b979]/5 px-3 py-1.5 text-xs text-[#aaa69d]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                    <div className="glass-content">
+                      <div className="flex flex-col justify-between gap-3 sm:flex-row">
+                        <div>
+                          <p className="text-sm text-[#7dd3fc]">{item.place}</p>
+                          <h3 className="mt-2 text-xl font-medium">{item.title}</h3>
+                        </div>
+                        <span className="text-xs tracking-[0.2em] text-[#7a82a8]">
+                          {item.year}
+                        </span>
+                      </div>
 
-                  <p className="mt-5 max-w-2xl text-sm leading-7 text-[#aaa69d]">
-                    {item.description}
-                  </p>
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {item.tech.map((tech) => (
+                          <span key={tech} className="glass-chip">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <p className="mt-5 max-w-2xl text-sm leading-7 text-[#a9b0d0]">
+                        {item.description}
+                      </p>
+                    </div>
+                  </article>
                 </div>
               </div>
             ))}

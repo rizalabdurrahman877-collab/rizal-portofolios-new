@@ -1,69 +1,141 @@
 "use client";
 
-import { FormEvent, useState } from "react";
 import {
+  CSSProperties,
+  FormEvent,
+  PointerEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  AlertCircle,
+  Check,
+  Loader2,
   Mail,
+  MessageSquare,
   Send,
   User,
-  MessageSquare,
-  Loader2,
 } from "lucide-react";
+
+type Status = { type: "success" | "error"; text: string } | null;
+
+/** Kedalaman (translateZ) + urutan masuk untuk tiap layer kartu */
+const layer = (z: number, i: number) =>
+  ({ "--z": `${z}px`, "--i": i }) as CSSProperties;
 
 export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>(null);
+  const [inView, setInView] = useState(false);
+
+  const cardRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef(0);
+
+  // Kartu "masuk" saat terlihat di layar
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Pesan status hilang otomatis
+  useEffect(() => {
+    if (!status) return;
+    const t = setTimeout(() => setStatus(null), 6000);
+    return () => clearTimeout(t);
+  }, [status]);
+
+  // Tombol kembali normal setelah menampilkan "Terkirim"
+  useEffect(() => {
+    if (!sent) return;
+    const t = setTimeout(() => setSent(false), 2600);
+    return () => clearTimeout(t);
+  }, [sent]);
+
+  // Tilt 3D mengikuti kursor (hanya mouse)
+  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse") return;
+    const el = cardRef.current;
+    if (!el) return;
+
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      el.style.setProperty("--ry", `${(px - 0.5) * 9}deg`);
+      el.style.setProperty("--rx", `${(0.5 - py) * 7}deg`);
+      el.style.setProperty("--mx", `${px * 100}%`);
+      el.style.setProperty("--my", `${py * 100}%`);
+      el.style.setProperty("--px", `${px - 0.5}`);
+      el.style.setProperty("--py", `${py - 0.5}`);
+    });
+  };
+
+  const handlePointerLeave = () => {
+    const el = cardRef.current;
+    if (!el) return;
+    cancelAnimationFrame(rafRef.current);
+    ["--rx", "--ry", "--mx", "--my", "--px", "--py"].forEach((v) =>
+      el.style.removeProperty(v)
+    );
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (loading) return;
 
-    // =========================
     // VALIDASI
-    // =========================
-
     if (!name.trim() || !email.trim() || !message.trim()) {
-      alert("Semua field wajib diisi.");
+      setStatus({ type: "error", text: "Semua field wajib diisi." });
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!emailRegex.test(email.trim())) {
-      alert("Format email tidak valid.");
+      setStatus({ type: "error", text: "Format email tidak valid." });
       return;
     }
 
-    // =========================
     // EMAILJS CONFIG
-    // =========================
-
-    const serviceId =
-      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-
-    const templateId =
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-
-    const publicKey =
-      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-
-    console.log("EMAILJS CONFIG:", {
-      serviceId: serviceId || "KOSONG",
-      templateId: templateId || "KOSONG",
-      publicKey: publicKey ? "TERBACA" : "KOSONG",
-    });
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      console.error("EMAILJS CONFIG ERROR");
-
-      alert(
-        "Konfigurasi EmailJS belum lengkap. Periksa file .env.local."
-      );
-
+      console.error("EMAILJS CONFIG ERROR", {
+        serviceId: serviceId || "KOSONG",
+        templateId: templateId || "KOSONG",
+        publicKey: publicKey ? "TERBACA" : "KOSONG",
+      });
+      setStatus({
+        type: "error",
+        text: "Konfigurasi EmailJS belum lengkap. Periksa file .env.local.",
+      });
       return;
     }
 
     setLoading(true);
+    setStatus(null);
 
     try {
       // Pustaka EmailJS & Supabase dimuat hanya saat form dikirim,
@@ -73,12 +145,7 @@ export default function Contact() {
         import("@/lib/supabase"),
       ]);
 
-      // =========================
       // 1. SIMPAN KE SUPABASE
-      // =========================
-
-      console.log("Menyimpan pesan ke Supabase...");
-
       const { error: supabaseError } = await supabase
         .from("pesan_kontak")
         .insert({
@@ -88,110 +155,50 @@ export default function Contact() {
         });
 
       if (supabaseError) {
-        console.error(
-          "SUPABASE ERROR:",
-          supabaseError
-        );
-
-        throw new Error(
-          `Supabase: ${supabaseError.message}`
-        );
+        console.error("SUPABASE ERROR:", supabaseError);
+        throw new Error(`Supabase: ${supabaseError.message}`);
       }
 
-      console.log(
-        "SUPABASE: Berhasil menyimpan pesan."
-      );
-
-      // =========================
       // 2. KIRIM EMAIL VIA EMAILJS
-      // =========================
-
-      console.log(
-        "Mengirim email melalui EmailJS..."
-      );
-
-      const templateParams = {
-        name: name.trim(),
-        email: email.trim(),
-        time: new Date().toLocaleString("id-ID"),
-        message: message.trim(),
-      };
-
-      console.log(
-        "EMAILJS PARAMS:",
-        templateParams
-      );
-
-      const emailResult = await emailjs.send(
+      await emailjs.send(
         serviceId,
         templateId,
-        templateParams,
         {
-          publicKey: publicKey,
-        }
+          name: name.trim(),
+          email: email.trim(),
+          time: new Date().toLocaleString("id-ID"),
+          message: message.trim(),
+        },
+        { publicKey }
       );
 
-      console.log(
-        "EMAILJS SUCCESS:",
-        emailResult
-      );
-
-      // =========================
       // 3. RESET FORM
-      // =========================
-
       setName("");
       setEmail("");
       setMessage("");
-
-      alert(
-        "Pesan berhasil dikirim! 💌"
-      );
+      setSent(true);
+      setStatus({ type: "success", text: "Pesan berhasil dikirim! 💌" });
     } catch (error) {
-      console.error(
-        "========== CONTACT ERROR =========="
-      );
+      console.error("CONTACT ERROR:", error);
 
-      console.error(error);
-
-      console.error(
-        "==================================="
-      );
-
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "text" in error
-      ) {
-        const emailJsError = error as {
-          status?: number;
-          text?: string;
-        };
-
-        console.error(
-          "EmailJS Status:",
-          emailJsError.status
-        );
-
-        console.error(
-          "EmailJS Message:",
-          emailJsError.text
-        );
-
-        alert(
-          `Gagal mengirim email.\n\n${
-            emailJsError.text ||
-            "Terjadi kesalahan pada EmailJS."
-          }`
-        );
+      if (typeof error === "object" && error !== null && "text" in error) {
+        const emailJsError = error as { status?: number; text?: string };
+        setStatus({
+          type: "error",
+          text: `Gagal mengirim email. ${
+            emailJsError.text || "Terjadi kesalahan pada EmailJS."
+          }`,
+        });
       } else if (error instanceof Error) {
-        alert(
-          `Gagal mengirim pesan:\n${error.message}`
-        );
+        setStatus({
+          type: "error",
+          text: `Gagal mengirim pesan: ${error.message}`,
+        });
       } else {
-        alert(
-          "Gagal mengirim pesan. Silakan coba lagi."
-        );
+        setStatus({
+          type: "error",
+          text: "Gagal mengirim pesan. Silakan coba lagi.",
+        });
       }
     } finally {
       setLoading(false);
@@ -201,13 +208,14 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full overflow-hidden py-20"
+      className="relative w-full overflow-hidden py-24"
     >
-      <div className="mx-auto w-full max-w-4xl px-6">
+      <div className="ct-glow" aria-hidden="true" />
 
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-6">
         {/* HEADER */}
-        <div className="mb-10 text-center">
-          <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.25em] text-[#e5c783]">
+        <div className="reveal-view mb-12 text-center">
+          <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-[0.25em] text-[#7dd3fc]">
             Kontak
           </span>
 
@@ -215,118 +223,148 @@ export default function Contact() {
             Mari Terhubung
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#aaa69d] sm:text-base">
-            Punya pertanyaan, ide project, atau ingin
-            bekerja sama? Kirim pesan melalui form di
-            bawah ini.
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#a9b0d0] sm:text-base">
+            Punya pertanyaan, ide project, atau ingin bekerja sama? Kirim
+            pesan melalui form di bawah ini.
           </p>
         </div>
 
-        {/* FORM CARD */}
-        <div className="luxury-card rounded-3xl p-6 backdrop-blur-xl sm:p-8">
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6"
+        {/* KARTU 3D */}
+        <div className="ct-scene">
+          <div
+            ref={cardRef}
+            className="ct-card"
+            data-in={inView}
+            onPointerMove={handlePointerMove}
+            onPointerLeave={handlePointerLeave}
           >
+            {/* Permukaan: glare mengikuti kursor + grid (daun, di-clip sendiri) */}
+            <span className="ct-surface" aria-hidden="true">
+              <span className="ct-glare" />
+              <span className="ct-grid" />
+            </span>
 
-            {/* NAMA */}
-            <div>
-              <label
-                htmlFor="name"
-                className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-200"
-              >
-                <User size={16} />
-                Nama
-              </label>
-
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) =>
-                  setName(e.target.value)
-                }
-                placeholder="Masukkan nama kamu"
-                disabled={loading}
-                required
-                className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none transition placeholder:text-[#777168] focus:border-[#e5c783]/60 focus:ring-2 focus:ring-[#e5c783]/10 disabled:cursor-not-allowed disabled:opacity-60"
-              />
+            {/* Dekorasi 3D di luar tepi kartu */}
+            <div className="ct-cube" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
             </div>
+            <span className="ct-ring" aria-hidden="true" />
 
-            {/* EMAIL */}
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-200"
-              >
-                <Mail size={16} />
-                Email
-              </label>
+            <form onSubmit={handleSubmit} className="ct-form space-y-6">
+              {/* NAMA */}
+              <div className="ct-field ct-layer ct-rise" style={layer(22, 0)}>
+                <label
+                  htmlFor="name"
+                  className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-200"
+                >
+                  <User size={16} className="ct-icon" />
+                  Nama
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Masukkan nama kamu"
+                  disabled={loading}
+                  required
+                  className="ct-input"
+                />
+              </div>
 
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) =>
-                  setEmail(e.target.value)
-                }
-                placeholder="nama@email.com"
-                disabled={loading}
-                required
-                className="w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none transition placeholder:text-[#777168] focus:border-[#e5c783]/60 focus:ring-2 focus:ring-[#e5c783]/10 disabled:cursor-not-allowed disabled:opacity-60"
-              />
-            </div>
+              {/* EMAIL */}
+              <div className="ct-field ct-layer ct-rise" style={layer(30, 1)}>
+                <label
+                  htmlFor="email"
+                  className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-200"
+                >
+                  <Mail size={16} className="ct-icon" />
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="nama@email.com"
+                  disabled={loading}
+                  required
+                  className="ct-input"
+                />
+              </div>
 
-            {/* PESAN */}
-            <div>
-              <label
-                htmlFor="message"
-                className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-200"
-              >
-                <MessageSquare size={16} />
-                Pesan
-              </label>
+              {/* PESAN */}
+              <div className="ct-field ct-layer ct-rise" style={layer(38, 2)}>
+                <label
+                  htmlFor="message"
+                  className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-200"
+                >
+                  <MessageSquare size={16} className="ct-icon" />
+                  Pesan
+                </label>
+                <textarea
+                  id="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Tulis pesan kamu..."
+                  rows={6}
+                  disabled={loading}
+                  required
+                  className="ct-input resize-none"
+                />
+              </div>
 
-              <textarea
-                id="message"
-                value={message}
-                onChange={(e) =>
-                  setMessage(e.target.value)
-                }
-                placeholder="Tulis pesan kamu..."
-                rows={6}
-                disabled={loading}
-                required
-                className="w-full resize-none rounded-xl border border-white/10 bg-black/25 px-4 py-3 text-white outline-none transition placeholder:text-[#777168] focus:border-[#e5c783]/60 focus:ring-2 focus:ring-[#e5c783]/10 disabled:cursor-not-allowed disabled:opacity-60"
-              />
-            </div>
-
-            {/* BUTTON */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#f1d79c] to-[#b88b48] px-6 py-3.5 font-semibold text-[#17130c] shadow-lg shadow-[#c59c5b]/15 transition duration-300 hover:scale-[1.01] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
-            >
-              {loading ? (
-                <>
-                  <Loader2
-                    size={18}
-                    className="animate-spin"
-                  />
-                  Mengirim...
-                </>
-              ) : (
-                <>
-                  <Send
-                    size={18}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                  Kirim Pesan
-                </>
+              {/* STATUS */}
+              {status && (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className={`ct-status ${
+                    status.type === "success" ? "ct-status--ok" : "ct-status--err"
+                  }`}
+                >
+                  {status.type === "success" ? (
+                    <Check size={18} className="mt-0.5 shrink-0" />
+                  ) : (
+                    <AlertCircle size={18} className="mt-0.5 shrink-0" />
+                  )}
+                  <span>{status.text}</span>
+                </div>
               )}
-            </button>
 
-          </form>
+              {/* BUTTON */}
+              <div className="ct-layer ct-rise" style={layer(46, 3)}>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="ct-btn group"
+                  data-state={loading ? "loading" : sent ? "sent" : "idle"}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      Mengirim...
+                    </>
+                  ) : sent ? (
+                    <>
+                      <Check size={18} className="ct-pop" />
+                      Terkirim
+                    </>
+                  ) : (
+                    <>
+                      <Send size={18} className="ct-send" />
+                      Kirim Pesan
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>

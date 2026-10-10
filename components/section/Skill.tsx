@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Code2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -27,70 +28,97 @@ async function getSkills(): Promise<Skill[]> {
   }
 }
 
-// Server Component: data diambil di server (statis + revalidate dari app/page.tsx),
-// jadi daftar skill sudah ada di HTML tanpa skeleton dan tanpa JavaScript di browser.
 export default async function Skills() {
   const skills = await getSkills();
 
   return (
-    <section id="skills" className="relative px-6 py-24 sm:py-32">
+    <section id="skills" className="relative overflow-hidden px-6 py-24 sm:py-32">
+      {/* Orb latar agar efek kaca terlihat */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="gl-orb gl-orb-a" style={{ top: "30%", left: "auto", right: "-8%" }} />
+        <div className="gl-orb gl-orb-b" style={{ bottom: "-5%", right: "auto", left: "-6%" }} />
+      </div>
+
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12">
-          <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-[#e5c783]">
+        <div className="reveal-view mb-12">
+          <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-[#7dd3fc]">
             Keahlian
           </p>
-
           <h2 className="text-4xl font-bold text-white sm:text-5xl">
-           Keterampilan saya
+            Keterampilan saya
           </h2>
-
-          <p className="mt-4 max-w-2xl text-[#aaa69d]">
+          <p className="mt-4 max-w-2xl text-[#a9b0d0]">
             Teknologi dan tools yang saya gunakan dalam mengembangkan berbagai
             project.
           </p>
         </div>
 
         {skills.length === 0 ? (
-          <div className="luxury-card rounded-2xl p-10 text-center text-[#aaa69d]">
-            Belum ada skills.
+          <div className="glass-card rounded-3xl p-10 text-center text-[#a9b0d0]">
+            <span className="glass-bg" aria-hidden="true" />
+            <div className="glass-content">Belum ada skills.</div>
           </div>
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {skills.map((skill) => (
-              <div
-                key={skill.id}
-                className="luxury-card group rounded-2xl p-5"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-xl border border-[#d7b979]/15 bg-[#d7b979]/8 p-2.5 text-[#e5c783]">
-                      <Code2 className="h-5 w-5" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {skills.map((skill, i) => {
+              const level = Math.min(Math.max(skill.level, 0), 100);
+
+              return (
+                <div
+                  key={skill.id}
+                  className="glass-enter glass-scene group"
+                  style={{ "--i": i } as CSSProperties}
+                >
+                  <article className="glass-card rounded-3xl p-5 sm:p-6">
+                    <span className="glass-bg" aria-hidden="true">
+                      <span className="glass-blob" />
+                      <span className="glass-sheen" />
+                    </span>
+
+                    <div className="glass-content">
+                      <div className="mb-5 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="skill-icon rounded-xl border border-[#7dd3fc]/25 bg-[#7dd3fc]/10 p-2.5 text-[#7dd3fc]">
+                            <Code2 className="h-5 w-5" />
+                          </div>
+
+                          <div>
+                            <h3 className="font-semibold text-white">{skill.nama}</h3>
+                            <p className="text-xs text-[#7a82a8]">
+                              {skill.kategori || "Technology"}
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="text-sm font-semibold text-[#7dd3fc]">
+                          {level}%
+                        </span>
+                      </div>
+
+                      {/* Bar level: tabung kaca berisi cairan biru cyan */}
+                      <div
+                        className="skill-track"
+                        role="progressbar"
+                        aria-valuenow={level}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-label={`Level ${skill.nama}`}
+                      >
+                        <div
+                          className="skill-fill"
+                          style={
+                            {
+                              width: `${level}%`,
+                              "--i": i,
+                            } as CSSProperties
+                          }
+                        />
+                      </div>
                     </div>
-
-                    <div>
-                      <h3 className="font-semibold text-white">{skill.nama}</h3>
-
-                      <p className="text-xs text-[#8e897f]">
-                        {skill.kategori || "Technology"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <span className="text-sm font-semibold text-[#e5c783]">
-                    {skill.level}%
-                  </span>
+                  </article>
                 </div>
-
-                <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                  <div
-                    className="h-full rounded-full bg-linear-to-r from-[#f1d79c] to-[#a77c3d] transition-all duration-1000"
-                    style={{
-                      width: `${Math.min(Math.max(skill.level, 0), 100)}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
