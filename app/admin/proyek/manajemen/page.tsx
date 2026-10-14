@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { createSupabaseServerClient } from "@/lib/supabase-server";
+﻿import Link from "next/link";
 import { tambahProyekAction } from "@/actions/proyek-actions";
+import { requireAdminUser } from "@/lib/admin-auth";
 
 export default async function ManajemenProyekPage({
   searchParams,
@@ -11,8 +11,7 @@ export default async function ManajemenProyekPage({
   }>;
 }) {
   const params = await searchParams;
-
-  const supabase = await createSupabaseServerClient();
+  const { supabase } = await requireAdminUser();
 
   const { data: daftarProyek } = await supabase
     .from("proyek")
@@ -20,248 +19,256 @@ export default async function ManajemenProyekPage({
     .order("id", { ascending: true });
 
   return (
-    <div className="space-y-8">
-      {/* ================= HEADER ================= */}
-      <div>
-        <h1 className="text-xl font-black text-slate-900 sm:text-2xl">
+    <div className="w-full space-y-8">
+      {/* HEADER */}
+      <div className="adm-up" style={{ ["--i" as string]: 0 }}>
+        <span className="adm-badge mb-4">
+          <span className="adm-dot" />
+          Manajemen
+        </span>
+
+        <h1 className="adm-title-grad text-3xl font-black tracking-tight sm:text-4xl">
           Manajemen Proyek
         </h1>
 
-        <p className="mt-1 text-sm text-slate-500">
-          Tambah, ubah, atau hapus data proyek yang tampil di halaman
-          portfolio.
+        <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-slate-400">
+          Tambah, ubah, atau hapus data proyek yang tampil di halaman portfolio.
         </p>
       </div>
 
-      {/* ================= PESAN ERROR ================= */}
+      {/* PESAN ERROR */}
       {params.error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-600">
+        <div
+          className="adm-up adm-alert adm-alert-error"
+          style={{ ["--i" as string]: 1 }}
+        >
           {params.error}
         </div>
       )}
 
-      {/* ================= PESAN SUCCESS ================= */}
+      {/* PESAN SUKSES */}
       {params.success && (
-        <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-medium text-green-600">
+        <div
+          className="adm-up adm-alert adm-alert-success"
+          style={{ ["--i" as string]: 1 }}
+        >
           {params.success}
         </div>
       )}
 
-      {/* ================= TABEL DAFTAR PROYEK ================= */}
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full min-w-160 text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50">
-            <tr>
-              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
-                Judul
-              </th>
-
-              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
-                Kategori
-              </th>
-
-              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
-                Featured
-              </th>
-
-              <th className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
-                Aksi
-              </th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y divide-slate-100">
-            {daftarProyek?.map((proyek) => (
-              <tr
-                key={proyek.id}
-                className="transition hover:bg-slate-50"
-              >
-                {/* JUDUL */}
-                <td className="px-4 py-3 font-medium text-slate-900">
-                  {proyek.judul}
-                </td>
-
-                {/* KATEGORI */}
-                <td className="whitespace-nowrap px-4 py-3 text-slate-500">
-                  {proyek.kategori || "—"}
-                </td>
-
-                {/* FEATURED */}
-                <td className="px-4 py-3">
-                  {proyek.featured ? (
-                    <span className="inline-flex rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-700">
-                      ✓ Featured
-                    </span>
-                  ) : (
-                    <span className="text-slate-400">—</span>
-                  )}
-                </td>
-
-                {/* AKSI */}
-                <td className="px-4 py-3">
-                  <div className="flex gap-2">
-                    <Link
-                      href={`/admin/proyek/edit/${proyek.id}`}
-                      className="whitespace-nowrap rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-semibold text-blue-700 transition hover:bg-blue-400"
-                    >
-                      Edit
-                    </Link>
-
-                    <Link
-                      href={`/admin/proyek/hapus/${proyek.id}`}
-                      className="whitespace-nowrap rounded-lg bg-red-500 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-400"
-                    >
-                      Hapus
-                    </Link>
-                  </div>
-                </td>
-              </tr>
-            ))}
-
-            {/* DATA KOSONG */}
-            {(!daftarProyek || daftarProyek.length === 0) && (
+      {/* TABEL DAFTAR PROYEK */}
+      <div
+        className="adm-card adm-up"
+        style={{ ["--i" as string]: 2 }}
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px] text-sm">
+            <thead className="border-b border-white/10 bg-white/[0.02]">
               <tr>
-                <td
-                  colSpan={4}
-                  className="px-4 py-8 text-center text-slate-400"
-                >
-                  Belum ada data proyek.
-                </td>
+                <th className="adm-th">Judul</th>
+                <th className="adm-th">Kategori</th>
+                <th className="adm-th">Featured</th>
+                <th className="adm-th">Aksi</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="divide-y divide-white/5">
+              {daftarProyek?.map((proyek) => (
+                <tr
+                  key={proyek.id}
+                  className="group transition-colors duration-300 hover:bg-cyan-400/5"
+                >
+                  <td className="px-4 py-3.5 font-bold text-white transition-colors group-hover:text-cyan-200">
+                    {proyek.judul}
+                  </td>
+
+                  <td className="whitespace-nowrap px-4 py-3.5 text-slate-400">
+                    {proyek.kategori || "—"}
+                  </td>
+
+                  <td className="px-4 py-3.5">
+                    {proyek.featured ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2.5 py-1 text-xs font-black text-cyan-300 shadow-[0_0_18px_-6px_rgba(34,211,238,0.6)]">
+                        <span className="adm-dot" />
+                        Featured
+                      </span>
+                    ) : (
+                      <span className="text-slate-600">—</span>
+                    )}
+                  </td>
+
+                  <td className="px-4 py-3.5">
+                    <div className="flex gap-2">
+                      <Link
+                        href={`/admin/proyek/edit/${proyek.id}`}
+                        className="adm-btn adm-btn-sm adm-btn-ghost"
+                      >
+                        ✎ Edit
+                      </Link>
+
+                      <Link
+                        href={`/admin/proyek/hapus/${proyek.id}`}
+                        className="adm-btn adm-btn-sm adm-btn-danger"
+                      >
+                        🗑 Hapus
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+
+              {(!daftarProyek || daftarProyek.length === 0) && (
+                <tr>
+                  <td colSpan={4} className="px-4 py-14 text-center">
+                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-xl text-slate-500">
+                      ◆
+                    </div>
+                    <p className="text-sm font-bold text-slate-300">
+                      Belum ada data proyek
+                    </p>
+                    <p className="mt-1 text-xs font-medium text-slate-500">
+                      Tambahkan proyek pertama kamu di bawah.
+                    </p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* ================= FORM TAMBAH PROYEK ================= */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-bold text-slate-900">
-          Tambah Proyek Baru
-        </h2>
+      {/* FORM TAMBAH PROYEK */}
+      <div
+        className="adm-card adm-up relative p-6 sm:p-8"
+        style={{ ["--i" as string]: 3 }}
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,_rgba(34,211,238,0.25),_transparent_70%)] blur-2xl"
+        />
 
-        <form
-          action={tambahProyekAction}
-          className="space-y-4"
-        >
-          {/* JUDUL + KATEGORI */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* JUDUL */}
+        <div className="relative">
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/30 bg-cyan-400/10 text-lg font-black text-cyan-300 shadow-[0_0_22px_-6px_rgba(34,211,238,0.7)]">
+              +
+            </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
-                Judul Proyek
-              </label>
+              <h2 className="text-lg font-black text-white">
+                Tambah Proyek Baru
+              </h2>
+              <p className="text-xs font-medium text-slate-400">
+                Isi data di bawah, lalu klik simpan.
+              </p>
+            </div>
+          </div>
 
+          <form action={tambahProyekAction} className="space-y-5">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <label htmlFor="judul" className="adm-label">
+                  Judul Proyek
+                </label>
+                <input
+                  id="judul"
+                  name="judul"
+                  type="text"
+                  required
+                  placeholder="Contoh: Website Portfolio"
+                  className="adm-input"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="kategori" className="adm-label">
+                  Kategori
+                </label>
+                <input
+                  id="kategori"
+                  name="kategori"
+                  type="text"
+                  placeholder="Web Application / Management System / IoT"
+                  className="adm-input"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="deskripsi" className="adm-label">
+                Deskripsi
+              </label>
+              <textarea
+                id="deskripsi"
+                name="deskripsi"
+                rows={3}
+                placeholder="Tuliskan deskripsi singkat proyek..."
+                className="adm-input adm-textarea"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <label htmlFor="teknologi" className="adm-label">
+                  Teknologi
+                </label>
+                <input
+                  id="teknologi"
+                  name="teknologi"
+                  type="text"
+                  placeholder="Next.js, Tailwind, Supabase"
+                  className="adm-input"
+                />
+                <p className="adm-hint">Pisahkan teknologi menggunakan koma.</p>
+              </div>
+
+              <div>
+                <label htmlFor="link" className="adm-label">
+                  Link Proyek
+                </label>
+                <input
+                  id="link"
+                  name="link"
+                  type="url"
+                  placeholder="https://..."
+                  className="adm-input"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="gambar" className="adm-label">
+                Gambar Proyek
+              </label>
               <input
-                name="judul"
-                type="text"
+                id="gambar"
+                name="gambar"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
                 required
-                placeholder="Contoh: Website Portfolio"
-                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="adm-input adm-file h-auto cursor-pointer py-2 text-slate-300"
               />
-            </div>
-
-            {/* KATEGORI */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
-                Kategori
-              </label>
-
-              <input
-                name="kategori"
-                type="text"
-                placeholder="Web Application / Management System / IoT"
-                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-              />
-            </div>
-          </div>
-
-          {/* DESKRIPSI */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
-              Deskripsi
-            </label>
-
-            <textarea
-              name="deskripsi"
-              rows={3}
-              placeholder="Tuliskan deskripsi singkat proyek..."
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-            />
-          </div>
-
-          {/* TEKNOLOGI + LINK */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* TEKNOLOGI */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
-                Teknologi
-              </label>
-
-              <input
-                name="teknologi"
-                type="text"
-                placeholder="Next.js, Tailwind, Supabase"
-                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-              />
-
-              <p className="mt-1 text-xs text-slate-500">
-                Pisahkan teknologi menggunakan koma.
+              <p className="adm-hint">
+                Format JPG, PNG, atau WEBP. Maksimal 5 MB.
               </p>
             </div>
 
-            {/* LINK */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
-                Link Proyek
-              </label>
-
-              <input
-                name="link"
-                type="url"
-                placeholder="https://..."
-                className="h-11 w-full rounded-lg border border-slate-300 px-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-              />
-            </div>
-          </div>
-
-          {/* GAMBAR */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
-              Gambar Proyek
+            <label className="adm-check">
+              <input type="checkbox" name="featured" />
+              <span className="text-sm font-bold text-slate-300">
+                Tandai sebagai <span className="text-cyan-300">Featured</span>
+              </span>
             </label>
 
-            <input
-              name="gambar"
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              required
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-            />
-
-            <p className="mt-1 text-xs text-slate-500">
-              Format JPG, PNG, atau WEBP. Maksimal 5 MB.
-            </p>
-          </div>
-
-          {/* FEATURED */}
-          <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
-            <input
-              type="checkbox"
-              name="featured"
-              className="h-4 w-4 rounded border-slate-300"
-            />
-
-            <span>Tandai sebagai Featured</span>
-          </label>
-
-          {/* BUTTON */}
-          <button
-            type="submit"
-            className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-blue-700 active:scale-[0.98]"
-          >
-            Simpan Proyek
-          </button>
-        </form>
+            <div className="flex justify-end pt-2">
+              <button
+                type="submit"
+                className="adm-btn adm-btn-lg adm-btn-primary"
+              >
+                <span>💾</span>
+                <span>Simpan Proyek</span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

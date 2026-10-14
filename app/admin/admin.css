@@ -1,0 +1,606 @@
+/* =====================================================
+   ADMIN THEME — biru & cyan, senada dengan portfolio
+   ===================================================== */
+
+.adm-root {
+  --adm-bg: #050816;
+  --adm-blue: #3b82f6;
+  --adm-blue-soft: #60a5fa;
+  --adm-cyan: #22d3ee;
+  --adm-sky: #7dd3fc;
+  --adm-text: #e2e8f0;
+  --adm-muted: #94a3b8;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: var(--adm-bg);
+  color: var(--adm-text);
+  overflow-x: clip;
+}
+
+/* ---------- BACKGROUND ANIMASI ---------- */
+.adm-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse at top, #0b1437 0%, #050816 60%);
+}
+
+.adm-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  will-change: transform;
+}
+.adm-orb-1 {
+  width: 40rem;
+  height: 40rem;
+  top: -12rem;
+  left: -12rem;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.5), transparent 70%);
+  animation: adm-drift 20s ease-in-out infinite;
+}
+.adm-orb-2 {
+  width: 44rem;
+  height: 44rem;
+  bottom: -16rem;
+  right: -14rem;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.42), transparent 70%);
+  animation: adm-drift 26s ease-in-out infinite reverse;
+}
+.adm-orb-3 {
+  width: 26rem;
+  height: 26rem;
+  top: 35%;
+  left: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.22), transparent 70%);
+  animation: adm-drift 30s ease-in-out infinite;
+  animation-delay: -10s;
+}
+@keyframes adm-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(60px, -40px, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-40px, 50px, 0) scale(0.95);
+  }
+}
+
+.adm-aurora {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 130vmax;
+  height: 130vmax;
+  margin: -65vmax 0 0 -65vmax;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(34, 211, 238, 0.1) 40deg,
+    transparent 90deg,
+    rgba(59, 130, 246, 0.12) 200deg,
+    transparent 260deg,
+    rgba(56, 189, 248, 0.08) 320deg,
+    transparent 360deg
+  );
+  filter: blur(50px);
+  opacity: 0.9;
+  animation: adm-spin 60s linear infinite;
+}
+@keyframes adm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* lantai grid 3D yang bergerak ke arah pengguna */
+.adm-floor {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -20%;
+  height: 70%;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.22) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(420px) rotateX(62deg);
+  transform-origin: 50% 100%;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 80%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 80%);
+  animation: adm-floor 3.5s linear infinite;
+}
+@keyframes adm-floor {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 0 60px, 0 60px;
+  }
+}
+
+.adm-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 38% 64%, #bae6fd, transparent),
+    radial-gradient(1px 1px at 61% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 78% 72%, #67e8f9, transparent),
+    radial-gradient(1.5px 1.5px at 90% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 24% 88%, #bae6fd, transparent),
+    radial-gradient(1px 1px at 52% 42%, #fff, transparent);
+  background-size: 420px 420px;
+  animation: adm-twinkle 5s ease-in-out infinite alternate;
+}
+@keyframes adm-twinkle {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+
+.adm-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 45%,
+    rgba(5, 8, 22, 0.85) 100%
+  );
+}
+
+/* ---------- ANIMASI MASUK ---------- */
+.adm-up,
+.adm-row {
+  animation: adm-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+@keyframes adm-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* hormati pengaturan "kurangi gerakan" */
+@media (prefers-reduced-motion: reduce) {
+  .adm-root *,
+  .adm-root *::before,
+  .adm-root *::after,
+  .adm-bg,
+  .adm-bg * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- KARTU ---------- */
+.adm-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.018)
+  );
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 50px rgba(2, 4, 16, 0.45);
+}
+
+/* kartu yang naik saat di-hover */
+.adm-lift {
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.4s,
+    box-shadow 0.4s;
+}
+.adm-lift:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow:
+    0 30px 80px rgba(37, 99, 235, 0.3),
+    0 0 40px rgba(34, 211, 238, 0.12);
+}
+
+/* banner ajakan di dashboard */
+.adm-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  background: linear-gradient(135deg, #0b1440 0%, #0a1f5c 50%, #06203a 100%);
+  box-shadow:
+    0 30px 80px -30px rgba(37, 99, 235, 0.6),
+    inset 0 1px 0 rgba(186, 230, 253, 0.15);
+}
+.adm-banner-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.09) 1px, transparent 1px);
+  background-size: 36px 36px;
+  -webkit-mask-image: radial-gradient(ellipse at 20% 0%, #000, transparent 70%);
+  mask-image: radial-gradient(ellipse at 20% 0%, #000, transparent 70%);
+}
+
+/* ---------- TEKS & ELEMEN KECIL ---------- */
+.adm-title-grad {
+  background: linear-gradient(90deg, #ffffff, #bae6fd 50%, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.adm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  background: rgba(59, 130, 246, 0.12);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #a5f3fc;
+  box-shadow: 0 0 20px -6px rgba(34, 211, 238, 0.6);
+}
+.adm-dot {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: #22d3ee;
+  box-shadow: 0 0 8px #22d3ee;
+}
+.adm-ping {
+  position: relative;
+  display: inline-flex;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background: #22d3ee;
+  box-shadow: 0 0 10px #22d3ee;
+}
+.adm-ping::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #22d3ee;
+  opacity: 0.6;
+  animation: adm-pulse 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes adm-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+.adm-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #7dd3fc, #3b82f6);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #04102a;
+  box-shadow:
+    0 16px 40px -10px rgba(34, 211, 238, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.adm-row:hover {
+  background: rgba(34, 211, 238, 0.05);
+}
+
+/* ---------- TOMBOL ---------- */
+.adm-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  border-radius: 0.75rem;
+  font-weight: 800;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s,
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+}
+.adm-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+.adm-btn-sm {
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+}
+.adm-btn-lg {
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  font-size: 0.875rem;
+}
+.adm-btn-xl {
+  height: 3rem;
+  padding: 0 1.5rem;
+  font-size: 0.95rem;
+}
+
+.adm-btn-primary {
+  color: #04102a;
+  background: linear-gradient(135deg, #7dd3fc 0%, #22d3ee 45%, #3b82f6 100%);
+  box-shadow:
+    0 14px 40px -10px rgba(34, 211, 238, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.adm-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 54px -10px rgba(34, 211, 238, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.adm-btn-primary:active {
+  transform: scale(0.98);
+}
+.adm-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.8s;
+}
+.adm-btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+.adm-btn-ghost {
+  color: #bae6fd;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  background: rgba(125, 211, 252, 0.06);
+}
+.adm-btn-ghost:hover {
+  color: #ffffff;
+  border-color: rgba(34, 211, 238, 0.55);
+  background: rgba(34, 211, 238, 0.14);
+  box-shadow: 0 0 20px -4px rgba(34, 211, 238, 0.55);
+}
+
+.adm-btn-danger {
+  color: #fecdd3;
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  background: rgba(244, 63, 94, 0.12);
+}
+.adm-btn-danger:hover {
+  color: #ffe4e6;
+  border-color: rgba(251, 113, 133, 0.6);
+  background: rgba(244, 63, 94, 0.22);
+  box-shadow: 0 0 20px -4px rgba(251, 113, 133, 0.55);
+}
+
+.adm-btn-solid-danger {
+  color: #ffffff;
+  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  box-shadow: 0 14px 40px -12px rgba(244, 63, 94, 0.6);
+}
+.adm-btn-solid-danger:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- FORM ---------- */
+.adm-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+}
+.adm-input {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(2, 6, 23, 0.55);
+  color: #f1f5f9;
+  font-size: 0.875rem;
+  font-weight: 500;
+  outline: none;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    background-color 0.25s;
+}
+.adm-input::placeholder {
+  color: #64748b;
+}
+.adm-input:focus {
+  border-color: rgba(34, 211, 238, 0.7);
+  background: rgba(2, 6, 23, 0.75);
+  box-shadow:
+    0 0 0 4px rgba(34, 211, 238, 0.12),
+    0 0 28px -6px rgba(34, 211, 238, 0.5);
+}
+.adm-textarea {
+  height: auto;
+  padding: 0.75rem 0.875rem;
+  resize: vertical;
+}
+.adm-file::file-selector-button {
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  font-weight: 800;
+  color: #04102a;
+  background: linear-gradient(135deg, #7dd3fc, #3b82f6);
+  cursor: pointer;
+}
+.adm-hint {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+.adm-check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition:
+    border-color 0.25s,
+    background-color 0.25s;
+}
+.adm-check:hover {
+  border-color: rgba(34, 211, 238, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+}
+.adm-check input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #22d3ee;
+  cursor: pointer;
+}
+
+/* ---------- ALERT ---------- */
+.adm-alert {
+  border-radius: 0.75rem;
+  padding: 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.adm-alert-error {
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  background: rgba(244, 63, 94, 0.1);
+  color: #fda4af;
+}
+.adm-alert-success {
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background: rgba(34, 211, 238, 0.1);
+  color: #67e8f9;
+  box-shadow: 0 0 24px -8px rgba(34, 211, 238, 0.5);
+}
+
+/* ---------- TABEL ---------- */
+.adm-th {
+  white-space: nowrap;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+}
+
+/* ---------- EFEK 3D & UI/UX ---------- */
+.adm-three {
+  position: absolute;
+  inset: 0;
+}
+.adm-three canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.adm-spot {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    520px circle at var(--mx, -500px) var(--my, -500px),
+    rgba(34, 211, 238, 0.13),
+    transparent 60%
+  );
+}
+
+.adm-tilt {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.4s,
+    box-shadow 0.4s;
+  will-change: transform;
+}
+.adm-tilt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(
+    360px circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.14),
+    transparent 60%
+  );
+}
+.adm-tilt:hover {
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow:
+    0 30px 80px rgba(37, 99, 235, 0.3),
+    0 0 40px rgba(34, 211, 238, 0.12);
+}
+.adm-tilt:hover::before {
+  opacity: 1;
+}
+/* =====================================================
+   SIDEBAR — background kaca (tanpa mengganggu sticky)
+   ===================================================== */
+.adm-root aside {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 14, 38, 0.72) 0%,
+    rgba(5, 8, 22, 0.55) 100%
+  );
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  border-right: 1px solid rgba(34, 211, 238, 0.18);
+  box-shadow: 10px 0 50px -20px rgba(37, 99, 235, 0.45);
+}

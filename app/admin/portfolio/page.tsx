@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 export default function AdminPortfolioPage() {
   return (
@@ -9,7 +9,7 @@ export default function AdminPortfolioPage() {
         </div>
 
         <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-          Portfolio Admin 👋
+          Portfolio Admin ðŸ‘‹
         </h1>
 
         <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-slate-500">
@@ -24,7 +24,7 @@ export default function AdminPortfolioPage() {
           className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-xl text-blue-600">
-            📊
+            ðŸ“Š
           </div>
 
           <h2 className="mt-5 text-xl font-black text-slate-900">
@@ -36,7 +36,7 @@ export default function AdminPortfolioPage() {
           </p>
 
           <span className="mt-5 inline-flex text-sm font-black text-blue-600 transition group-hover:translate-x-1">
-            Buka Dashboard →
+            Buka Dashboard â†’
           </span>
         </Link>
 
@@ -45,7 +45,7 @@ export default function AdminPortfolioPage() {
           className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-xl text-indigo-600">
-            ＋
+            ï¼‹
           </div>
 
           <h2 className="mt-5 text-xl font-black text-slate-900">
@@ -57,10 +57,11 @@ export default function AdminPortfolioPage() {
           </p>
 
           <span className="mt-5 inline-flex text-sm font-black text-indigo-600 transition group-hover:translate-x-1">
-            Tambah Sekarang →
+            Tambah Sekarang â†’
           </span>
         </Link>
       </div>
     </main>
   );
 }
+

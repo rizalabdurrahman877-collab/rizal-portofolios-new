@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import LoginSubmitButton from "./LoginSubmitButton";
 
@@ -132,7 +132,7 @@ export default async function LoginPage({
         </div>
 
         <p className="mt-6 text-center text-xs font-medium text-slate-500">
-          © 2026 Rizal Portfolio
+          Â© 2026 Rizal Portfolio
         </p>
       </div>
     </main>

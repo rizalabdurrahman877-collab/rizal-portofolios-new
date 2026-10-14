@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from "@/lib/supabase-server";
+﻿import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export default async function LoginDebug() {
   const supabase = await createSupabaseServerClient();
@@ -8,7 +8,7 @@ export default async function LoginDebug() {
 
   return (
     <div className="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded text-xs">
-      <p>User: {user ? "LOGGED IN ❌" : "LOGGED OUT ✅"}</p>
+      <p>User: {user ? "LOGGED IN âŒ" : "LOGGED OUT âœ…"}</p>
       <p>Email: {user?.email || "None"}</p>
     </div>
   );
