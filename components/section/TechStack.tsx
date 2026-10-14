@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const technologies = [
   "Figma",
@@ -14,34 +14,70 @@ const technologies = [
 ];
 
 export default function TechStack() {
+  const shouldReduceMotion = useReducedMotion();
+
+  // Duplikasi daftar agar animasi berjalan berulang tanpa jeda.
   const items = [...technologies, ...technologies];
 
   return (
-    <section className="relative overflow-hidden border-y border-white/[0.06] py-8">
-      <div className="absolute inset-0 bg-blue-500/[0.02]" />
-
-      <motion.div
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className="relative flex w-max items-center gap-10"
+    <section
+      aria-label="Teknologi yang digunakan"
+      className="relative isolate overflow-hidden border-y border-cyan-400/10 bg-[#061116]/80 py-7 sm:py-8"
+    >
+      {/* Background glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
       >
-        {items.map((tech, index) => (
-          <div
-            key={`${tech}-${index}`}
-            className="flex items-center gap-10"
-          >
-            <span className="whitespace-nowrap text-sm font-medium text-slate-500 transition hover:text-blue-400">
-              {tech}
-            </span>
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,17,22,0.98)_0%,rgba(8,145,178,0.06)_50%,rgba(6,17,22,0.98)_100%)]" />
 
-            <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400" />
-          </div>
-        ))}
-      </motion.div>
+        <div className="absolute left-1/4 top-0 h-24 w-64 -translate-y-1/2 rounded-full bg-cyan-400/6 blur-3xl" />
+
+        <div className="absolute bottom-0 right-1/4 h-24 w-64 translate-y-1/2 rounded-full bg-sky-500/6 blur-3xl" />
+      </div>
+
+      {/* Marquee */}
+      <div className="relative overflow-hidden">
+        <motion.div
+          animate={
+            shouldReduceMotion
+              ? undefined
+              : { x: ["0%", "-50%"] }
+          }
+          initial={false}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          className="flex w-max items-center"
+          style={{
+            willChange: shouldReduceMotion ? "auto" : "transform",
+          }}
+        >
+          {items.map((tech, index) => (
+            <div
+              key={`${tech}-${index}`}
+              className="flex shrink-0 items-center gap-8 px-5 sm:gap-10 sm:px-6"
+            >
+              <span className="whitespace-nowrap text-sm font-medium tracking-wide text-[#8fa7b5] transition-all duration-300 hover:text-cyan-200 hover:[text-shadow:0_0_12px_rgba(34,211,238,0.5)] sm:text-base">
+                {tech}
+              </span>
+
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-r from-cyan-400 to-sky-500 shadow-[0_0_10px_rgba(34,211,238,0.55)]"
+              />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Subtle bottom highlight */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-cyan-400/25 to-transparent"
+      />
     </section>
   );
 }
